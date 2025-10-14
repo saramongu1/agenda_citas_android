@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Agenda_optica_isis</string>
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="button_sesion">Iniciar sesión</string>
+    <string name="forgot_password">¿Has olvidado tu contraseña?</string>
+    <string name="welcome">Bienvenido</string>
+    <string name="btm_menu_calendar">Calendario</string>
+    <string name="btm_menu_agenda">Agenda</string>
+    <string name="btm_menu_pacientes">Pacientes</string>
+    <string name="btm_menu_optometras">Optometras</string>
+    <string name="btm_menu_agregar_cita">Agregar cita</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="llenar_calendario">llenar calendario</string>
+    <string name="open_drawer">Abrir menú</string>
+    <string name="close_drawer">Cerrar menú</string>
+    <string-array name="tipos_busqueda">
+        <item>Nombre</item>
+        <item>Documento</item>
+    </string-array>
+    <string name="buscar_paciente">Buscar paciente</string>
+    <string name="hola">hola\n</string>
+
+    <string-array name="tipos_documento">
+        <item>C.C.</item>
+        <item>T.I.</item>
+        <item>C.E.</item>
+        <item>PAS</item>
+    </string-array>
+
+
+
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btnCalendario"
+        android:title="@string/btm_menu_calendar"
+        android:icon="@drawable/calendario" />
+
+    <item
+        android:id="@+id/btnAgenda"
+        android:title="@string/btm_menu_agenda"
+        android:icon="@drawable/agenda" />
+
+    <item
+        android:enabled="false"
+        android:title=""
+         />
+
+    <item
+        android:id="@+id/btnPacientes"
+        android:title="@string/btm_menu_pacientes"
+        android:icon="@drawable/usuarios" />
+
+
+    <item
+        android:id="@+id/btnOptometras"
+        android:title="@string/btm_menu_optometras"
+        android:icon="@drawable/optometra" />
+
+</menu>
