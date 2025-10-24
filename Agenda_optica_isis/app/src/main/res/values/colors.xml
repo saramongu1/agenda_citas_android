@@ -6,4 +6,6 @@
     <color name="GrisOscuro">#737070</color>
     <color name="grisMasOscuro">#5E5E5E</color>
     <color name="grisNormal">#A2A2A2</color>
+    <color name="azul">#303F9F</color>
+    <color name="rojo">#E53935</color>
 </resources>

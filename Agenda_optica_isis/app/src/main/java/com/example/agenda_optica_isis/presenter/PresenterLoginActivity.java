@@ -11,7 +11,7 @@ public class PresenterLoginActivity {
 
     public PresenterLoginActivity(LoginActivity view) {
         this.view = view;
-        this.sistemaReservas = new SistemaReservas();
+        this.sistemaReservas = SistemaReservas.getInstance();
     }
 
     public void iniciarSesion() {

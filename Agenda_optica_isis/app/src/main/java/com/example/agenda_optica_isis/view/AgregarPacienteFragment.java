@@ -30,6 +30,7 @@ public class AgregarPacienteFragment extends Fragment {
     private TextInputEditText etCorreoPaciente;
     private Button btnCrearPaciente;
     private PresenterAgregarPacienteFragment presenter;
+    private Spinner spnGeneroPaciente;
 
 
     @Override
@@ -45,11 +46,18 @@ public class AgregarPacienteFragment extends Fragment {
         enlazarVistar(view);
         initInputFecha(view);
         initSpinnerTiposDocumento(view);
+        initSpinnerGenero(view);
         btnCrearPaciente.setOnClickListener(v -> crearPaciente());
     }
 
     public void crearPaciente(){
         presenter.crearPaciente();
+    }
+
+    public void irAPacientes(){
+        if (getActivity() instanceof MenuActivity) {
+            ((MenuActivity) getActivity()).replaceFragment(new PacientesFragment());
+        }
     }
 
     public void iniciarPresenter(){
@@ -64,6 +72,7 @@ public class AgregarPacienteFragment extends Fragment {
         etFechaNacimientoPaciente = view.findViewById(R.id.inputFechaNacimiento);
         btnCrearPaciente = view.findViewById(R.id.btnCrearPaciente);
         etCorreoPaciente = view.findViewById(R.id.inputCorreoCrearPaciente);
+        spnGeneroPaciente = view.findViewById(R.id.spinnerGeneroCrearPaciente);
     }
 
     public String getNombrePaciente(){
@@ -90,6 +99,10 @@ public class AgregarPacienteFragment extends Fragment {
         return etCorreoPaciente.getText() != null ? etCorreoPaciente.getText().toString().trim() : "";
     }
 
+    public String getGeneroPaciente(){
+        return spnGeneroPaciente.getSelectedItem().toString();
+    }
+
     public void initSpinnerTiposDocumento(@NonNull View view){
         Spinner spinnerTipoDocumento = view.findViewById(R.id.spinnerTipoDocumentoCrearPaciente);
 
@@ -100,6 +113,18 @@ public class AgregarPacienteFragment extends Fragment {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTipoDocumento.setAdapter(adapter);
+    }
+
+    public void initSpinnerGenero(@NonNull View view){
+        Spinner spinnerGeneroPaciente = view.findViewById(R.id.spinnerGeneroCrearPaciente);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.tipos_genero,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGeneroPaciente.setAdapter(adapter);
     }
 
     public void initInputFecha(@NonNull View view){

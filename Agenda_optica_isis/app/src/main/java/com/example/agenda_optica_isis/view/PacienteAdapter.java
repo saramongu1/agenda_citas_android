@@ -18,9 +18,15 @@ import java.util.Map;
 public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.PacienteViewHolder> {
 
     private List<Map.Entry<String, String>> listaPacientes;
+    private OnPacienteClickListener listener;
 
-    public PacienteAdapter(HashMap<String, String> pacientesMap) {
+    public interface OnPacienteClickListener {
+        void onPacienteClick(String documento);
+    }
+
+    public PacienteAdapter(HashMap<String, String> pacientesMap, OnPacienteClickListener listener) {
         this.listaPacientes = new ArrayList<>(pacientesMap.entrySet());
+        this.listener = listener;
     }
 
     @NonNull
@@ -34,12 +40,17 @@ public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.Pacien
     @Override
     public void onBindViewHolder(@NonNull PacienteViewHolder holder, int position) {
         Map.Entry<String, String> paciente = listaPacientes.get(position);
-
         String documento = paciente.getKey();
         String nombre = paciente.getValue();
 
         holder.tvNombre.setText(nombre);
         holder.tvDocumento.setText("Documento: " + documento);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onPacienteClick(documento);
+            }
+        });
     }
 
     @Override
@@ -57,3 +68,4 @@ public class PacienteAdapter extends RecyclerView.Adapter<PacienteAdapter.Pacien
         }
     }
 }
+

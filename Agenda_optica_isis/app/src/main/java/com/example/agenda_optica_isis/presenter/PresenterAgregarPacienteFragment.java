@@ -13,40 +13,45 @@ public class PresenterAgregarPacienteFragment {
 
     public PresenterAgregarPacienteFragment(AgregarPacienteFragment view) {
         this.view = view;
-        this.sistemaReservas = new SistemaReservas();
+        this.sistemaReservas = SistemaReservas.getInstance();
     }
 
 
     public void crearPaciente(){
         try{
-            String nombrePaciente = view.getNombrePaciente();
-            String documentoPaciente = view.getDocumentoPaciente();
-            String tipoDocumento = view.getTipoDocumentoPaciente();
-            String numeroCelularPaciente = view.getNumeroCelularPaciente();
-            String fechaNacimientoPaciente = view.getFechaNacimientoPaciente();
-            String correoPaciente = view.getCorreoPaciente();
+            String nombre_paciente = view.getNombrePaciente();
+            String documento_paciente = view.getDocumentoPaciente();
+            String tipo_documento = view.getTipoDocumentoPaciente();
+            String genero_paciente = view.getGeneroPaciente();
+            String numero_celular_paciente = view.getNumeroCelularPaciente();
+            String fecha_nacimiento_paciente = view.getFechaNacimientoPaciente();
+            String correo_paciente = view.getCorreoPaciente();
 
-            ValidarDatos.validarTexto("nombre", nombrePaciente);
-            ValidarDatos.validarTexto("documento", documentoPaciente);
-            ValidarDatos.validarTexto("tipo de documento", tipoDocumento);
-            ValidarDatos.validarTexto("fecha de nacimiento",fechaNacimientoPaciente);
-            ValidarDatos.validarTexto("Numero de celular", numeroCelularPaciente);
-            ValidarDatos.validarLongitud("documento", documentoPaciente,10);
-            ValidarDatos.validarLongitud("numero de celular", numeroCelularPaciente, 10);
-            ValidarDatos.validarLongitud("nombre", nombrePaciente, 6);
-            if(!correoPaciente.isEmpty()){
-                ValidarDatos.validarCorreo(correoPaciente);
+
+            ValidarDatos.validarTexto("nombre", nombre_paciente);
+            ValidarDatos.validarTexto("documento", documento_paciente);
+            ValidarDatos.validarTexto("tipo de documento", tipo_documento);
+            ValidarDatos.validarTexto("fecha de nacimiento",fecha_nacimiento_paciente);
+            ValidarDatos.validarTexto("Numero de celular", numero_celular_paciente);
+            ValidarDatos.validarLongitud("documento", documento_paciente,10);
+            ValidarDatos.validarLongitud("numero de celular", numero_celular_paciente, 10);
+            ValidarDatos.validarLongitud("nombre", nombre_paciente, 6);
+
+            if(!correo_paciente.isEmpty()){
+                ValidarDatos.validarCorreo(correo_paciente);
             }
 
 
-               boolean seCreoPaciente = sistemaReservas.crearPaciente(correoPaciente,nombrePaciente,documentoPaciente,
-                        numeroCelularPaciente,getAnioNacimiento(fechaNacimientoPaciente),
-                        getMesNacimiento(fechaNacimientoPaciente), getDiaNacimiento(fechaNacimientoPaciente),
-                        tipoDocumento);
+               boolean seCreoPaciente = sistemaReservas.crearPaciente(correo_paciente,nombre_paciente,documento_paciente,
+                        numero_celular_paciente,getAnioNacimiento(fecha_nacimiento_paciente),
+                        getMesNacimiento(fecha_nacimiento_paciente), getDiaNacimiento(fecha_nacimiento_paciente),
+                        tipo_documento, genero_paciente);
             if(!seCreoPaciente){
                 view.mostrarMensaje("El paciente ya existe");
             }else{
-                view.mostrarMensaje("Se creo el paciente");
+                view.mostrarMensaje("Se creo el paciente exitosamente");
+                view.irAPacientes();
+
             }
 
 

@@ -19,6 +19,7 @@
         <item>Documento</item>
     </string-array>
     <string name="buscar_paciente">Buscar paciente</string>
+    <string name="buscar_optometra">Buscar optometra</string>
     <string name="hola">hola\n</string>
 
     <string-array name="tipos_documento">
@@ -28,6 +29,11 @@
         <item>PAS</item>
     </string-array>
 
+    <string-array name="tipos_genero">
+        <item>Femenino</item>
+        <item>Masculino</item>
+        <item>Otro</item>
+    </string-array>
 
 
 </resources>

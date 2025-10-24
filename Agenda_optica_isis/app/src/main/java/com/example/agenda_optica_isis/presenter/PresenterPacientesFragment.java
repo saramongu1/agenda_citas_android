@@ -11,7 +11,7 @@ public class PresenterPacientesFragment {
 
     public PresenterPacientesFragment(PacientesFragment view){
         this.view = view;
-        this.sistemaReservas = new SistemaReservas();
+        this.sistemaReservas = SistemaReservas.getInstance();
     }
 
     public void cargarPacientes(){

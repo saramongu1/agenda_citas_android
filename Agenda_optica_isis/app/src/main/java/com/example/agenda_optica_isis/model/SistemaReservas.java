@@ -12,6 +12,7 @@ public class SistemaReservas {
     private HashMap<Integer, Cita> citas;
     private HashMap<String, Consultorio> consultorios;
     private HashMap<String,Usuario> usuarios;
+    private static SistemaReservas instancia;
 
     public SistemaReservas() {
         this.optometras = new HashMap<>();
@@ -21,26 +22,34 @@ public class SistemaReservas {
         this.usuarios = new HashMap<>();
         quemarDatos();
     }
+    public static synchronized SistemaReservas getInstance() {
+        if (instancia == null) {
+            instancia = new SistemaReservas();
+        }
+        return instancia;
+    }
 
     public void quemarDatos(){
 
-        crearUsuario("admin@admin.com","12345678",true,"Administradora","1057574987","3213055412",2005,7,13, "cédula de ciudadanía");
-        crearOptometra("diana@optometra.com","12345678",true,"Diana yineth González Martínez","1057571987","3131234546",1990,9,13, "cédula de ciudadanía");
-        crearPaciente("maria.rodriguez@email.com", "María Elena Rodríguez", "1023456789", "3101234567", 1985, 3, 15, "cédula de ciudadanía");
-        crearPaciente("carlos.lopez@email.com", "Carlos Andrés López", "987654321", "3152345678", 1990, 7, 22, "cédula de ciudadanía");
-        crearPaciente("ana.martinez@email.com", "Ana Isabel Martínez", "456789123", "3203456789", 1978, 11, 5, "cédula de ciudadanía");
-        crearPaciente("jorge.silva@email.com", "Jorge Eduardo Silva", "789123456", "3004567890", 1988, 1, 30, "cédula de ciudadanía");
-        crearPaciente("laura.diaz@email.com", "Laura Patricia Díaz", "321654987", "3015678901", 1995, 9, 12, "cédula de ciudadanía");
-        crearPaciente("roberto.garcia@email.com", "Roberto Antonio García", "654987321", "3026789012", 1982, 4, 18, "cédula de ciudadanía");
-        crearPaciente("sofia.perez@email.com", "Sofia Camila Pérez", "147258369", "3037890123", 2000, 8, 25, "cédula de ciudadanía");
-        crearPaciente("miguel.torres@email.com", "Miguel Ángel Torres", "258369147", "3048901234", 1975, 12, 3, "cédula de ciudadanía");
-        crearPaciente("elena.castro@email.com", "Elena Margarita Castro", "369147258", "3059012345", 1992, 6, 8, "cédula de ciudadanía");
-        crearPaciente("fernando.ramirez@email.com", "Fernando José Ramírez", "951753852", "3120123456", 1987, 2, 14, "cédula de ciudadanía");
-        crearPaciente("carmen.herrera@email.com", "Carmen Rosa Herrera", "753159486", "3131234567", 1965, 10, 17, "cédula de ciudadanía");
-        crearPaciente("diego.mendoza@email.com", "Diego Alejandro Mendoza", "852741963", "3142345678", 2010, 7, 29, "Targeta de identidad");
-        crearPaciente("patricia.rojas@email.com", "Patricia Alejandra Rojas", "963852741", "3173456789", 2018, 3, 21, "registro civil");
-        crearPaciente("ricardo.vargas@email.com", "Ricardo Manuel Vargas", "CE741852963", "3184567890", 1970, 11, 9, "cédula de extranjería");
-        crearPaciente("isabel.nunez@email.com", "Isabel Cristina Núñez", "PP159487263", "3195678901", 1993, 5, 6, "pasaporte");
+        crearUsuario("admin@admin.com","12345678",true,"Administradora","1057574987","3213055412",2005,7,13, "C.C.", "femenino");
+        crearOptometra("diana@optometra.com","12345678",true,"Diana yineth González Martínez","1057571987","3131234546",1990,9,13, "C.C.", "femenino");
+
+
+
+        crearPaciente("carlos.lopez@email.com", "Carlos Andrés López", "9876543215", "3152345678", 1990, 7, 22, "C.C.", "masculino");
+        crearPaciente("ana.martinez@email.com", "Ana Isabel Martínez", "1456789123", "3203456789", 1978, 11, 5, "C.C.", "femenino");
+        crearPaciente("jorge.silva@email.com", "Jorge Eduardo Silva", "7891234561", "3004567890", 1988, 1, 30, "C.C.", "masculino");
+        crearPaciente("laura.diaz@email.com", "Laura Patricia Díaz", "1321654987", "3015678901", 1995, 9, 12, "C.C.", "femenino");
+        crearPaciente("roberto.garcia@email.com", "Roberto Antonio García", "6549873211", "3026789012", 1982, 4, 18, "C.C.", "masculino");
+        crearPaciente("sofia.perez@email.com", "Sofia Camila Pérez", "2147258369", "3037890123", 2000, 8, 25, "C.C.", "femenino");
+        crearPaciente("miguel.torres@email.com", "Miguel Ángel Torres", "2583691472", "3048901234", 1975, 12, 3, "C.C.", "masculino");
+        crearPaciente("elena.castro@email.com", "Elena Margarita Castro", "2369147258", "3059012345", 1992, 6, 8, "C.C.", "femenino");
+        crearPaciente("fernando.ramirez@email.com", "Fernando José Ramírez", "9517538522", "3120123456", 1987, 2, 14, "C.C.", "masculino");
+        crearPaciente("carmen.herrera@email.com", "Carmen Rosa Herrera", "1753159486", "3131234567", 1965, 10, 17, "C.C.", "femenino");
+        crearPaciente("diego.mendoza@email.com", "Diego Alejandro Mendoza", "8527419632", "3142345678", 2010, 7, 29, "T.I.", "otro");
+        crearPaciente("patricia.rojas@email.com", "Patricia Alejandra Rojas", "3963852741", "3173456789", 2018, 3, 21, "R.C.", "femenino");
+        crearPaciente("ricardo.vargas@email.com", "Ricardo Manuel Vargas", "7418529633", "3184567890", 1970, 11, 9, "C.E.", "otro");
+        crearPaciente("isabel.nunez@email.com", "Isabel Cristina Núñez", "5948726312", "3195678901", 1993, 5, 6, "C.C.", "otro");
         crearConsultorio("COI-01","calle 15 # 13-9", "Sogamoso");
     }
 
@@ -84,9 +93,9 @@ public class SistemaReservas {
      //CRUD USUARIOS
      //
     public boolean crearUsuario(String correo_electronico,String contrasenia ,boolean isAdmin,String nombre, String numero_documento,
-                                String numero_celular, int anio, int mes, int dia, String tipo_contrasenia) {
+                                String numero_celular, int anio, int mes, int dia, String tipo_contrasenia, String genero) {
         if (usuarios.containsKey(numero_documento)) return false;
-        usuarios.put(numero_documento,new Usuario(correo_electronico,contrasenia,isAdmin,nombre,numero_documento,numero_celular,anio,mes,dia, tipo_contrasenia));
+        usuarios.put(numero_documento,new Usuario(correo_electronico,contrasenia,isAdmin,nombre,numero_documento,numero_celular,anio,mes,dia, tipo_contrasenia, genero));
         return true;
     }
 
@@ -133,10 +142,19 @@ public class SistemaReservas {
     // ================================
     // CRUD OPTOMETRAS
     // ================================
+
+    public HashMap<String, String> obtenerListaOptometras() {
+        HashMap<String, String> lista = new HashMap<>();
+        for (Optometra o : optometras.values()) {
+            lista.put(o.getNumero_documento(), o.getNombre());
+        }
+        return lista;
+    }
+
     public boolean crearOptometra(String correo_electronico,String contrasenia ,boolean isAdmin,String nombre, String numero_documento,
-                                  String numero_celular, int anio, int mes, int dia, String tipo_contrasenia) {
+                                  String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         if (optometras.containsKey(numero_documento)) return false;
-        optometras.put(numero_documento, new Optometra(correo_electronico, contrasenia , isAdmin, nombre,  numero_documento,numero_celular,  anio,  mes,  dia, tipo_contrasenia));
+        optometras.put(numero_documento, new Optometra(correo_electronico, contrasenia , isAdmin, nombre,  numero_documento,numero_celular,  anio,  mes,  dia, tipo_documento, genero));
         return true;
     }
 
@@ -167,9 +185,9 @@ public class SistemaReservas {
     // CRUD PACIENTES
     // ================================
     public boolean crearPaciente(String correo_electronico,String nombre, String numero_documento,
-                                 String numero_celular, int anio, int mes, int dia, String tipo_documento) {
+                                 String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         if (pacientes.containsKey(numero_documento)) return false;
-        pacientes.put(numero_documento, new Paciente(correo_electronico,nombre, numero_documento,numero_celular, anio, mes, dia, tipo_documento));
+        pacientes.put(numero_documento, new Paciente(correo_electronico,nombre, numero_documento,numero_celular, anio, mes, dia, tipo_documento, genero));
         return true;
     }
 
@@ -181,17 +199,21 @@ public class SistemaReservas {
         return pacientes.containsKey(numero_documento);
     }
 
-    public boolean actualizarPaciente(String nombre, String numero_documento,
-                                      String numero_celular, int anio, int mes, int dia) {
+    public boolean actualizarPaciente(String correo_electronico,String nombre, String numero_documento,
+                                      String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         Paciente paciente = pacientes.get(numero_documento);
         if (paciente != null) {
+            paciente.setCorreo_electronico(correo_electronico);
             paciente.setNombre(nombre);
             paciente.setNumero_celular(numero_celular);
             paciente.setFecha_nacimiento(LocalDate.of(anio, mes, dia));
+            paciente.asignarTipoDocumento(tipo_documento);
+            paciente.asignarGenero(genero);
             return true;
         }
         return false;
     }
+
 
     public boolean eliminarPaciente(String numero_documento) {
         return pacientes.remove(numero_documento) != null;

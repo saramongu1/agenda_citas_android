@@ -1,24 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".view.AgregarCitaFragment">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Agregar cita"
-          android:textSize="50dp"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-  </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agendar nueva cita"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp" />
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/custom_background"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Datos del paciente"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_margin="15dp"
+                android:textColor="#000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Buscar paciente">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputBuscarPacienteCrearCita"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="50"
+                        android:textColor="@color/edittext_color" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/spinnerTipoBusquedaCrearCita"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:spinnerMode="dropdown"
+                    android:background="@drawable/custom_spinner_border"
+                    android:padding="4dp" />
+
+                <ImageButton
+                    android:id="@+id/btnBuscarPacienteCrearCita"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_boton_buscar"
+                    android:src="@drawable/buscar"
+                    app:tint="@color/white"
+                    android:contentDescription="@string/buscar_paciente" />
+            </LinearLayout>
+
+            <!-- 🔸 Resultados búsqueda -->
+            <TextView
+                android:id="@+id/tvResultadosTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Resultados de búsqueda"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_margin="15dp"
+                android:textColor="#000000"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPacientesEncontrados"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/custom_spinner_border"
+                android:scrollbars="vertical"
+                android:padding="4dp"
+                android:clipToPadding="false"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAgregarPacienteCrearCita"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Agregar nuevo paciente"
+                android:textAllCaps="false"
+                android:icon="@drawable/baseline_person_add_alt_1_24"
+                android:iconTint="@color/white"
+                android:backgroundTint="@color/grisMasOscuro"
+                android:textColor="@color/white"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- 🔸 Fecha -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Seleccionar fecha"
+                android:layout_margin="15dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputFechaCitaCrearCita"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:inputType="none"
+                    android:textColor="@color/edittext_color"
+                    android:drawableEnd="@drawable/calendario" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- 🔸 Hora -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Seleccionar hora"
+                android:layout_margin="15dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputHoraCitaCrearCita"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:inputType="none"
+                    android:textColor="@color/edittext_color"
+                    android:drawableEnd="@drawable/baseline_access_time_24" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- 🔸 Optómetra -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/custom_spinner_border"
+                android:layout_margin="15dp"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Optómetra asignado"
+                    android:textColor="#000000"
+                    android:textSize="13dp"
+                    tools:ignore="TextSizeCheck" />
+
+                <Spinner
+                    android:id="@+id/spinnerOptometraCrearCita"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:padding="4dp"
+                    android:spinnerMode="dropdown"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGuardarCita"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guardar cita"
+                android:textAllCaps="false"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/azul"
+                android:textColor="@color/white"
+                android:iconTint="@color/white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
