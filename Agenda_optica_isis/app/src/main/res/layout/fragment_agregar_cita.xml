@@ -38,87 +38,52 @@
                 android:layout_margin="15dp"
                 android:textColor="#000000" />
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp">
+                android:layout_marginVertical="4dp"
+                android:layout_marginHorizontal="8dp"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Buscar paciente">
+                    android:orientation="vertical"
+                    android:padding="12dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputBuscarPacienteCrearCita"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvNombrePacienteCC"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLength="50"
-                        android:textColor="@color/edittext_color" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:text="Nombre del paciente"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
-                <Spinner
-                    android:id="@+id/spinnerTipoBusquedaCrearCita"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:spinnerMode="dropdown"
-                    android:background="@drawable/custom_spinner_border"
-                    android:padding="4dp" />
+                    <TextView
+                        android:id="@+id/tvDocumentoPacienteCC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Documento"
+                        android:textColor="@color/grisMasOscuro"
+                        android:textSize="14sp" />
 
-                <ImageButton
-                    android:id="@+id/btnBuscarPacienteCrearCita"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/bg_boton_buscar"
-                    android:src="@drawable/buscar"
-                    app:tint="@color/white"
-                    android:contentDescription="@string/buscar_paciente" />
-            </LinearLayout>
+                </LinearLayout>
 
-            <!-- 🔸 Resultados búsqueda -->
-            <TextView
-                android:id="@+id/tvResultadosTitulo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Resultados de búsqueda"
-                android:textStyle="bold"
-                android:textSize="16dp"
-                android:layout_margin="15dp"
-                android:textColor="#000000"
-                android:visibility="gone" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerPacientesEncontrados"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_margin="15dp"
-                android:background="@drawable/custom_spinner_border"
-                android:scrollbars="vertical"
-                android:padding="4dp"
-                android:clipToPadding="false"
-                android:visibility="gone" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAgregarPacienteCrearCita"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Agregar nuevo paciente"
+            <Button
+                android:id="@+id/btnBuscarPacienteCC"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
                 android:textAllCaps="false"
-                android:icon="@drawable/baseline_person_add_alt_1_24"
-                android:iconTint="@color/white"
-                android:backgroundTint="@color/grisMasOscuro"
-                android:textColor="@color/white"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="10dp" />
+                android:text="Seleccionar Paciente"/>
 
-            <!-- 🔸 Fecha -->
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                 android:layout_width="match_parent"
@@ -127,7 +92,7 @@
                 android:layout_margin="15dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputFechaCitaCrearCita"
+                    android:id="@+id/inputFechaCitaCC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -146,7 +111,7 @@
                 android:layout_margin="15dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputHoraCitaCrearCita"
+                    android:id="@+id/inputHoraCitaCC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -174,7 +139,33 @@
                     tools:ignore="TextSizeCheck" />
 
                 <Spinner
-                    android:id="@+id/spinnerOptometraCrearCita"
+                    android:id="@+id/spinnerOptometraCC"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:padding="4dp"
+                    android:spinnerMode="dropdown"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/custom_spinner_border"
+                android:layout_margin="15dp"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Consultorio"
+                    android:textColor="#000000"
+                    android:textSize="13dp"
+                    tools:ignore="TextSizeCheck" />
+
+                <Spinner
+                    android:id="@+id/spinnerConsultorioCC"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:background="@android:color/transparent"

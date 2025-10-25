@@ -16,6 +16,8 @@ public class MenuActivity extends AppCompatActivity {
 
     private ActivityMenuBinding binding;
     private ActionBarDrawerToggle toggle;
+    private Fragment fragmentActivo;
+    private String tagActivo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,35 +37,35 @@ public class MenuActivity extends AppCompatActivity {
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        replaceFragment(new CalendarioFragment());
+        replaceFragment(new CalendarioFragment(), "CALENDARIO");
 
         binding.bottomNavigationView.setBackground(null);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.btnCalendario) {
-                replaceFragment(new CalendarioFragment());
+                replaceFragment(new CalendarioFragment(), "CALENDARIO");
             } else if (id == R.id.btnAgenda) {
-                replaceFragment(new AgendaFragment());
+                replaceFragment(new AgendaFragment(), "AGENDA");
             } else if (id == R.id.btnPacientes) {
-                replaceFragment(new PacientesFragment());
+                replaceFragment(new PacientesFragment(), "PACIENTES");
             } else if (id == R.id.btnOptometras) {
-                replaceFragment(new OptometrasFragment());
+                replaceFragment(new OptometrasFragment(), "OPTOMETRAS");
             }
             return true;
         });
 
-        binding.btnAgregarCita.setOnClickListener(v -> replaceFragment(new AgregarCitaFragment()));
+        binding.btnAgregarCita.setOnClickListener(v -> replaceFragment(new AgregarCitaFragment(), "AGREGAR_CITA"));
 
         binding.navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
             if (id == R.id.nav_configuracion) {
-                replaceFragment(new ConfiguracionFragment());
+                replaceFragment(new ConfiguracionFragment(), "CONFIGURACION");
             } else if (id == R.id.nav_perfil) {
-                replaceFragment(new UsuarioFragment());
+                replaceFragment(new UsuarioFragment(), "USUARIO");
             } else if (id == R.id.nav_consultorio) {
-                replaceFragment(new ConsultoriosFragment());
+                replaceFragment(new ConsultoriosFragment(), "CONSULTORIO");
             } else if (id == R.id.nav_logout) {
                 Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -76,11 +78,63 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Reemplaza completamente el fragmento actual con uno nuevo
+     * @param fragment fragmento que se mostrará
+     * @param tag etiqueta identificadora del fragmento
+     */
+    public void replaceFragment(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.commit();
+
+        fragmentActivo = fragment;
+        tagActivo = tag;
+    }
+
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+
+    /**
+     * Muestra un fragmento con datos actualizados (por ejemplo, volver de buscar paciente)
+     */
+    public void mostrarFragmentConDatos(Fragment fragment, String tag) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        // Siempre reemplaza el fragment para garantizar que los nuevos argumentos se apliquen
+        transaction.replace(R.id.frame_layout, fragment, tag);
+        transaction.addToBackStack(tag);
+        transaction.commit();
+
+        fragmentActivo = fragment;
+        tagActivo = tag;
+    }
+
+    /**
+     * Guarda referencia del fragmento actualmente activo (por ejemplo antes de abrir el buscador)
+     */
+    public void guardarFragmentActivo(Fragment fragment, String tag) {
+        this.fragmentActivo = fragment;
+        this.tagActivo = tag;
+    }
+
+    /**
+     * Devuelve el fragmento activo actualmente, si se necesita acceder desde otros lugares
+     */
+    public Fragment getFragmentActivo() {
+        return fragmentActivo;
+    }
+
+    public String getTagActivo() {
+        return tagActivo;
     }
 }
