@@ -16,11 +16,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.presenter.PresenterAgregarCitaFragment;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -29,19 +28,14 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 public class AgregarCitaFragment extends Fragment {
-    // Variables estáticas para conservar datos
     private static String nombrePacienteGuardado;
     private static String documentoPacienteGuardado;
     private static String fechaGuardada;
     private static String horaGuardada;
     private static int optometraSeleccionada;
     private static int consultorioSeleccionado;
-
-    // 🔹 Nuevo: variables temporales para actualizaciones pendientes
     private String nombrePendiente;
     private String documentoPendiente;
-
-    // Vistas
     private TextView tvNombrePaciente;
     private TextView tvDocumentoPaciente;
     private TextInputEditText etFecha;
@@ -49,6 +43,7 @@ public class AgregarCitaFragment extends Fragment {
     private Spinner spnOptometra;
     private Spinner spnConsultorio;
     private Button btnBuscarPaciente;
+    private MaterialButton btnGuardarCita;
     private PresenterAgregarCitaFragment presenter;
 
     private final Calendar calendar = Calendar.getInstance();
@@ -63,29 +58,23 @@ public class AgregarCitaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         enlazarVistas(view);
-        configurarSpinnerOptometras();
         iniciarPresenter();
-
+        configurarSpinnerOptometras();
+        configurarSpinnerConsultorios();
 
         btnBuscarPaciente.setOnClickListener(v -> irABuscarPaciente());
+        btnGuardarCita.setOnClickListener(v -> guardarCita());
         etFecha.setOnClickListener(v -> mostrarSelectorFecha());
         etHora.setOnClickListener(v -> mostrarSelectorHora());
 
-        // ✅ Rellenar datos previos o de argumentos
-        llenarPaciente();
 
-        // ✅ Si hay una actualización pendiente (desde BuscarPacienteCCFragment)
-        if (nombrePendiente != null && documentoPendiente != null) {
-            actualizarPaciente(nombrePendiente, documentoPendiente);
-            nombrePendiente = null;
-            documentoPendiente = null;
-        }
+        llenarPaciente();
+        cambiarPaciente();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        // Guardar todos los valores antes de salir del fragment
         nombrePacienteGuardado = tvNombrePaciente.getText().toString();
         documentoPacienteGuardado = tvDocumentoPaciente.getText().toString();
         fechaGuardada = etFecha.getText().toString();
@@ -97,7 +86,6 @@ public class AgregarCitaFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Restaurar los valores si existen
         if (nombrePacienteGuardado != null && !nombrePacienteGuardado.isEmpty()) {
             tvNombrePaciente.setText(nombrePacienteGuardado);
         }
@@ -135,6 +123,7 @@ public class AgregarCitaFragment extends Fragment {
         spnOptometra = view.findViewById(R.id.spinnerOptometraCC);
         spnConsultorio = view.findViewById(R.id.spinnerConsultorioCC);
         btnBuscarPaciente = view.findViewById(R.id.btnBuscarPacienteCC);
+        btnGuardarCita = view.findViewById(R.id.btnGuardarCitaCC);
 
     }
 
@@ -181,14 +170,14 @@ public class AgregarCitaFragment extends Fragment {
         }
     }
 
-
-    private void abrirAgregarPaciente() {
-        if (getActivity() instanceof MenuActivity) {
-            MenuActivity activity = (MenuActivity) getActivity();
-            activity.guardarFragmentActivo(this, "AGREGAR_CITA");
-            activity.mostrarFragmentConDatos(new CrearPacienteCCFragment(), "CREAR_PACIENTE");
+    private void cambiarPaciente() {
+        if (nombrePendiente != null && documentoPendiente != null) {
+            actualizarPaciente(nombrePendiente, documentoPendiente);
+            nombrePendiente = null;
+            documentoPendiente = null;
         }
     }
+
 
     private void irABuscarPaciente() {
         if (getActivity() instanceof MenuActivity) {
@@ -199,7 +188,7 @@ public class AgregarCitaFragment extends Fragment {
     }
 
     private void configurarSpinnerOptometras() {
-        String[] optometras = {"Seleccione un optómetra", "Laura Gómez", "Carlos Pérez", "Ana Morales"};
+        String []optometras = presenter.listaOptometras();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
                 android.R.layout.simple_spinner_item,
@@ -207,6 +196,17 @@ public class AgregarCitaFragment extends Fragment {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnOptometra.setAdapter(adapter);
+    }
+
+    private void configurarSpinnerConsultorios(){
+        String []consultorios = presenter.listaConsultorios();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                consultorios
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnConsultorio.setAdapter(adapter);
     }
 
     private void mostrarSelectorFecha() {
@@ -238,6 +238,40 @@ public class AgregarCitaFragment extends Fragment {
                     etHora.setText(horaFormateada);
                 }, hora, minuto, true);
         timePickerDialog.show();
+    }
+
+    public void guardarCita(){
+        presenter.agregarCita();
+    }
+
+    public String getNombrePaciente(){
+        return  tvNombrePaciente.getText() != null ? tvNombrePaciente.getText().toString().trim() :"";
+    }
+
+    public String getDocumentoPaciente(){
+        return tvDocumentoPaciente.getText() != null ? tvDocumentoPaciente.getText().toString().trim() : "";
+    }
+
+    public String getFechaCita(){
+        return etFecha.getText() != null ? etFecha.getText().toString().trim(): "";
+    }
+
+    public String getHoraCita(){
+        return etHora.getText() != null ? etHora.getText().toString().trim() : "";
+    }
+
+    public String getOptometra(){
+        return spnOptometra.getSelectedItem().toString().trim();
+    }
+
+    public String getConsultorio(){
+        return spnConsultorio.getSelectedItem().toString().trim();
+    }
+
+    public void irACalendario(){
+        if (getActivity() instanceof MenuActivity) {
+            ((MenuActivity) getActivity()).replaceFragment(new CalendarioFragment());
+        }
     }
 
 

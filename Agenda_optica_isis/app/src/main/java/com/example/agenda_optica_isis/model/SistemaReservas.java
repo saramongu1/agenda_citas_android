@@ -31,8 +31,9 @@ public class SistemaReservas {
 
     public void quemarDatos(){
 
-        crearUsuario("admin@admin.com","12345678",true,"Administradora","1057574987","3213055412",2005,7,13, "C.C.", "femenino");
+        crearUsuario("admin@admin.com","12345678",true,"Administradora","1057577987","3213055412",2005,7,13, "C.C.", "femenino");
         crearOptometra("diana@optometra.com","12345678",true,"Diana yineth González Martínez","1057571987","3131234546",1990,9,13, "C.C.", "femenino");
+        crearOptometra("sara@optometra.com","12345678",true,"Sara alejandra mongui gonzalez","1057574987","3131234789",2005,9,13, "C.C.", "femenino");
 
 
 
@@ -143,6 +144,34 @@ public class SistemaReservas {
     // CRUD OPTOMETRAS
     // ================================
 
+    public String getDocumentoOptometra(String nombre_optometra){
+        for (Optometra o : optometras.values()) {
+            if(o.getNombre().equalsIgnoreCase(nombre_optometra)){
+                return o.getNumero_documento();
+            }
+        }
+        return "";
+    }
+
+    public String getNombreOptometra(String numero_documento){
+        for (Optometra o : optometras.values()) {
+            if(o.getNumero_documento().equalsIgnoreCase(numero_documento)){
+                return o.getNumero_documento();
+            }
+        }
+        return "";
+    }
+
+    public String[] obtenerNombresOptometras(){
+        String[]listaOptometras = new String[optometras.size()];
+        int i = 0;
+        for (Optometra o : optometras.values()) {
+            listaOptometras [i] = o.getNombre();
+            i++;
+        }
+        return listaOptometras;
+    }
+
     public HashMap<String, String> obtenerListaOptometras() {
         HashMap<String, String> lista = new HashMap<>();
         for (Optometra o : optometras.values()) {
@@ -222,27 +251,47 @@ public class SistemaReservas {
     // ========================================
     // CRUD CITAS
     // ========================================
-    public int crearCita(String docOptometra, String docPaciente, String idConsultorio,
+    public boolean crearCita(String docOptometra, String docPaciente, String idConsultorio,
                          int anio, int mes, int dia, int hora, int minutos) {
         int id = Cita.getContador();
-        if (citas.containsKey(id)) return -1;
-
-        LocalDate fecha_nueva = LocalDate.of(anio, mes, dia);
-        LocalTime hora_nueva = LocalTime.of(hora, minutos);
-        LocalTime hora_nueva_fin = hora_nueva.plusMinutes(20);
-        for (Cita cita : citas.values()){
-            if(cita.getFecha().isEqual(fecha_nueva) &&
-                    cita.getDocumento_optometra().equals(docOptometra) &&
-                    cita.getId_consultorio().equals(idConsultorio)){
-                LocalTime inicio_actual = cita.getHora();
-                LocalTime fin_actual = inicio_actual.plusMinutes(20);
-                boolean seCruzan = !hora_nueva.isAfter(fin_actual) && !hora_nueva_fin.isBefore(inicio_actual);
-                if(seCruzan) return -1;
-            }
-        }
+        if (citas.containsKey(id)) return false;
         Cita nueva = new Cita(docOptometra, docPaciente, idConsultorio, anio, mes, dia, hora, minutos);
         citas.put(nueva.getId(), nueva);
-        return id;
+        return true;
+    }
+
+    public boolean comprobarHorarioOptometra(String documento_optometra, int anio, int mes, int dia, int hora, int minutos){
+        LocalDate fecha = LocalDate.of(anio,mes,dia);
+        LocalTime horaCita = LocalTime.of(hora,minutos);
+        LocalTime horaFinCita = horaCita.plusMinutes(15);
+
+        for (Cita cita : citas.values()){
+            if(cita.getFecha().isEqual(fecha) && cita.getDocumento_optometra().equalsIgnoreCase(documento_optometra)){
+                LocalTime inicio_actual = cita.getHora();
+                LocalTime fin_actual = inicio_actual.plusMinutes(20);
+                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean comprobarHorarioConsultorio(String idConsultorio, int anio, int mes, int dia, int hora, int minutos){
+        LocalDate fecha = LocalDate.of(anio,mes,dia);
+        LocalTime horaCita = LocalTime.of(hora,minutos);
+        LocalTime horaFinCita = horaCita.plusMinutes(15);
+
+        for (Cita cita : citas.values()){
+            if(cita.getFecha().isEqual(fecha) && cita.getId_consultorio().equals(idConsultorio)){
+                LocalTime inicio_actual = cita.getHora();
+                LocalTime fin_actual = inicio_actual.plusMinutes(20);
+                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public Cita leerCita(int id) {
@@ -275,6 +324,10 @@ public class SistemaReservas {
     // ================================
     // CRUD CONSULTORIOS
     // ================================
+
+    public String[] obtenerIdsConsultorios(){
+        return consultorios.keySet().toArray(new String[0]);
+    }
     public boolean crearConsultorio(String id, String direccion, String ciudad) {
         if (consultorios.containsKey(id)) return false;
         consultorios.put(id, new Consultorio(id, direccion, ciudad));
@@ -330,5 +383,9 @@ public class SistemaReservas {
             }
         }
         return citasMes;
+    }
+
+    public List<Cita> consultarCitas(){
+        return new ArrayList<>(citas.values());
     }
 }

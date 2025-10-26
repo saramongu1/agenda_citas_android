@@ -4,7 +4,7 @@
         <item name="colorPrimary">@color/grisMasOscuro</item>
         <item name="colorPrimaryVariant">@color/GrisOscuro</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/grisClaro</item>
+        <item name="colorSecondary">@color/grisNormal</item>
         <item name="colorSecondaryVariant">@color/white</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:statusBarColor">@color/grisMasOscuro</item>

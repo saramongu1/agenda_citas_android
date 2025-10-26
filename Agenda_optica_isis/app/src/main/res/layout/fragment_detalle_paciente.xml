@@ -101,6 +101,7 @@
                     android:layout_height="35dp"
                     tools:ignore="TouchTargetSizeCheck"
                     android:spinnerMode="dropdown"
+
                     android:background="@android:color/transparent"/>
             </LinearLayout>
 

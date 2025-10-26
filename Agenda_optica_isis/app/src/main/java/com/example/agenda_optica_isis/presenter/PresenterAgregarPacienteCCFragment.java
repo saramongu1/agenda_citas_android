@@ -49,7 +49,7 @@ public class PresenterAgregarPacienteCCFragment {
                 view.mostrarMensaje("El paciente ya existe");
             }else{
                 view.mostrarMensaje("Se creo el paciente exitosamente");
-                view.irACrearCita();
+                view.irACrearCita(nombre_paciente,documento_paciente);
 
             }
 

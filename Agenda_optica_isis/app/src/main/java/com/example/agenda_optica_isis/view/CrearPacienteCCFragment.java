@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,11 +57,23 @@ public class CrearPacienteCCFragment extends Fragment {
         presenter.crearPaciente();
     }
 
-    public void irACrearCita(){
+    public void irACrearCita(String nombre, String documento) {
         if (getActivity() instanceof MenuActivity) {
-            ((MenuActivity) getActivity()).replaceFragment(new BuscarPacienteCCFragment());
+            MenuActivity activity = (MenuActivity) getActivity();
+            FragmentManager fm = activity.getSupportFragmentManager();
+
+            AgregarCitaFragment fragmentExistente = (AgregarCitaFragment) fm.findFragmentByTag("AGREGAR_CITA");
+
+            if (fragmentExistente != null && fragmentExistente.isVisible()) {
+                fragmentExistente.actualizarPaciente(nombre, documento);
+                fm.popBackStack();
+            } else {
+                AgregarCitaFragment nuevoFragment = AgregarCitaFragment.nuevaInstancia(nombre, documento);
+                activity.mostrarFragmentConDatos(nuevoFragment, "AGREGAR_CITA");
+            }
         }
     }
+
 
     public void iniciarPresenter(){
         presenter = new PresenterAgregarPacienteCCFragment(this);

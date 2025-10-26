@@ -17,9 +17,9 @@ public class ExampleUnitTest {
     @Test
     public void testActualizar(){
         SistemaReservas sis = new SistemaReservas();
-        sis.crearPaciente("ana.martinez@email.com", "Ana Isabel Martínez", "456789123", "3203456789", 1978, 11, 5, "C.C.", "femenino");
-        boolean seactualizo = sis.actualizarPaciente("ana.martinez@email.com", "Ana Isabelartínez", "456789123", "3203456789", 1978, 11, 5, "C.C.", "femenino");
-        assertEquals(seactualizo, true);
+       String []op = sis.obtenerNombresOptometras();
+       assertEquals("Diana yineth González Martínez", op[0]);
+       assertEquals("Sara alejandra mongui gonzalez", op[1]);
     }
 
 }
