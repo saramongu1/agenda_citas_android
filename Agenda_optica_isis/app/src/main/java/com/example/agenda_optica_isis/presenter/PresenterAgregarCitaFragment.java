@@ -40,8 +40,8 @@ public class PresenterAgregarCitaFragment {
             int dia = Integer.parseInt(fecha[2]);
             int hora = Integer.parseInt(hora_completa[0]);
             int minutos = Integer.parseInt(hora_completa[1]);
-            boolean consultorioLibre = sistemaReservas.comprobarHorarioConsultorio(consultorio,anio,mes,dia,hora,minutos);
-            boolean optometraLibre = sistemaReservas.comprobarHorarioOptometra(documento_optometra,anio,mes,dia,hora,minutos);
+            boolean consultorioLibre = sistemaReservas.comprobarHorarioConsultorio(-1,consultorio,anio,mes,dia,hora,minutos);
+            boolean optometraLibre = sistemaReservas.comprobarHorarioOptometra(-1,documento_optometra,anio,mes,dia,hora,minutos);
             boolean pacienteSeleccionado = !documento_paciente.equalsIgnoreCase("Documento del paciente");
             if(!consultorioLibre){
                 view.mostrarMensaje("El consultorio no está disponible en esa hora");
@@ -51,7 +51,7 @@ public class PresenterAgregarCitaFragment {
                 view.mostrarMensaje("Seleccione un paciente");
             }
 
-            if(consultorioLibre && optometraLibre && pacienteSeleccionado){
+            if(consultorioLibre || optometraLibre && pacienteSeleccionado){
                 sistemaReservas.crearCita(documento_optometra,documento_paciente,consultorio,anio,mes,dia,hora,minutos);
                 view.mostrarMensaje("Cita agendada correctamente");
                 view.irACalendario();

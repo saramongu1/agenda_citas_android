@@ -65,6 +65,7 @@ public class DetallePacienteFragment extends Fragment {
         enlazarVistas(view);
         initSpinnerTiposDocumento(view);
         initSpinnerGenero(view);
+        deshabilitarSpinners();
         initPresentador();
         initInputFecha(view);
         cargarDatosPaciente(); 
@@ -186,6 +187,11 @@ public class DetallePacienteFragment extends Fragment {
             posicion = 4;
         }
         return posicion;
+    }
+
+    public void deshabilitarSpinners(){
+        spnGeneroPaciente.setEnabled(false);
+        spnTipoDocumentoPaciente.setEnabled(false);
     }
 
     private int posicionSeleccionGenero(String genero){

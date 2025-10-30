@@ -78,11 +78,6 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Reemplaza completamente el fragmento actual con uno nuevo
-     * @param fragment fragmento que se mostrará
-     * @param tag etiqueta identificadora del fragmento
-     */
     public void replaceFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -103,9 +98,6 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Muestra un fragmento con datos actualizados (por ejemplo, volver de buscar paciente)
-     */
     public void mostrarFragmentConDatos(Fragment fragment, String tag) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -119,17 +111,11 @@ public class MenuActivity extends AppCompatActivity {
         tagActivo = tag;
     }
 
-    /**
-     * Guarda referencia del fragmento actualmente activo (por ejemplo antes de abrir el buscador)
-     */
     public void guardarFragmentActivo(Fragment fragment, String tag) {
         this.fragmentActivo = fragment;
         this.tagActivo = tag;
     }
 
-    /**
-     * Devuelve el fragmento activo actualmente, si se necesita acceder desde otros lugares
-     */
     public Fragment getFragmentActivo() {
         return fragmentActivo;
     }

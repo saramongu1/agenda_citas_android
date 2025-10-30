@@ -2,20 +2,19 @@ package com.example.agenda_optica_isis.presenter;
 
 import com.example.agenda_optica_isis.model.Cita;
 import com.example.agenda_optica_isis.model.SistemaReservas;
+import com.example.agenda_optica_isis.model.EstadoCita;
 import com.example.agenda_optica_isis.view.AgendaFragment;
+import com.example.agenda_optica_isis.view.CitaUI;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class PresenterAgendaFragment {
 
-    private AgendaFragment view;
-    private SistemaReservas sistemaReservas;
-
-    private List<Cita> todasCitas;
-    private int pageSize = 20;
+    private final AgendaFragment view;
+    private final SistemaReservas sistemaReservas;
+    private final List<Cita> todasCitas;
+    private final int pageSize = 20;
     private int currentIndex = 0;
 
     public PresenterAgendaFragment(AgendaFragment view) {
@@ -25,19 +24,14 @@ public class PresenterAgendaFragment {
     }
 
     public void cargarInicial() {
-        // traer todas las citas desde el modelo
         List<Cita> raw = sistemaReservas.consultarCitas();
-        // ordenar por fecha+hora descendente (más próximas primero):
-        Collections.sort(raw, new Comparator<Cita>() {
-            @Override
-            public int compare(Cita o1, Cita o2) {
-                int cmp = o2.getFecha().compareTo(o1.getFecha()); // fecha desc
-                if (cmp == 0) {
-                    return o2.getHora().compareTo(o1.getHora()); // hora desc
-                }
-                return cmp;
-            }
+
+        raw.sort((o1, o2) -> {
+            int cmp = o2.getFecha().compareTo(o1.getFecha());
+            if (cmp == 0) return o2.getHora().compareTo(o1.getHora());
+            return cmp;
         });
+
         todasCitas.clear();
         todasCitas.addAll(raw);
         currentIndex = 0;
@@ -49,33 +43,37 @@ public class PresenterAgendaFragment {
             view.mostrarBtnCargarMas(false);
             return;
         }
+
         int end = Math.min(currentIndex + pageSize, todasCitas.size());
         List<Cita> sub = todasCitas.subList(currentIndex, end);
+        List<CitaUI> uiList = convertirACitaUI(sub);
+
         if (currentIndex == 0) {
-            view.mostrarCitasInicial(new ArrayList<>(sub));
+            view.mostrarCitasInicial(uiList);
         } else {
-            view.agregarMasCitas(new ArrayList<>(sub));
+            view.agregarMasCitas(uiList);
         }
+
         currentIndex = end;
         view.mostrarBtnCargarMas(currentIndex < todasCitas.size());
     }
 
-    public void buscarCitasPorPaciente(String documento) {
-        // método opcional: filtrar por documento
-        List<Cita> filtradas = new ArrayList<>();
-        for (Cita c : sistemaReservas.consultarCitas()) {
-            if (c.getDocumento_paciente().equalsIgnoreCase(documento)) {
-                filtradas.add(c);
-            }
+    private List<CitaUI> convertirACitaUI(List<Cita> citas) {
+        List<CitaUI> uiList = new ArrayList<>();
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
+        for (Cita c : citas) {
+            String id = String.valueOf(c.getId());
+            String nombrePaciente = sistemaReservas.getNombrePaciente(c.getDocumento_paciente());
+            String nombreOptometra = sistemaReservas.getNombreOptometra(c.getDocumento_optometra());
+            String fechaHora = c.getFecha().format(formatoFecha) + " " + c.getHora().format(formatoHora);
+            String estado = c.getEstadoCita().name();
+
+            uiList.add(new CitaUI(id, nombrePaciente, c.getDocumento_paciente(),
+                    nombreOptometra, fechaHora, estado));
         }
-        // ordenar igual que antes
-        Collections.sort(filtradas, (o1, o2) -> {
-            int cmp = o2.getFecha().compareTo(o1.getFecha());
-            if (cmp == 0) return o2.getHora().compareTo(o1.getHora());
-            return cmp;
-        });
-        todasCitas = filtradas;
-        currentIndex = 0;
-        cargarSiguientePagina();
+
+        return uiList;
     }
 }

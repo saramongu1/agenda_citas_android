@@ -30,7 +30,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvIdCita"
+                android:id="@+id/tvIdCitaAdapter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ID: 001"
@@ -38,7 +38,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tvPacienteCita"
+                android:id="@+id/tvPacienteCitaAdapter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Paciente: Juan Pérez"
@@ -46,25 +46,25 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvDocumentoCita"
+                android:id="@+id/tvDocumentoPacienteCitaAdapter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Documento: 123456789" />
 
             <TextView
-                android:id="@+id/tvOptometraCita"
+                android:id="@+id/tvOptometraCitaAdapter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Optómetra: Dra. López" />
 
             <TextView
-                android:id="@+id/tvFechaHoraCita"
+                android:id="@+id/tvFechaHoraCitaAdapter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fecha: 2025-10-25 14:00" />
 
             <TextView
-                android:id="@+id/tvEstadoCita"
+                android:id="@+id/tvEstadoCitaAdapter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Estado: Programada"

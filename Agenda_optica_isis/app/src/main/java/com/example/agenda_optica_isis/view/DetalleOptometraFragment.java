@@ -57,6 +57,7 @@ public class DetalleOptometraFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         enlazarVistas(view);
+        deshabilitarSpinners();
         initSpinnerTiposDocumento();
         initSpinnerGenero();
         initPresentador();
@@ -69,6 +70,10 @@ public class DetalleOptometraFragment extends Fragment {
         presenter = new PresenterDetalleOptometraFragment(this);
     }
 
+    public void deshabilitarSpinners(){
+        spnGeneroOptometra.setEnabled(false);
+        spnTipoDocumentoOptometra.setEnabled(false);
+    }
     private void enlazarVistas(@NonNull View view) {
         etNombreOptometra = view.findViewById(R.id.inputNombreOptometraDetalle);
         etDocumentoOptometra = view.findViewById(R.id.inputDocumentoOptometraDetalle);

@@ -29,6 +29,9 @@
         <item>PAS</item>
     </string-array>
 
+
+
+
     <string-array name="tipos_genero">
         <item>Femenino</item>
         <item>Masculino</item>

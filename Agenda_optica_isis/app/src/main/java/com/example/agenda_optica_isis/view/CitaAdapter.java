@@ -12,22 +12,21 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.agenda_optica_isis.R;
-import com.example.agenda_optica_isis.model.Cita;
-import com.example.agenda_optica_isis.model.EstadoCita;
+import com.example.agenda_optica_isis.view.CitaUI;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class CitaAdapter extends RecyclerView.Adapter<CitaAdapter.CitaViewHolder> {
 
-    private final List<Cita> listaCitas;
+    private final List<CitaUI> listaCitas;
     private final OnCitaClickListener listener;
     private final Context context;
+
     public interface OnCitaClickListener {
-        void onCitaClick(Cita cita);
+        void onCitaClick(String idCita);
     }
 
-    public CitaAdapter(Context context, List<Cita> listaCitas, OnCitaClickListener listener) {
+    public CitaAdapter(Context context, List<CitaUI> listaCitas, OnCitaClickListener listener) {
         this.context = context;
         this.listaCitas = listaCitas;
         this.listener = listener;
@@ -36,32 +35,24 @@ public class CitaAdapter extends RecyclerView.Adapter<CitaAdapter.CitaViewHolder
     @NonNull
     @Override
     public CitaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_cita, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_cita, parent, false);
         return new CitaViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CitaViewHolder holder, int position) {
-        Cita cita = listaCitas.get(position);
-
-        // Formatear fecha y hora
-        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+        CitaUI cita = listaCitas.get(position);
 
         holder.tvIdCita.setText("ID: " + cita.getId());
-        holder.tvPacienteCita.setText("Paciente: " + cita.getDocumento_paciente());
-        holder.tvDocumentoCita.setText("Documento: " + cita.getDocumento_paciente());
-        holder.tvOptometraCita.setText("Optómetra: " + cita.getDocumento_optometra());
-        holder.tvFechaHoraCita.setText("Fecha: " + cita.getFecha().format(formatoFecha) +
-                " " + cita.getHora().format(formatoHora));
-        holder.tvEstadoCita.setText("Estado: " + cita.getEstadoCita().name());
+        holder.tvPacienteCita.setText("Paciente: " + cita.getNombrePaciente());
+        holder.tvDocumentoCita.setText("Documento: " + cita.getDocumentoPaciente());
+        holder.tvOptometraCita.setText("Optómetra: " + cita.getNombreOptometra());
+        holder.tvFechaHoraCita.setText("Fecha: " + cita.getFechaHora());
+        holder.tvEstadoCita.setText("Estado: " + cita.getEstado());
 
-        // Color lateral según estado
-        holder.estadoCitaView.setBackgroundColor(colorPorEstado(cita.getEstadoCita()));
+        holder.estadoCitaView.setBackgroundColor(colorPorEstado(cita.getEstado()));
 
-        // Click
-        holder.itemView.setOnClickListener(v -> listener.onCitaClick(cita));
+        holder.itemView.setOnClickListener(v -> listener.onCitaClick(cita.getId()));
     }
 
     @Override
@@ -69,21 +60,14 @@ public class CitaAdapter extends RecyclerView.Adapter<CitaAdapter.CitaViewHolder
         return listaCitas.size();
     }
 
-    // Método auxiliar para cambiar el color según el estado
-    private int colorPorEstado(EstadoCita estado) {
+    private int colorPorEstado(String estado) {
         switch (estado) {
-            case PROGRAMADA:
-                return Color.parseColor("#4CAF50"); // verde
-            case EN_PROGRESO:
-                return Color.parseColor("#2196F3"); // azul
-            case COMPLETADA:
-                return Color.parseColor("#9C27B0"); // morado
-            case CANCELADA:
-                return Color.parseColor("#F44336"); // rojo
-            case NO_ASISTIO:
-                return Color.parseColor("#FF9800"); // naranja
-            default:
-                return Color.GRAY;
+            case "PROGRAMADA": return Color.parseColor("#4CAF50");
+            case "EN_PROGRESO": return Color.parseColor("#2196F3");
+            case "COMPLETADA": return Color.parseColor("#9C27B0");
+            case "CANCELADA": return Color.parseColor("#F44336");
+            case "NO_ASISTIO": return Color.parseColor("#FF9800");
+            default: return Color.GRAY;
         }
     }
 
@@ -96,12 +80,12 @@ public class CitaAdapter extends RecyclerView.Adapter<CitaAdapter.CitaViewHolder
             super(itemView);
             cardCita = itemView.findViewById(R.id.cardCita);
             estadoCitaView = itemView.findViewById(R.id.estadoCitaView);
-            tvIdCita = itemView.findViewById(R.id.tvIdCita);
-            tvPacienteCita = itemView.findViewById(R.id.tvPacienteCita);
-            tvDocumentoCita = itemView.findViewById(R.id.tvDocumentoCita);
-            tvOptometraCita = itemView.findViewById(R.id.tvOptometraCita);
-            tvFechaHoraCita = itemView.findViewById(R.id.tvFechaHoraCita);
-            tvEstadoCita = itemView.findViewById(R.id.tvEstadoCita);
+            tvIdCita = itemView.findViewById(R.id.tvIdCitaAdapter);
+            tvPacienteCita = itemView.findViewById(R.id.tvPacienteCitaAdapter);
+            tvDocumentoCita = itemView.findViewById(R.id.tvDocumentoPacienteCitaAdapter);
+            tvOptometraCita = itemView.findViewById(R.id.tvOptometraCitaAdapter);
+            tvFechaHoraCita = itemView.findViewById(R.id.tvFechaHoraCitaAdapter);
+            tvEstadoCita = itemView.findViewById(R.id.tvEstadoCitaAdapter);
         }
     }
 }

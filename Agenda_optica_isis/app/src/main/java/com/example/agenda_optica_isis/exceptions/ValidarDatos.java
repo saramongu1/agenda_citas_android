@@ -2,6 +2,9 @@ package com.example.agenda_optica_isis.exceptions;
 
 import android.util.Patterns;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class ValidarDatos {
 
     public static void validarTexto(String campo, String valor) throws ValidacionException {
@@ -26,5 +29,19 @@ public class ValidarDatos {
         if (valor.length() < min) {
             throw new ValidacionException(campo + " debe tener al menos " + min + " caracteres.");
         }
+    }
+
+    public static void validarFechaCita(int anio, int mes , int dia, int hora, int minutos) throws ValidacionException{
+        LocalDate fecha_cita = LocalDate.of(anio,mes,dia);
+        LocalTime hora_cita = LocalTime.of(hora,minutos);
+        LocalDate fecha_actual = LocalDate.now();
+        LocalTime hora_actual = LocalTime.now();
+
+        if(fecha_cita.equals(fecha_actual)){
+            if(hora_cita.isBefore(hora_actual) || hora_cita.equals(hora_actual)){
+                throw new ValidacionException("Ingrese una hora valida");
+            }
+        }
+
     }
 }

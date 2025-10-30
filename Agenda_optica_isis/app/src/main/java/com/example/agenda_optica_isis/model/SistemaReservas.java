@@ -156,7 +156,16 @@ public class SistemaReservas {
     public String getNombreOptometra(String numero_documento){
         for (Optometra o : optometras.values()) {
             if(o.getNumero_documento().equalsIgnoreCase(numero_documento)){
-                return o.getNumero_documento();
+                return o.getNombre();
+            }
+        }
+        return "";
+    }
+
+    public String getNombrePaciente(String numero_documento){
+        for (Paciente o : pacientes.values()) {
+            if(o.getNumero_documento().equalsIgnoreCase(numero_documento)){
+                return o.getNombre();
             }
         }
         return "";
@@ -260,16 +269,22 @@ public class SistemaReservas {
         return true;
     }
 
-    public boolean comprobarHorarioOptometra(String documento_optometra, int anio, int mes, int dia, int hora, int minutos){
-        LocalDate fecha = LocalDate.of(anio,mes,dia);
-        LocalTime horaCita = LocalTime.of(hora,minutos);
+    public boolean comprobarHorarioOptometra(int id_cita, String documento_optometra, int anio, int mes, int dia, int hora, int minutos) {
+        LocalDate fecha = LocalDate.of(anio, mes, dia);
+        LocalTime horaCita = LocalTime.of(hora, minutos);
         LocalTime horaFinCita = horaCita.plusMinutes(15);
 
-        for (Cita cita : citas.values()){
-            if(cita.getFecha().isEqual(fecha) && cita.getDocumento_optometra().equalsIgnoreCase(documento_optometra)){
+        HashMap<Integer, Cita> lista_citas = new HashMap<>(citas);
+        if (id_cita != -1) lista_citas.remove(id_cita);
+
+        for (Cita cita : lista_citas.values()) {
+            if (cita.getFecha().isEqual(fecha) &&
+                    cita.getDocumento_optometra().equalsIgnoreCase(documento_optometra)) {
+
                 LocalTime inicio_actual = cita.getHora();
-                LocalTime fin_actual = inicio_actual.plusMinutes(20);
-                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)){
+                LocalTime fin_actual = inicio_actual.plusMinutes(15);
+
+                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)) {
                     return false;
                 }
             }
@@ -277,28 +292,37 @@ public class SistemaReservas {
         return true;
     }
 
-    public boolean comprobarHorarioConsultorio(String idConsultorio, int anio, int mes, int dia, int hora, int minutos){
-        LocalDate fecha = LocalDate.of(anio,mes,dia);
-        LocalTime horaCita = LocalTime.of(hora,minutos);
+    public boolean comprobarHorarioConsultorio(int id_cita, String idConsultorio, int anio, int mes, int dia, int hora, int minutos) {
+        LocalDate fecha = LocalDate.of(anio, mes, dia);
+        LocalTime horaCita = LocalTime.of(hora, minutos);
         LocalTime horaFinCita = horaCita.plusMinutes(15);
 
-        for (Cita cita : citas.values()){
-            if(cita.getFecha().isEqual(fecha) && cita.getId_consultorio().equals(idConsultorio)){
+        HashMap<Integer, Cita> lista_citas = new HashMap<>(citas);
+        if (id_cita != -1) lista_citas.remove(id_cita);
+
+        for (Cita cita : lista_citas.values()) {
+            if (cita.getFecha().isEqual(fecha) &&
+                    cita.getId_consultorio().equals(idConsultorio)) {
+
                 LocalTime inicio_actual = cita.getHora();
-                LocalTime fin_actual = inicio_actual.plusMinutes(20);
-                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)){
+                LocalTime fin_actual = inicio_actual.plusMinutes(15);
+
+                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)) {
                     return false;
                 }
             }
         }
         return true;
     }
+
+
+
 
     public Cita leerCita(int id) {
         return citas.get(id);
     }
 
-    public boolean actualizarCita(int id, String docOptometra, String docPaciente, String idConsultorio,
+    public boolean actualizaCita(int id, String docOptometra, String docPaciente, String idConsultorio,
                                   int anio, int mes, int dia, int hora, int minutos) {
         Cita c = citas.get(id);
         if (c == null) return false;
@@ -316,6 +340,16 @@ public class SistemaReservas {
         c.setHora(nuevaHora);
         return true;
     }
+
+    public void actualizarCita(int id_cita, int anio, int mes, int dia,int hora, int minutos,
+                               String documento_optometra, String id_consultorio ){
+        citas.get(id_cita).setFecha(LocalDate.of(anio,mes,dia));
+        citas.get(id_cita).setHora(LocalTime.of(hora,minutos));
+        citas.get(id_cita).setDocumento_optometra(documento_optometra);
+        citas.get(id_cita).setId_consultorio(id_consultorio);
+    }
+
+
 
     public boolean eliminarCita(int id) {
         return citas.remove(id) != null;
