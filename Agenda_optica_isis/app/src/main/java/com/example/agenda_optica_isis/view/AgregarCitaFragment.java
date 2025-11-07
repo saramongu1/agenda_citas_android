@@ -2,7 +2,9 @@ package com.example.agenda_optica_isis.view;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +26,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -231,12 +236,50 @@ public class AgregarCitaFragment extends Fragment {
         int hora = horaActual.get(Calendar.HOUR_OF_DAY);
         int minuto = horaActual.get(Calendar.MINUTE);
 
+        // Redondear la hora inicial a los 15 minutos más cercanos
+        int minutosRedondeadosInicial = (minuto / 15) * 15;
+
         TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
                 (view, hourOfDay, minute1) -> {
-                    int minutosRedondeados = (minute1 / 10) * 10;
+                    // Redondear los minutos seleccionados al múltiplo de 15 más cercano
+                    int minutosRedondeados = (minute1 / 15) * 15;
+
+                    // Validar rango horario
+                    if (hourOfDay < 6) {
+                        hourOfDay = 6;
+                        minutosRedondeados = 0;
+                        Toast.makeText(requireContext(), "La hora mínima permitida es 6:00", Toast.LENGTH_SHORT).show();
+                    } else if (hourOfDay > 20 || (hourOfDay == 20 && minutosRedondeados > 0)) {
+                        hourOfDay = 20;
+                        minutosRedondeados = 0;
+                        Toast.makeText(requireContext(), "La hora máxima permitida es 20:00", Toast.LENGTH_SHORT).show();
+                    }
+
                     String horaFormateada = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minutosRedondeados);
                     etHora.setText(horaFormateada);
-                }, hora, minuto, true);
+                }, hora, minutosRedondeadosInicial, true) {
+
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                // Redondear los minutos en tiempo real al múltiplo de 15 más cercano
+                int minutosRedondeados = (minute / 15) * 15;
+
+                // Validar rango horario en tiempo real
+                if (hourOfDay < 6) {
+                    view.setCurrentHour(6);
+                    view.setCurrentMinute(0);
+                } else if (hourOfDay > 20 || (hourOfDay == 20 && minutosRedondeados > 0)) {
+                    view.setCurrentHour(20);
+                    view.setCurrentMinute(0);
+                } else {
+                    // Solo actualizar los minutos si estamos dentro del rango válido
+                    if (minute != minutosRedondeados) {
+                        view.setCurrentMinute(minutosRedondeados);
+                    }
+                }
+            }
+        };
+
         timePickerDialog.show();
     }
 

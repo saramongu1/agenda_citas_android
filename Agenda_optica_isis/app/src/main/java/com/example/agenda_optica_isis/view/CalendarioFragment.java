@@ -62,9 +62,6 @@ public class CalendarioFragment extends Fragment {
         scrollViewSemana = view.findViewById(R.id.scrollViewSemana);
         tvFechaSeleccionada = view.findViewById(R.id.tvFechaSeleccionada);
         spinnerVista = view.findViewById(R.id.spinnerVista);
-
-        Log.d(TAG, "Vistas enlazadas - Dia: " + (contenedorHorasDia != null) +
-                ", Semana: " + (contenedorHorasSemana != null));
     }
 
     private void configurarSpinner() {
@@ -628,33 +625,25 @@ public class CalendarioFragment extends Fragment {
     }
 
     private View crearBloqueCita(CitaVisual cita) {
-        Log.d(TAG, "Creando bloque visual para cita ID: " + cita.getId());
-
         View bloque = LayoutInflater.from(requireContext())
                 .inflate(R.layout.item_cita_calendario, null);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-        params.setMargins(dpToPx(2), dpToPx(1), dpToPx(2), dpToPx(1));
-        bloque.setLayoutParams(params);
 
         TextView tvPaciente = bloque.findViewById(R.id.tvPacienteCitaCalendarAdapter);
         TextView tvOptometra = bloque.findViewById(R.id.tvOptometraCitaCalendarAdapter);
         TextView tvConsultorio = bloque.findViewById(R.id.tvConsultorioCitaCalendarAdapter);
         View estadoView = bloque.findViewById(R.id.estadoCitaView);
 
-        String paciente = cita.getNombrePaciente();
-        if (paciente.length() > 25) paciente = paciente.substring(0, 25) + "...";
-        String optometra = cita.getNombreOptometra();
-        if (optometra.length() > 20) optometra = optometra.substring(0, 20) + "...";
-        String consultorio = cita.getConsultorio();
-        if (consultorio.length() > 15) consultorio = consultorio.substring(0, 15) + "...";
+        // Guardar el ID de la cita dentro de la vista
+        bloque.setTag(cita.getId());
 
-        tvPaciente.setText("Pac: " + paciente);
+        // --- Configuración visual ---
+        String paciente = cita.getNombrePaciente();
+
+        String optometra = cita.getNombreOptometra();
+
+        tvPaciente.setText(paciente);
         tvOptometra.setText("Opt: " + optometra);
-        tvConsultorio.setText("Cons: " + consultorio);
+        tvConsultorio.setText("Cons: " + cita.getConsultorio());
 
         tvPaciente.setTextSize(10);
         tvOptometra.setTextSize(8);
@@ -662,11 +651,20 @@ public class CalendarioFragment extends Fragment {
 
         estadoView.setBackgroundColor(obtenerColorEstado(cita.getEstado()));
 
-        bloque.setOnClickListener(v -> presenter.onCitaClick(cita.getId()));
+        bloque.setAlpha(0.95f);
 
-        Log.d(TAG, "Bloque de cita creado exitosamente");
+        // --- Evento de clic ---
+        bloque.setOnClickListener(v -> {
+            Object tag = v.getTag();
+            if (tag instanceof Integer) {
+                int idCita = (int) tag;
+                presenter.onCitaClick(idCita);
+            }
+        });
+
         return bloque;
     }
+
 
     private int obtenerColorEstado(EstadoCita estado) {
         switch (estado) {
@@ -678,6 +676,8 @@ public class CalendarioFragment extends Fragment {
             default: return Color.parseColor("#4CAF50");
         }
     }
+
+
 
     private int dpToPx(int dp) {
         float density = getResources().getDisplayMetrics().density;
@@ -693,9 +693,10 @@ public class CalendarioFragment extends Fragment {
 
     public void mostrarDetalleCita(int idCita) {
         Log.d(TAG, "Mostrando detalle de cita ID: " + idCita);
+        DetalleCitaFragment detalle = DetalleCitaFragment.newInstance(String.valueOf(idCita));
+
         if (getActivity() instanceof MenuActivity) {
-            MenuActivity activity = (MenuActivity) getActivity();
-            activity.guardarFragmentActivo(this, "CALENDARIO");
+            ((MenuActivity) getActivity()).replaceFragment(detalle);
         }
     }
 
