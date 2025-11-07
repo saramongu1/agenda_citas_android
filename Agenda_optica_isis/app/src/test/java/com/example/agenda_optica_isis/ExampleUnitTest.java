@@ -3,6 +3,7 @@ package com.example.agenda_optica_isis;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import com.example.agenda_optica_isis.model.Paciente;
 import com.example.agenda_optica_isis.model.SistemaReservas;

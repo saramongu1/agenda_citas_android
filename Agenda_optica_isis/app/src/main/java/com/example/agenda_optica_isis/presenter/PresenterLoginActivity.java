@@ -38,6 +38,4 @@ public class PresenterLoginActivity {
             view.mostrarMensaje("Error inesperado: " + e.getMessage());
         }
     }
-
-
 }

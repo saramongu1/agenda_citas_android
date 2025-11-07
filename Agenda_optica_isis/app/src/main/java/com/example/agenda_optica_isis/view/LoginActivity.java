@@ -24,11 +24,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        enlazarVistas();
+        btnLogin.setOnClickListener(v -> iniciarSesion());
+    }
+
+    public void enlazarVistas(){
         etMail = findViewById(R.id.etMail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
-        btnLogin.setOnClickListener(v -> iniciarSesion());
     }
 
     public void iniciarSesion(){
@@ -53,7 +57,5 @@ public class LoginActivity extends AppCompatActivity {
     public void mostrarMensaje(String mensaje) {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
-
-
 
 }

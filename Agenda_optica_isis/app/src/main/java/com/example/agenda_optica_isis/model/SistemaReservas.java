@@ -100,6 +100,8 @@ public class SistemaReservas {
         return true;
     }
 
+
+
     public Usuario leerUsuario(String numero_documento) {
         return usuarios.get(numero_documento);
     }
@@ -387,10 +389,13 @@ public class SistemaReservas {
     // ================================
     // CONSULTA CITAS POR CRITERIO
     // ================================
-    public List<Cita> consultarCitasDia(int dia, int mes){
+    public List<Cita> consultarCitasDia(int dia, int mes, int anio) {
         List<Cita> citasDia = new ArrayList<>();
-        for(Cita cita: citas.values()){
-            if(cita.getFecha().getDayOfMonth() == dia && cita.getFecha().getMonthValue() == mes){
+        for (Cita cita : citas.values()) {
+            LocalDate fecha = cita.getFecha();
+            if (fecha.getDayOfMonth() == dia &&
+                    fecha.getMonthValue() == mes &&
+                    fecha.getYear() == anio) {
                 citasDia.add(cita);
             }
         }

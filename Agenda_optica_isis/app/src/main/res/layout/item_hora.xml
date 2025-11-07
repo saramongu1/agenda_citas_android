@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="horizontal"
+    android:background="@android:color/white">
+
+    <!-- Columna de hora -->
+    <TextView
+        android:id="@+id/tvHora"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="08:00"
+        android:textSize="12sp"
+        tools:ignore="TextContrastCheck" />
+
+    <!-- Columna para citas (día) o columnas de días (semana) -->
+    <View
+        android:id="@+id/columnaCitas"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@android:color/white" />
+
+</LinearLayout>

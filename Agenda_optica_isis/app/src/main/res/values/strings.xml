@@ -30,6 +30,10 @@
     </string-array>
 
 
+    <string-array name="tipos_vista">
+        <item>Diaria</item>
+        <item>Semanal</item>
+    </string-array>
 
 
     <string-array name="tipos_genero">
@@ -37,6 +41,11 @@
         <item>Masculino</item>
         <item>Otro</item>
     </string-array>
+        <string-array name="vistas_calendario">
+            <item>Día</item>
+            <item>Semana</item>
+        </string-array>
+
 
 
 </resources>
