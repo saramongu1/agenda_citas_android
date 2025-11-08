@@ -13,6 +13,12 @@ public class ValidarDatos {
         }
     }
 
+    public static void validarLongitudTexto(String campo, String valor, int minimo, int maximo) throws ValidacionException {
+        if (valor.length() < minimo || valor.length() > maximo) {
+            throw new ValidacionException("El campo " + campo + " no puede estar vacío.");
+        }
+    }
+
     public static void validarTextosInicioSesion(String mail, String contrasenia) throws ValidacionException {
         if (mail.isEmpty() || contrasenia.isEmpty()) {
             throw new ValidacionException("Debes completar todos los campos");

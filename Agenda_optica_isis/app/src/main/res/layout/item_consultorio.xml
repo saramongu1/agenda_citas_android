@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="4dp"
+    android:layout_marginHorizontal="8dp"
+    android:backgroundTint="@color/white"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tvIdConsultorio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID Consultorio"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvDireccionConsultorio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dirección"
+            android:textColor="@color/grisMasOscuro"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvCiudadConsultorio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ciudad"
+            android:textColor="@color/grisMasOscuro"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

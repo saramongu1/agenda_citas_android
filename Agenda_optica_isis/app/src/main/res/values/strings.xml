@@ -41,11 +41,15 @@
         <item>Masculino</item>
         <item>Otro</item>
     </string-array>
-        <string-array name="vistas_calendario">
-            <item>Día</item>
-            <item>Semana</item>
-        </string-array>
-
+    <string-array name="vistas_calendario">
+        <item>Día</item>
+        <item>Semana</item>
+    </string-array>
+    <string-array name="tipos_busqueda_consultorio">
+        <item>ID</item>
+        <item>Dirección</item>
+        <item>Ciudad</item>
+    </string-array>
 
 
 </resources>
