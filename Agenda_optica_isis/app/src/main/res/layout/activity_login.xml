@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@drawable/fondo_vdd"
+
     android:gravity="center"
     android:orientation="vertical">
 
@@ -55,7 +55,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="4dp"
                 android:autofillHints="emailAddress"
-                android:background="@color/grisClaro"
+                android:background="@color/AzulClaroPastel"
                 android:drawableStart="@drawable/correo"
                 android:drawablePadding="10dp"
                 android:ems="10"
@@ -74,13 +74,13 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="30dp"
                 android:autofillHints="password"
-                android:background="@color/grisClaro"
+                android:background="@color/AzulClaroPastel"
                 android:drawableStart="@drawable/candado"
                 android:drawablePadding="10dp"
                 android:ems="10"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
-                android:maxLength="50"
+                android:maxLength="20"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:textColor="@color/black"
@@ -99,15 +99,18 @@
                 android:textColor="@color/GrisOscuro"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="149dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:backgroundTint="@color/grisMasOscuro"
-                android:text="@string/button_sesion"
-                android:background="@drawable/custom_edittext"
-                />
+
+
+           <com.google.android.material.button.MaterialButton
+               android:id="@+id/btnLogin"
+               android:layout_width="149dp"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="25dp"
+               android:text="@string/button_sesion"
+               android:textAllCaps="false"
+               android:backgroundTint="@color/azulOscuro"
+               />
+
         </LinearLayout>
 
 

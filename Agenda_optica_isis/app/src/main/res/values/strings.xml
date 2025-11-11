@@ -19,6 +19,7 @@
         <item>Documento</item>
     </string-array>
     <string name="buscar_paciente">Buscar paciente</string>
+    <string name="buscar_optometra">Buscar optometra</string>
     <string name="hola">hola\n</string>
 
     <string-array name="tipos_documento">
@@ -27,6 +28,29 @@
         <item>C.E.</item>
         <item>PAS</item>
     </string-array>
+
+
+    <string-array name="tipos_vista">
+        <item>Diaria</item>
+        <item>Semanal</item>
+    </string-array>
+
+
+    <string-array name="tipos_genero">
+        <item>Femenino</item>
+        <item>Masculino</item>
+        <item>Otro</item>
+    </string-array>
+    <string-array name="vistas_calendario">
+        <item>Día</item>
+        <item>Semana</item>
+    </string-array>
+    <string-array name="tipos_busqueda_consultorio">
+        <item>ID</item>
+        <item>Dirección</item>
+        <item>Ciudad</item>
+    </string-array>
+
 
 
 

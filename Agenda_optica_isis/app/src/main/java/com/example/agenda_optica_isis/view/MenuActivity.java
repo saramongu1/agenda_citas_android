@@ -2,6 +2,8 @@ package com.example.agenda_optica_isis.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
@@ -11,11 +13,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.databinding.ActivityMenuBinding;
+import com.example.agenda_optica_isis.model.SistemaReservas;
+import com.example.agenda_optica_isis.model.Usuario;
 
 public class MenuActivity extends AppCompatActivity {
 
     private ActivityMenuBinding binding;
     private ActionBarDrawerToggle toggle;
+    private Fragment fragmentActivo;
+    private String tagActivo;
+    private SistemaReservas sistemaReservas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +30,12 @@ public class MenuActivity extends AppCompatActivity {
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        sistemaReservas = SistemaReservas.getInstance();
+
         setSupportActionBar(binding.toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         toggle = new ActionBarDrawerToggle(
                 this,
@@ -35,45 +47,94 @@ public class MenuActivity extends AppCompatActivity {
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        replaceFragment(new CalendarioFragment());
+        // Actualizar información del usuario en el drawer
+        actualizarInformacionUsuario();
+
+        replaceFragment(new CalendarioFragment(), "CALENDARIO");
 
         binding.bottomNavigationView.setBackground(null);
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.btnCalendario) {
-                replaceFragment(new CalendarioFragment());
+                replaceFragment(new CalendarioFragment(), "CALENDARIO");
             } else if (id == R.id.btnAgenda) {
-                replaceFragment(new AgendaFragment());
+                replaceFragment(new AgendaFragment(), "AGENDA");
             } else if (id == R.id.btnPacientes) {
-                replaceFragment(new PacientesFragment());
+                replaceFragment(new PacientesFragment(), "PACIENTES");
             } else if (id == R.id.btnOptometras) {
-                replaceFragment(new OptometrasFragment());
+                replaceFragment(new OptometrasFragment(), "OPTOMETRAS");
             }
             return true;
         });
 
-        binding.btnAgregarCita.setOnClickListener(v -> replaceFragment(new AgregarCitaFragment()));
+        binding.btnAgregarCita.setOnClickListener(v -> replaceFragment(new AgregarCitaFragment(), "AGREGAR_CITA"));
 
         binding.navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
 
             if (id == R.id.nav_configuracion) {
-                replaceFragment(new ConfiguracionFragment());
+                replaceFragment(new ConfiguracionFragment(), "CONFIGURACION");
             } else if (id == R.id.nav_perfil) {
-                replaceFragment(new UsuarioFragment());
+                replaceFragment(new UsuarioFragment(), "USUARIO");
             } else if (id == R.id.nav_consultorio) {
-                replaceFragment(new ConsultoriosFragment());
+                replaceFragment(new ConsultoriosFragment(), "CONSULTORIO");
             } else if (id == R.id.nav_logout) {
-                Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                cerrarSesion();
             }
 
             binding.drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
+    }
+
+    private void actualizarInformacionUsuario() {
+        // Obtener el header view del NavigationView
+        View headerView = binding.navigationView.getHeaderView(0);
+        TextView tvNombreUsuario = headerView.findViewById(R.id.tvNombreUsuario);
+        TextView tvCorreoUsuario = headerView.findViewById(R.id.tvCorreoUsuario);
+
+        // Obtener el usuario actual del sistema
+        Usuario usuarioActual = sistemaReservas.getUsuarioActual();
+
+        if (usuarioActual != null) {
+            // Usar getNombre() y getCorreo_electronico() de la clase Usuario
+            tvNombreUsuario.setText(usuarioActual.getNombre());
+            tvCorreoUsuario.setText(usuarioActual.getCorreo_electronico());
+        } else {
+            // Si no hay usuario, mostrar valores por defecto
+            tvNombreUsuario.setText("Usuario actual");
+            tvCorreoUsuario.setText("usuario@ejemplo.com");
+        }
+    }
+
+    private void cerrarSesion() {
+        // Limpiar usuario actual
+        sistemaReservas.cerrarSesion();
+
+        Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Actualizar información del usuario cada vez que la actividad se reanude
+        actualizarInformacionUsuario();
+    }
+
+    // ... (los demás métodos se mantienen igual)
+    public void replaceFragment(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.commit();
+
+        fragmentActivo = fragment;
+        tagActivo = tag;
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -82,5 +143,30 @@ public class MenuActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    public void mostrarFragmentConDatos(Fragment fragment, String tag) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        transaction.replace(R.id.frame_layout, fragment, tag);
+        transaction.addToBackStack(tag);
+        transaction.commit();
+
+        fragmentActivo = fragment;
+        tagActivo = tag;
+    }
+
+    public void guardarFragmentActivo(Fragment fragment, String tag) {
+        this.fragmentActivo = fragment;
+        this.tagActivo = tag;
+    }
+
+    public Fragment getFragmentActivo() {
+        return fragmentActivo;
+    }
+
+    public String getTagActivo() {
+        return tagActivo;
     }
 }

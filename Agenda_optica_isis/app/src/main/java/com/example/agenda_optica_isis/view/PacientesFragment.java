@@ -72,7 +72,12 @@ public class PacientesFragment extends Fragment {
     }
 
     public void mostrarListaPacientes(HashMap<String, String> listaPacientes) {
-        adapter = new PacienteAdapter(listaPacientes);
+        adapter = new PacienteAdapter(listaPacientes, documento -> {
+            if (getActivity() instanceof MenuActivity) {
+                DetallePacienteFragment detalle = DetallePacienteFragment.nuevaInstancia(documento);
+                ((MenuActivity) getActivity()).replaceFragment(detalle);
+            }
+        });
         recyclerPacientes.setAdapter(adapter);
     }
 

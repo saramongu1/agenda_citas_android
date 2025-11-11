@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".view.DetallePacienteFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Información de paciente"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:dividerPadding="8dp"
+        android:background="@drawable/custom_background">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="180dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:src="@drawable/baseline_person_pin_24" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre Completo"
+            android:layout_margin="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputNombrePacienteDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="50"
+                android:enabled="false"
+                android:textColor="@color/edittext_color"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:hint="Documento"
+                android:layout_margin="15dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputDocumentoPacienteDetalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="10"
+                    android:inputType="number"
+                    android:enabled="false"
+                    android:textColor="@color/edittext_color"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="140dp"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:background="@drawable/custom_spinner_border"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo documento"
+                    android:textSize="13dp"
+                    tools:ignore="TextSizeCheck" />
+
+                <Spinner
+                    android:id="@+id/spinnerTipoDocumentoPacienteDetalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:spinnerMode="dropdown"
+
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/custom_spinner_border"
+            android:layout_margin="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Genero"
+                android:textSize="13dp"
+                tools:ignore="TextSizeCheck" />
+
+            <Spinner
+                android:id="@+id/spinnerGeneroPacienteDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@android:color/transparent"
+                android:padding="4dp"
+                android:spinnerMode="dropdown"
+                tools:ignore="TouchTargetSizeCheck"
+                android:layout_marginBottom="5dp"/>
+
+        </LinearLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Numero de celular"
+            android:layout_margin="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputCelularPacienteDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:enabled="false"
+                android:textColor="@color/edittext_color"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Correo electrónico"
+            android:layout_margin="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputCorreoPacienteDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="50"
+                android:inputType="textEmailAddress"
+                android:enabled="false"
+                android:textColor="@color/edittext_color"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputFechaNacimientoPacienteDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none"
+                android:hint="Seleccionar fecha"
+                android:enabled="false"
+                android:textColor="@color/edittext_color"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditarPaciente"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:text="Editar"
+                android:textAllCaps="false"
+                app:icon="@drawable/baseline_edit_24"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="@android:color/white"
+                android:backgroundTint="@color/azul"
+                android:textColor="@android:color/white"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGuardarCambios"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Guardar cambios"
+                android:textAllCaps="false"
+                app:icon="@drawable/baseline_save_24"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="@android:color/white"
+                android:backgroundTint="@color/azul"
+                android:textColor="@android:color/white"
+                android:visibility="gone"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEliminarPaciente"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="20dp"
+                android:text="Eliminar"
+                android:textAllCaps="false"
+                app:icon="@drawable/baseline_delete_24"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="@android:color/white"
+                android:backgroundTint="@color/rojo"
+                android:textColor="@android:color/white" />
+
+
+
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+        <!-- Título de la lista de citas -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Citas del paciente"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/black"/>
+
+        <!-- Lista de citas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCitasPaciente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+</ScrollView>

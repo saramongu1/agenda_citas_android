@@ -5,6 +5,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class SistemaReservas {
     private HashMap<String, Optometra> optometras;
@@ -12,6 +13,9 @@ public class SistemaReservas {
     private HashMap<Integer, Cita> citas;
     private HashMap<String, Consultorio> consultorios;
     private HashMap<String,Usuario> usuarios;
+    private static SistemaReservas instancia;
+    private Usuario usuarioActual;
+
 
     public SistemaReservas() {
         this.optometras = new HashMap<>();
@@ -21,26 +25,35 @@ public class SistemaReservas {
         this.usuarios = new HashMap<>();
         quemarDatos();
     }
+    public static synchronized SistemaReservas getInstance() {
+        if (instancia == null) {
+            instancia = new SistemaReservas();
+        }
+        return instancia;
+    }
 
     public void quemarDatos(){
 
-        crearUsuario("admin@admin.com","12345678",true,"Administradora","1057574987","3213055412",2005,7,13, "cédula de ciudadanía");
-        crearOptometra("diana@optometra.com","12345678",true,"Diana yineth González Martínez","1057571987","3131234546",1990,9,13, "cédula de ciudadanía");
-        crearPaciente("maria.rodriguez@email.com", "María Elena Rodríguez", "1023456789", "3101234567", 1985, 3, 15, "cédula de ciudadanía");
-        crearPaciente("carlos.lopez@email.com", "Carlos Andrés López", "987654321", "3152345678", 1990, 7, 22, "cédula de ciudadanía");
-        crearPaciente("ana.martinez@email.com", "Ana Isabel Martínez", "456789123", "3203456789", 1978, 11, 5, "cédula de ciudadanía");
-        crearPaciente("jorge.silva@email.com", "Jorge Eduardo Silva", "789123456", "3004567890", 1988, 1, 30, "cédula de ciudadanía");
-        crearPaciente("laura.diaz@email.com", "Laura Patricia Díaz", "321654987", "3015678901", 1995, 9, 12, "cédula de ciudadanía");
-        crearPaciente("roberto.garcia@email.com", "Roberto Antonio García", "654987321", "3026789012", 1982, 4, 18, "cédula de ciudadanía");
-        crearPaciente("sofia.perez@email.com", "Sofia Camila Pérez", "147258369", "3037890123", 2000, 8, 25, "cédula de ciudadanía");
-        crearPaciente("miguel.torres@email.com", "Miguel Ángel Torres", "258369147", "3048901234", 1975, 12, 3, "cédula de ciudadanía");
-        crearPaciente("elena.castro@email.com", "Elena Margarita Castro", "369147258", "3059012345", 1992, 6, 8, "cédula de ciudadanía");
-        crearPaciente("fernando.ramirez@email.com", "Fernando José Ramírez", "951753852", "3120123456", 1987, 2, 14, "cédula de ciudadanía");
-        crearPaciente("carmen.herrera@email.com", "Carmen Rosa Herrera", "753159486", "3131234567", 1965, 10, 17, "cédula de ciudadanía");
-        crearPaciente("diego.mendoza@email.com", "Diego Alejandro Mendoza", "852741963", "3142345678", 2010, 7, 29, "Targeta de identidad");
-        crearPaciente("patricia.rojas@email.com", "Patricia Alejandra Rojas", "963852741", "3173456789", 2018, 3, 21, "registro civil");
-        crearPaciente("ricardo.vargas@email.com", "Ricardo Manuel Vargas", "CE741852963", "3184567890", 1970, 11, 9, "cédula de extranjería");
-        crearPaciente("isabel.nunez@email.com", "Isabel Cristina Núñez", "PP159487263", "3195678901", 1993, 5, 6, "pasaporte");
+        crearUsuario("admin@admin.com","12345678",true,"Administradora","1057577987","3213055412",2005,7,13, "C.C.", "femenino");
+        crearOptometra("diana@optometra.com","12345678","Diana yineth González Martínez","1057571987","3131234546",1990,9,13, "C.C.", "femenino");
+        crearOptometra("sara@optometra.com","12345678","Sara alejandra mongui gonzalez","1057574987","3131234789",2005,9,13, "C.C.", "femenino");
+
+
+
+        crearPaciente("carlos.lopez@email.com", "Carlos Andrés López", "9876543215", "3152345678", 1990, 7, 22, "C.C.", "masculino");
+        crearPaciente("ana.martinez@email.com", "Ana Isabel Martínez", "1456789123", "3203456789", 1978, 11, 5, "C.C.", "femenino");
+        crearPaciente("jorge.silva@email.com", "Jorge Eduardo Silva", "7891234561", "3004567890", 1988, 1, 30, "C.C.", "masculino");
+        crearPaciente("laura.diaz@email.com", "Laura Patricia Díaz", "1321654987", "3015678901", 1995, 9, 12, "C.C.", "femenino");
+        crearPaciente("roberto.garcia@email.com", "Roberto Antonio García", "6549873211", "3026789012", 1982, 4, 18, "C.C.", "masculino");
+        crearPaciente("sofia.perez@email.com", "Sofia Camila Pérez", "2147258369", "3037890123", 2000, 8, 25, "C.C.", "femenino");
+        crearPaciente("miguel.torres@email.com", "Miguel Ángel Torres", "2583691472", "3048901234", 1975, 12, 3, "C.C.", "masculino");
+        crearPaciente("elena.castro@email.com", "Elena Margarita Castro", "2369147258", "3059012345", 1992, 6, 8, "C.C.", "femenino");
+        crearPaciente("fernando.ramirez@email.com", "Fernando José Ramírez", "9517538522", "3120123456", 1987, 2, 14, "C.C.", "masculino");
+        crearPaciente("carmen.herrera@email.com", "Carmen Rosa Herrera", "1753159486", "3131234567", 1965, 10, 17, "C.C.", "femenino");
+        crearPaciente("diego.mendoza@email.com", "Diego Alejandro Mendoza", "8527419632", "3142345678", 2010, 7, 29, "T.I.", "otro");
+        crearPaciente("patricia.rojas@email.com", "Patricia Alejandra Rojas", "3963852741", "3173456789", 2018, 3, 21, "R.C.", "femenino");
+        crearPaciente("ricardo.vargas@email.com", "Ricardo Manuel Vargas", "7418529633", "3184567890", 1970, 11, 9, "C.E.", "otro");
+        crearPaciente("isabel.nunez@email.com", "Isabel Cristina Núñez", "5948726312", "3195678901", 1993, 5, 6, "C.C.", "otro");
         crearConsultorio("COI-01","calle 15 # 13-9", "Sogamoso");
     }
 
@@ -84,36 +97,102 @@ public class SistemaReservas {
      //CRUD USUARIOS
      //
     public boolean crearUsuario(String correo_electronico,String contrasenia ,boolean isAdmin,String nombre, String numero_documento,
-                                String numero_celular, int anio, int mes, int dia, String tipo_contrasenia) {
+                                String numero_celular, int anio, int mes, int dia, String tipo_contrasenia, String genero) {
         if (usuarios.containsKey(numero_documento)) return false;
-        usuarios.put(numero_documento,new Usuario(correo_electronico,contrasenia,isAdmin,nombre,numero_documento,numero_celular,anio,mes,dia, tipo_contrasenia));
+        usuarios.put(numero_documento,new Usuario(correo_electronico,contrasenia,isAdmin,nombre,numero_documento,numero_celular,anio,mes,dia, tipo_contrasenia, genero));
         return true;
     }
+
+    // En tu SistemaReservas.java, agrega este método:
+    public boolean actualizarContrasena(String correo, String nuevaContrasena) {
+        for (Usuario usuario : usuarios.values()) {
+            if (usuario.getCorreo_electronico().equalsIgnoreCase(correo)) {
+                usuario.setContrasenia(nuevaContrasena);
+                return true;
+            }
+        }
+        for (Optometra optometra : optometras.values()) {
+            if (optometra.getCorreo_electronico().equalsIgnoreCase(correo)) {
+                optometra.setContrasenia(nuevaContrasena);
+                return true;
+            }
+        }
+        return false;
+    }
+    public HashMap<String, Usuario> getTodosUsuarios() {
+        HashMap<String, Usuario> todosUsuarios = new HashMap<>();
+        for (Usuario usuario : usuarios.values()) {
+            todosUsuarios.put(usuario.getNumero_documento(), usuario);
+        }
+        for (Optometra optometra : optometras.values()) {
+            todosUsuarios.put(optometra.getNumero_documento(), optometra);
+        }
+
+        return todosUsuarios;
+    }
+
+    public void cerrarSesion() {
+        this.usuarioActual = null;
+    }
+
+    public Usuario getUsuarioActual() {
+        return usuarioActual;
+    }
+
+    public void setUsuarioActual(Usuario usuario) {
+        this.usuarioActual = usuario;
+    }
+
 
     public Usuario leerUsuario(String numero_documento) {
         return usuarios.get(numero_documento);
     }
 
-    public boolean actualizarUsuario(String contrasenia ,boolean isAdmin,String nombre, String numero_documento,
-                                     String numero_celular, int anio, int mes, int dia) {
-        Usuario usuario = usuarios.get(numero_documento);
-        LocalDate fecha_nueva = LocalDate.of(anio,mes,dia);
-        if (usuario != null) {
-            usuario.setNombre(nombre);
-            usuario.setNumero_celular(numero_celular);
-            usuario.setContrasenia(contrasenia);
-            usuario.setAdmin(isAdmin);
-            usuario.setFecha_nacimiento(fecha_nueva);
-            return true;
+    public boolean actualizarUsuario(String numero_documento, String correo_electronico, String nombre,
+                                     String numero_celular, int anio, int mes, int dia,
+                                     String tipo_documento, String genero) {
+        try {
+            Usuario usuario = usuarios.get(numero_documento);
+            if (usuario != null) {
+                // Actualizar los datos del usuario
+                usuario.setCorreo_electronico(correo_electronico);
+                usuario.setNombre(nombre);
+                usuario.setNumero_celular(numero_celular);
+                usuario.setFecha_nacimiento(LocalDate.of(anio, mes, dia));
+                usuario.asignarTipoDocumento(tipo_documento);
+                usuario.asignarGenero(genero);
+
+                // Actualizar también el usuario actual si es el mismo
+                if (usuarioActual != null && usuarioActual.getNumero_documento().equals(numero_documento)) {
+                    usuarioActual = usuario;
+                }
+
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 
-    public boolean eliminarUsuario(String numero_documento) {
-        return usuarios.remove(numero_documento) != null;
+    public boolean cambiarContraseniaUsuario(String numeroDocumento, String nuevaContrasenia) {
+        try {
+            Usuario usuario = usuarios.get(numeroDocumento);
+            if (usuario != null) {
+                usuario.setContrasenia(nuevaContrasenia);
+
+                // Actualizar también el usuario actual si es el mismo
+                if (usuarioActual != null && usuarioActual.getNumero_documento().equals(numeroDocumento)) {
+                    usuarioActual.setContrasenia(nuevaContrasenia);
+                }
+
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
-
-
     public boolean iniciarSesion(String mail, String contrasenia){
         HashMap<String, Usuario> todosUsuarios = new HashMap<>();
         todosUsuarios.putAll(usuarios);
@@ -133,11 +212,68 @@ public class SistemaReservas {
     // ================================
     // CRUD OPTOMETRAS
     // ================================
-    public boolean crearOptometra(String correo_electronico,String contrasenia ,boolean isAdmin,String nombre, String numero_documento,
-                                  String numero_celular, int anio, int mes, int dia, String tipo_contrasenia) {
+
+    public String getDocumentoOptometra(String nombre_optometra){
+        for (Optometra o : optometras.values()) {
+            if(o.getNombre().equalsIgnoreCase(nombre_optometra)){
+                return o.getNumero_documento();
+            }
+        }
+        return "";
+    }
+
+    public String getNombreOptometra(String numero_documento){
+        for (Optometra o : optometras.values()) {
+            if(o.getNumero_documento().equalsIgnoreCase(numero_documento)){
+                return o.getNombre();
+            }
+        }
+        return "";
+    }
+
+    public String getNombrePaciente(String numero_documento){
+        for (Paciente o : pacientes.values()) {
+            if(o.getNumero_documento().equalsIgnoreCase(numero_documento)){
+                return o.getNombre();
+            }
+        }
+        return "";
+    }
+
+    public String[] obtenerNombresOptometras(){
+        String[]listaOptometras = new String[optometras.size()];
+        int i = 0;
+        for (Optometra o : optometras.values()) {
+            listaOptometras [i] = o.getNombre();
+            i++;
+        }
+        return listaOptometras;
+    }
+
+    public HashMap<String, String> obtenerListaOptometras() {
+        HashMap<String, String> lista = new HashMap<>();
+        for (Optometra o : optometras.values()) {
+            lista.put(o.getNumero_documento(), o.getNombre());
+        }
+        return lista;
+    }
+
+    public boolean crearOptometra(String correo_electronico,String contrasenia ,String nombre, String numero_documento,
+                                  String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         if (optometras.containsKey(numero_documento)) return false;
-        optometras.put(numero_documento, new Optometra(correo_electronico, contrasenia , isAdmin, nombre,  numero_documento,numero_celular,  anio,  mes,  dia, tipo_contrasenia));
+        optometras.put(numero_documento, new Optometra(correo_electronico, contrasenia , true, nombre,  numero_documento,numero_celular,  anio,  mes,  dia, tipo_documento, genero));
         return true;
+    }
+
+    public String generarContrasena() {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder contrasena = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < 8; i++) {
+            contrasena.append(caracteres.charAt(random.nextInt(caracteres.length())));
+        }
+        return contrasena.toString();
     }
 
     public Optometra leerOptometra(String numero_documento) {
@@ -167,9 +303,9 @@ public class SistemaReservas {
     // CRUD PACIENTES
     // ================================
     public boolean crearPaciente(String correo_electronico,String nombre, String numero_documento,
-                                 String numero_celular, int anio, int mes, int dia, String tipo_documento) {
+                                 String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         if (pacientes.containsKey(numero_documento)) return false;
-        pacientes.put(numero_documento, new Paciente(correo_electronico,nombre, numero_documento,numero_celular, anio, mes, dia, tipo_documento));
+        pacientes.put(numero_documento, new Paciente(correo_electronico,nombre, numero_documento,numero_celular, anio, mes, dia, tipo_documento, genero));
         return true;
     }
 
@@ -181,17 +317,21 @@ public class SistemaReservas {
         return pacientes.containsKey(numero_documento);
     }
 
-    public boolean actualizarPaciente(String nombre, String numero_documento,
-                                      String numero_celular, int anio, int mes, int dia) {
+    public boolean actualizarPaciente(String correo_electronico,String nombre, String numero_documento,
+                                      String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         Paciente paciente = pacientes.get(numero_documento);
         if (paciente != null) {
+            paciente.setCorreo_electronico(correo_electronico);
             paciente.setNombre(nombre);
             paciente.setNumero_celular(numero_celular);
             paciente.setFecha_nacimiento(LocalDate.of(anio, mes, dia));
+            paciente.asignarTipoDocumento(tipo_documento);
+            paciente.asignarGenero(genero);
             return true;
         }
         return false;
     }
+
 
     public boolean eliminarPaciente(String numero_documento) {
         return pacientes.remove(numero_documento) != null;
@@ -200,34 +340,69 @@ public class SistemaReservas {
     // ========================================
     // CRUD CITAS
     // ========================================
-    public int crearCita(String docOptometra, String docPaciente, String idConsultorio,
+    public boolean crearCita(String docOptometra, String docPaciente, String idConsultorio,
                          int anio, int mes, int dia, int hora, int minutos) {
         int id = Cita.getContador();
-        if (citas.containsKey(id)) return -1;
-
-        LocalDate fecha_nueva = LocalDate.of(anio, mes, dia);
-        LocalTime hora_nueva = LocalTime.of(hora, minutos);
-        LocalTime hora_nueva_fin = hora_nueva.plusMinutes(20);
-        for (Cita cita : citas.values()){
-            if(cita.getFecha().isEqual(fecha_nueva) &&
-                    cita.getDocumento_optometra().equals(docOptometra) &&
-                    cita.getId_consultorio().equals(idConsultorio)){
-                LocalTime inicio_actual = cita.getHora();
-                LocalTime fin_actual = inicio_actual.plusMinutes(20);
-                boolean seCruzan = !hora_nueva.isAfter(fin_actual) && !hora_nueva_fin.isBefore(inicio_actual);
-                if(seCruzan) return -1;
-            }
-        }
+        if (citas.containsKey(id)) return false;
         Cita nueva = new Cita(docOptometra, docPaciente, idConsultorio, anio, mes, dia, hora, minutos);
         citas.put(nueva.getId(), nueva);
-        return id;
+        return true;
     }
+
+    public boolean comprobarHorarioOptometra(int id_cita, String documento_optometra, int anio, int mes, int dia, int hora, int minutos) {
+        LocalDate fecha = LocalDate.of(anio, mes, dia);
+        LocalTime horaCita = LocalTime.of(hora, minutos);
+        LocalTime horaFinCita = horaCita.plusMinutes(15);
+
+        HashMap<Integer, Cita> lista_citas = new HashMap<>(citas);
+        if (id_cita != -1) lista_citas.remove(id_cita);
+
+        for (Cita cita : lista_citas.values()) {
+            if (cita.getFecha().isEqual(fecha) &&
+                    cita.getDocumento_optometra().equalsIgnoreCase(documento_optometra)) {
+
+                LocalTime inicio_actual = cita.getHora();
+                LocalTime fin_actual = inicio_actual.plusMinutes(15);
+
+                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean comprobarHorarioConsultorio(int id_cita, String idConsultorio, int anio, int mes, int dia, int hora, int minutos) {
+        LocalDate fecha = LocalDate.of(anio, mes, dia);
+        LocalTime horaCita = LocalTime.of(hora, minutos);
+        LocalTime horaFinCita = horaCita.plusMinutes(15);
+
+        HashMap<Integer, Cita> lista_citas = new HashMap<>(citas);
+        if (id_cita != -1) lista_citas.remove(id_cita);
+
+        for (Cita cita : lista_citas.values()) {
+            if (cita.getFecha().isEqual(fecha) &&
+                    cita.getId_consultorio().equals(idConsultorio)) {
+
+                LocalTime inicio_actual = cita.getHora();
+                LocalTime fin_actual = inicio_actual.plusMinutes(15);
+
+                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
 
     public Cita leerCita(int id) {
         return citas.get(id);
     }
 
-    public boolean actualizarCita(int id, String docOptometra, String docPaciente, String idConsultorio,
+    public boolean actualizaCita(int id, String docOptometra, String docPaciente, String idConsultorio,
                                   int anio, int mes, int dia, int hora, int minutos) {
         Cita c = citas.get(id);
         if (c == null) return false;
@@ -246,6 +421,16 @@ public class SistemaReservas {
         return true;
     }
 
+    public void actualizarCita(int id_cita, int anio, int mes, int dia,int hora, int minutos,
+                               String documento_optometra, String id_consultorio ){
+        citas.get(id_cita).setFecha(LocalDate.of(anio,mes,dia));
+        citas.get(id_cita).setHora(LocalTime.of(hora,minutos));
+        citas.get(id_cita).setDocumento_optometra(documento_optometra);
+        citas.get(id_cita).setId_consultorio(id_consultorio);
+    }
+
+
+
     public boolean eliminarCita(int id) {
         return citas.remove(id) != null;
     }
@@ -253,6 +438,10 @@ public class SistemaReservas {
     // ================================
     // CRUD CONSULTORIOS
     // ================================
+
+    public String[] obtenerIdsConsultorios(){
+        return consultorios.keySet().toArray(new String[0]);
+    }
     public boolean crearConsultorio(String id, String direccion, String ciudad) {
         if (consultorios.containsKey(id)) return false;
         consultorios.put(id, new Consultorio(id, direccion, ciudad));
@@ -278,10 +467,13 @@ public class SistemaReservas {
     // ================================
     // CONSULTA CITAS POR CRITERIO
     // ================================
-    public List<Cita> consultarCitasDia(int dia, int mes){
+    public List<Cita> consultarCitasDia(int dia, int mes, int anio) {
         List<Cita> citasDia = new ArrayList<>();
-        for(Cita cita: citas.values()){
-            if(cita.getFecha().getDayOfMonth() == dia && cita.getFecha().getMonthValue() == mes){
+        for (Cita cita : citas.values()) {
+            LocalDate fecha = cita.getFecha();
+            if (fecha.getDayOfMonth() == dia &&
+                    fecha.getMonthValue() == mes &&
+                    fecha.getYear() == anio) {
                 citasDia.add(cita);
             }
         }
@@ -308,5 +500,9 @@ public class SistemaReservas {
             }
         }
         return citasMes;
+    }
+
+    public List<Cita> consultarCitas(){
+        return new ArrayList<>(citas.values());
     }
 }

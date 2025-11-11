@@ -7,7 +7,7 @@ public class Usuario extends Persona{
     private boolean isAdmin;
 
     public Usuario(String correo_electronico,String contrasenia ,boolean isAdmin,String nombre, String numero_documento,
-                   String numero_celular, int anio, int mes, int dia, String tipo_documento) {
+                   String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         this.setCorreo_electronico(correo_electronico);
         this.setNombre(nombre);
         this.setNumero_documento(numero_documento);
@@ -16,6 +16,7 @@ public class Usuario extends Persona{
         this.setContrasenia(contrasenia);
         this.setAdmin(isAdmin);
         super.asignarTipoDocumento(tipo_documento);
+        super.asignarGenero(genero);
     }
 
 
