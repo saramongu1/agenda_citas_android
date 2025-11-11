@@ -103,6 +103,22 @@ public class SistemaReservas {
         return true;
     }
 
+    // En tu SistemaReservas.java, agrega este método:
+    public boolean actualizarContrasena(String correo, String nuevaContrasena) {
+        for (Usuario usuario : usuarios.values()) {
+            if (usuario.getCorreo_electronico().equalsIgnoreCase(correo)) {
+                usuario.setContrasenia(nuevaContrasena);
+                return true;
+            }
+        }
+        for (Optometra optometra : optometras.values()) {
+            if (optometra.getCorreo_electronico().equalsIgnoreCase(correo)) {
+                optometra.setContrasenia(nuevaContrasena);
+                return true;
+            }
+        }
+        return false;
+    }
     public HashMap<String, Usuario> getTodosUsuarios() {
         HashMap<String, Usuario> todosUsuarios = new HashMap<>();
         for (Usuario usuario : usuarios.values()) {

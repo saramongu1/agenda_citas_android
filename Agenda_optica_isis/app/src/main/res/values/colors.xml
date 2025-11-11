@@ -6,6 +6,15 @@
     <color name="GrisOscuro">#737070</color>
     <color name="grisMasOscuro">#5E5E5E</color>
     <color name="grisNormal">#A2A2A2</color>
+
+
+    <color name="VerdePastel">#81C784</color>       <!-- verde suave para elementos destacados -->
+    <color name="AzulClaroPastel">#A7D7E8FF</color>    <!-- azul claro moderno para iconos o texto -->
+    <color name="morado">#D88CEC</color> <!-- morado -->
+    <color name="AzulGrisaseo">#AAC1FC</color> <!-- morado -->
+
+
+
     <color name="azul">#303F9F</color>
     <color name="rojo">#E53935</color>
     <color name="estado_programada">#2E7D32</color> <!-- verde -->
@@ -14,7 +23,7 @@
     <color name="estado_completada">#7B1FA2</color> <!-- morado -->
     <color name="estado_no_asistio">#F57C00</color> <!-- naranja -->
     <color name="azulClaro">#3A8DFF</color>
-    <color name="azulOscuro">#1B5ECC</color>
+    <color name="azulOscuro">#314083</color>
     <color name="blanco">#FFFFFF</color>
     <color name="blancoTransparente">#E0FFFFFF</color>
 

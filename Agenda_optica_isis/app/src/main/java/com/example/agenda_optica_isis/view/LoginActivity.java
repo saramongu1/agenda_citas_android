@@ -11,14 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.presenter.PresenterLoginActivity;
+import com.google.android.material.button.MaterialButton;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etMail;
-    private  EditText etPassword;
-    private Button btnLogin;
+    private EditText etPassword;
+    private MaterialButton btnLogin;
     private TextView tvForgotPassword;
     private PresenterLoginActivity presenter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         enlazarVistas();
         btnLogin.setOnClickListener(v -> iniciarSesion());
+        tvForgotPassword.setOnClickListener(v -> recuperarContrasena());
     }
 
     public void enlazarVistas(){
@@ -38,6 +39,11 @@ public class LoginActivity extends AppCompatActivity {
     public void iniciarSesion(){
         presenter = new PresenterLoginActivity(this);
         presenter.iniciarSesion();
+    }
+
+    public void recuperarContrasena() {
+        presenter = new PresenterLoginActivity(this);
+        presenter.recuperarContrasena();
     }
 
     public String getMailText(){
@@ -58,4 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 
+    public void limpiarCampoContrasena() {
+        etPassword.setText("");
+    }
 }

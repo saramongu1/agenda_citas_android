@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/grisNormal"
+            android:background="@color/AzulGrisaseo"
             android:titleTextColor="@color/white"
             android:title=""
             app:navigationIcon="@drawable/menu" />
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:backgroundTint="@color/grisNormal"
+            android:backgroundTint="@color/AzulGrisaseo"
             app:fabCradleMargin="10dp"
             app:fabCradleRoundedCornerRadius="50dp">
 
@@ -50,7 +50,7 @@
             android:id="@+id/btnAgregarCita"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/grisMasOscuro"
+            android:backgroundTint="@color/azulOscuro"
             android:contentDescription="@string/btm_menu_agregar_cita"
             android:src="@drawable/add"
             app:layout_anchor="@id/bottomAppBar"
