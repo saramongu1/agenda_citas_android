@@ -45,6 +45,10 @@ public class Persona {
         return fecha_nacimiento.format(formateador);
     }
 
+    public LocalDate getFecha_nacimientoFormat() {
+        return fecha_nacimiento;
+    }
+
     public void setFecha_nacimiento(LocalDate fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }

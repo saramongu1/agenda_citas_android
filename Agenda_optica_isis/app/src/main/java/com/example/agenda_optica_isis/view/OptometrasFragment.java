@@ -17,6 +17,7 @@ import android.widget.Spinner;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.presenter.PresenterOptometrasFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashMap;
@@ -26,6 +27,8 @@ public class OptometrasFragment extends Fragment {
     private TextInputEditText etBusquedaOptometra;
     private Spinner spnCriterioBusquedaOptometra;
     private ImageButton iBtnBuscarOptometra;
+    private FloatingActionButton fBtnAgregarOptometra;
+
     private RecyclerView recyclerOptometras;
     private OptometraAdapter adapter;
     private PresenterOptometrasFragment presenter;
@@ -44,7 +47,8 @@ public class OptometrasFragment extends Fragment {
         iniciarPresenter();
         presenter.cargarOptometras();
 
-        iBtnBuscarOptometra.setOnClickListener(v -> buscarOptometra()); // ✅ Nombre corregido
+        iBtnBuscarOptometra.setOnClickListener(v -> buscarOptometra());
+        fBtnAgregarOptometra.setOnClickListener(v -> agregarOptometra());
     }
 
     private void iniciarPresenter() {
@@ -56,6 +60,7 @@ public class OptometrasFragment extends Fragment {
         spnCriterioBusquedaOptometra = view.findViewById(R.id.spinnerTipoBusquedaOptometra);
         iBtnBuscarOptometra = view.findViewById(R.id.btnBuscarOptometra);
         recyclerOptometras = view.findViewById(R.id.recyclerOptometras);
+        fBtnAgregarOptometra = view.findViewById(R.id.btnAgregarOptometra);
         recyclerOptometras.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 
@@ -81,5 +86,11 @@ public class OptometrasFragment extends Fragment {
 
     private void buscarOptometra() {
         // Aquí implementas la lógica de búsqueda si deseas
+    }
+
+    public void agregarOptometra(){
+        if (getActivity() instanceof MenuActivity) {
+            ((MenuActivity) getActivity()).replaceFragment(new AgregarOptometraFragment());
+        }
     }
 }

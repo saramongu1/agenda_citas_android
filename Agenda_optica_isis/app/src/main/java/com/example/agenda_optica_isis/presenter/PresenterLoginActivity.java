@@ -3,6 +3,7 @@ package com.example.agenda_optica_isis.presenter;
 import com.example.agenda_optica_isis.exceptions.ValidacionException;
 import com.example.agenda_optica_isis.exceptions.ValidarDatos;
 import com.example.agenda_optica_isis.model.SistemaReservas;
+import com.example.agenda_optica_isis.model.Usuario;
 import com.example.agenda_optica_isis.view.LoginActivity;
 
 public class PresenterLoginActivity {
@@ -27,6 +28,8 @@ public class PresenterLoginActivity {
 
             boolean exito = sistemaReservas.iniciarSesion(mail, contrasenia);
             if (exito) {
+                Usuario usuario = buscarUsuarioPorCorreo(mail);
+                sistemaReservas.setUsuarioActual(usuario);
                 view.irAMenu();
             } else {
                 view.mostrarMensaje("Credenciales incorrectas");
@@ -37,5 +40,15 @@ public class PresenterLoginActivity {
         } catch (Exception e) {
             view.mostrarMensaje("Error inesperado: " + e.getMessage());
         }
+    }
+
+    private Usuario buscarUsuarioPorCorreo(String correo) {
+
+        for (Usuario usuario : sistemaReservas.getTodosUsuarios().values()) {
+            if (usuario.getCorreo_electronico().equalsIgnoreCase(correo)) {
+                return usuario;
+            }
+        }
+        return null;
     }
 }

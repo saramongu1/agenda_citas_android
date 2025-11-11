@@ -5,6 +5,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class SistemaReservas {
     private HashMap<String, Optometra> optometras;
@@ -13,6 +14,8 @@ public class SistemaReservas {
     private HashMap<String, Consultorio> consultorios;
     private HashMap<String,Usuario> usuarios;
     private static SistemaReservas instancia;
+    private Usuario usuarioActual;
+
 
     public SistemaReservas() {
         this.optometras = new HashMap<>();
@@ -32,8 +35,8 @@ public class SistemaReservas {
     public void quemarDatos(){
 
         crearUsuario("admin@admin.com","12345678",true,"Administradora","1057577987","3213055412",2005,7,13, "C.C.", "femenino");
-        crearOptometra("diana@optometra.com","12345678",true,"Diana yineth González Martínez","1057571987","3131234546",1990,9,13, "C.C.", "femenino");
-        crearOptometra("sara@optometra.com","12345678",true,"Sara alejandra mongui gonzalez","1057574987","3131234789",2005,9,13, "C.C.", "femenino");
+        crearOptometra("diana@optometra.com","12345678","Diana yineth González Martínez","1057571987","3131234546",1990,9,13, "C.C.", "femenino");
+        crearOptometra("sara@optometra.com","12345678","Sara alejandra mongui gonzalez","1057574987","3131234789",2005,9,13, "C.C.", "femenino");
 
 
 
@@ -100,32 +103,80 @@ public class SistemaReservas {
         return true;
     }
 
+    public HashMap<String, Usuario> getTodosUsuarios() {
+        HashMap<String, Usuario> todosUsuarios = new HashMap<>();
+        for (Usuario usuario : usuarios.values()) {
+            todosUsuarios.put(usuario.getNumero_documento(), usuario);
+        }
+        for (Optometra optometra : optometras.values()) {
+            todosUsuarios.put(optometra.getNumero_documento(), optometra);
+        }
+
+        return todosUsuarios;
+    }
+
+    public void cerrarSesion() {
+        this.usuarioActual = null;
+    }
+
+    public Usuario getUsuarioActual() {
+        return usuarioActual;
+    }
+
+    public void setUsuarioActual(Usuario usuario) {
+        this.usuarioActual = usuario;
+    }
 
 
     public Usuario leerUsuario(String numero_documento) {
         return usuarios.get(numero_documento);
     }
 
-    public boolean actualizarUsuario(String contrasenia ,boolean isAdmin,String nombre, String numero_documento,
-                                     String numero_celular, int anio, int mes, int dia) {
-        Usuario usuario = usuarios.get(numero_documento);
-        LocalDate fecha_nueva = LocalDate.of(anio,mes,dia);
-        if (usuario != null) {
-            usuario.setNombre(nombre);
-            usuario.setNumero_celular(numero_celular);
-            usuario.setContrasenia(contrasenia);
-            usuario.setAdmin(isAdmin);
-            usuario.setFecha_nacimiento(fecha_nueva);
-            return true;
+    public boolean actualizarUsuario(String numero_documento, String correo_electronico, String nombre,
+                                     String numero_celular, int anio, int mes, int dia,
+                                     String tipo_documento, String genero) {
+        try {
+            Usuario usuario = usuarios.get(numero_documento);
+            if (usuario != null) {
+                // Actualizar los datos del usuario
+                usuario.setCorreo_electronico(correo_electronico);
+                usuario.setNombre(nombre);
+                usuario.setNumero_celular(numero_celular);
+                usuario.setFecha_nacimiento(LocalDate.of(anio, mes, dia));
+                usuario.asignarTipoDocumento(tipo_documento);
+                usuario.asignarGenero(genero);
+
+                // Actualizar también el usuario actual si es el mismo
+                if (usuarioActual != null && usuarioActual.getNumero_documento().equals(numero_documento)) {
+                    usuarioActual = usuario;
+                }
+
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 
-    public boolean eliminarUsuario(String numero_documento) {
-        return usuarios.remove(numero_documento) != null;
+    public boolean cambiarContraseniaUsuario(String numeroDocumento, String nuevaContrasenia) {
+        try {
+            Usuario usuario = usuarios.get(numeroDocumento);
+            if (usuario != null) {
+                usuario.setContrasenia(nuevaContrasenia);
+
+                // Actualizar también el usuario actual si es el mismo
+                if (usuarioActual != null && usuarioActual.getNumero_documento().equals(numeroDocumento)) {
+                    usuarioActual.setContrasenia(nuevaContrasenia);
+                }
+
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
-
-
     public boolean iniciarSesion(String mail, String contrasenia){
         HashMap<String, Usuario> todosUsuarios = new HashMap<>();
         todosUsuarios.putAll(usuarios);
@@ -191,11 +242,22 @@ public class SistemaReservas {
         return lista;
     }
 
-    public boolean crearOptometra(String correo_electronico,String contrasenia ,boolean isAdmin,String nombre, String numero_documento,
+    public boolean crearOptometra(String correo_electronico,String contrasenia ,String nombre, String numero_documento,
                                   String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         if (optometras.containsKey(numero_documento)) return false;
-        optometras.put(numero_documento, new Optometra(correo_electronico, contrasenia , isAdmin, nombre,  numero_documento,numero_celular,  anio,  mes,  dia, tipo_documento, genero));
+        optometras.put(numero_documento, new Optometra(correo_electronico, contrasenia , true, nombre,  numero_documento,numero_celular,  anio,  mes,  dia, tipo_documento, genero));
         return true;
+    }
+
+    public String generarContrasena() {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder contrasena = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < 8; i++) {
+            contrasena.append(caracteres.charAt(random.nextInt(caracteres.length())));
+        }
+        return contrasena.toString();
     }
 
     public Optometra leerOptometra(String numero_documento) {

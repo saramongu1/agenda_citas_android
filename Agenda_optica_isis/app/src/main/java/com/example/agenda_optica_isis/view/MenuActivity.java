@@ -2,6 +2,8 @@ package com.example.agenda_optica_isis.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
@@ -11,6 +13,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.databinding.ActivityMenuBinding;
+import com.example.agenda_optica_isis.model.SistemaReservas;
+import com.example.agenda_optica_isis.model.Usuario;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -18,6 +22,7 @@ public class MenuActivity extends AppCompatActivity {
     private ActionBarDrawerToggle toggle;
     private Fragment fragmentActivo;
     private String tagActivo;
+    private SistemaReservas sistemaReservas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +30,12 @@ public class MenuActivity extends AppCompatActivity {
         binding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        sistemaReservas = SistemaReservas.getInstance();
+
         setSupportActionBar(binding.toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         toggle = new ActionBarDrawerToggle(
                 this,
@@ -36,6 +46,9 @@ public class MenuActivity extends AppCompatActivity {
         );
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        // Actualizar información del usuario en el drawer
+        actualizarInformacionUsuario();
 
         replaceFragment(new CalendarioFragment(), "CALENDARIO");
 
@@ -67,10 +80,7 @@ public class MenuActivity extends AppCompatActivity {
             } else if (id == R.id.nav_consultorio) {
                 replaceFragment(new ConsultoriosFragment(), "CONSULTORIO");
             } else if (id == R.id.nav_logout) {
-                Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                cerrarSesion();
             }
 
             binding.drawerLayout.closeDrawer(GravityCompat.START);
@@ -78,6 +88,44 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+    private void actualizarInformacionUsuario() {
+        // Obtener el header view del NavigationView
+        View headerView = binding.navigationView.getHeaderView(0);
+        TextView tvNombreUsuario = headerView.findViewById(R.id.tvNombreUsuario);
+        TextView tvCorreoUsuario = headerView.findViewById(R.id.tvCorreoUsuario);
+
+        // Obtener el usuario actual del sistema
+        Usuario usuarioActual = sistemaReservas.getUsuarioActual();
+
+        if (usuarioActual != null) {
+            // Usar getNombre() y getCorreo_electronico() de la clase Usuario
+            tvNombreUsuario.setText(usuarioActual.getNombre());
+            tvCorreoUsuario.setText(usuarioActual.getCorreo_electronico());
+        } else {
+            // Si no hay usuario, mostrar valores por defecto
+            tvNombreUsuario.setText("Usuario actual");
+            tvCorreoUsuario.setText("usuario@ejemplo.com");
+        }
+    }
+
+    private void cerrarSesion() {
+        // Limpiar usuario actual
+        sistemaReservas.cerrarSesion();
+
+        Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Actualizar información del usuario cada vez que la actividad se reanude
+        actualizarInformacionUsuario();
+    }
+
+    // ... (los demás métodos se mantienen igual)
     public void replaceFragment(Fragment fragment, String tag) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -97,12 +145,10 @@ public class MenuActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-
     public void mostrarFragmentConDatos(Fragment fragment, String tag) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
 
-        // Siempre reemplaza el fragment para garantizar que los nuevos argumentos se apliquen
         transaction.replace(R.id.frame_layout, fragment, tag);
         transaction.addToBackStack(tag);
         transaction.commit();
