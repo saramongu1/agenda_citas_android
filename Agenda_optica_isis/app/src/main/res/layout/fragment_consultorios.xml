@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="12dp"
-    android:background="@color/grisClaro"
+    android:background="@color/white"
     android:layout_marginBottom="70dp">
 
     <LinearLayout
@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="50"
+                android:backgroundTint="@color/AzulClaroPastel"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,7 +48,8 @@
             android:layout_height="48dp"
             android:background="@drawable/bg_boton_buscar"
             android:src="@drawable/buscar"
-            app:tint="@color/white"
+            app:tint="@color/estado_no_asistio"
+            android:backgroundTint="@color/estado_no_asistio_claro"
             android:contentDescription="buscar consultorio"/>
 
     </LinearLayout>
@@ -68,6 +70,6 @@
         android:layout_margin="16dp"
         android:src="@drawable/add"
         android:contentDescription="Agregar consultorio"
-        app:tint="@color/white"
-        android:backgroundTint="@color/grisMasOscuro"/>
+        app:tint="@color/verdeeeee"
+        android:backgroundTint="@color/VerdeClaro"/>
 </LinearLayout>

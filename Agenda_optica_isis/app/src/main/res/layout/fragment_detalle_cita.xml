@@ -196,7 +196,8 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditarCita"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
                 android:layout_marginStart="15dp"
@@ -214,7 +215,8 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGuardarCambiosCita"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="Guardar cambios"
@@ -230,8 +232,9 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelarCita"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginEnd="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginBottom="20dp"

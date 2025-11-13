@@ -69,7 +69,6 @@ public class DetallePacienteFragment extends Fragment {
         initPresentador();
         initInputFecha(view);
         cargarDatosPaciente(); 
-        cargarCitas();
 
         btnGuardarCambios.setOnClickListener(v -> guardarCambios());
         btnEditarPaciente.setOnClickListener(v -> editarPaciente());
@@ -211,9 +210,7 @@ public class DetallePacienteFragment extends Fragment {
         presenter.AsignarInformacionPaciente(documentoPaciente);
     }
 
-    private void cargarCitas() {
 
-    }
 
     private void guardarCambios() {
         presenter.actualizarPaciente();

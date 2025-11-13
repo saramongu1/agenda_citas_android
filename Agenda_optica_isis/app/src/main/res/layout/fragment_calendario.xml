@@ -4,9 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:layout_marginBottom="60dp">
 
     <!-- Barra superior de controles -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tipo de vista"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,10 +22,11 @@
         <Spinner
             android:id="@+id/spinnerVista"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck"
+            android:background="@drawable/custom_spinner_border"/>
 
         <TextView
             android:id="@+id/tvFechaSeleccionada"
@@ -35,6 +41,10 @@
             android:text="Seleccionar fecha"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:backgroundTint="@color/VerdeClaro"
+            android:textColor="@color/estado_programada"
+            android:drawableStart="@drawable/calendario"
+            android:drawablePadding="8dp"
             tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>

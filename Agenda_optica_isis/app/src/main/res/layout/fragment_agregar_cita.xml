@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
+    android:layout_marginBottom="70dp"
     tools:context=".view.AgregarCitaFragment">
 
     <LinearLayout
@@ -83,113 +84,149 @@
                 android:layout_height="50dp"
                 android:textAllCaps="false"
                 android:text="Seleccionar Paciente"
-                android:layout_margin="15dp"/>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Seleccionar fecha"
-                android:layout_margin="15dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputFechaCitaCC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:inputType="none"
-                    android:textColor="@color/edittext_color"
-                    android:drawableEnd="@drawable/calendario" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- 🔸 Hora -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Seleccionar hora"
-                android:layout_margin="15dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputHoraCitaCC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:inputType="none"
-                    android:textColor="@color/edittext_color"
-                    android:drawableEnd="@drawable/baseline_access_time_24" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- 🔸 Optómetra -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/custom_spinner_border"
                 android:layout_margin="15dp"
-                android:padding="8dp">
+                android:backgroundTint="@color/estado_no_asistio"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Optómetra asignado"
-                    android:textColor="#000000"
-                    android:textSize="13dp"
-                    tools:ignore="TextSizeCheck" />
 
-                <Spinner
-                    android:id="@+id/spinnerOptometraCC"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:background="@android:color/transparent"
-                    android:padding="4dp"
-                    android:spinnerMode="dropdown"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/custom_spinner_border"
-                android:layout_margin="15dp"
-                android:padding="8dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Consultorio"
-                    android:textColor="#000000"
-                    android:textSize="13dp"
-                    tools:ignore="TextSizeCheck" />
-
-                <Spinner
-                    android:id="@+id/spinnerConsultorioCC"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:background="@android:color/transparent"
-                    android:padding="4dp"
-                    android:spinnerMode="dropdown"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGuardarCitaCC"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Guardar cita"
-                android:textAllCaps="false"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                android:backgroundTint="@color/azul"
-                android:textColor="@color/white"
-                android:iconTint="@color/white"/>
 
         </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/custom_background"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Datos de la Cita"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_margin="15dp"
+            android:textColor="#000000" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fecha de la cita"
+            android:layout_margin="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputFechaCitaCC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none"
+                android:textColor="@color/edittext_color"
+                android:drawableEnd="@drawable/calendario" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 🔸 Hora -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hora de la cita"
+            android:layout_margin="15dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputHoraCitaCC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none"
+                android:textColor="@color/edittext_color"
+                android:drawableEnd="@drawable/baseline_access_time_24" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 🔸 Optómetra -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/custom_spinner_border"
+            android:layout_margin="15dp"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Optómetra asignado"
+                android:textColor="#000000"
+                android:textSize="13dp"
+                tools:ignore="TextSizeCheck" />
+
+            <Spinner
+                android:id="@+id/spinnerOptometraCC"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@android:color/transparent"
+                android:padding="4dp"
+                android:spinnerMode="dropdown"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/custom_spinner_border"
+            android:layout_margin="15dp"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Consultorio"
+                android:textColor="#000000"
+                android:textSize="13dp"
+                tools:ignore="TextSizeCheck" />
+
+            <Spinner
+                android:id="@+id/spinnerConsultorioCC"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@android:color/transparent"
+                android:padding="4dp"
+                android:spinnerMode="dropdown"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGuardarCitaCC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar cita"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/azul"
+            android:textColor="@color/white"
+            android:iconTint="@color/white"
+            android:layout_margin="15dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelarProcesoCitaCC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancelar"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:backgroundTint="@color/GrisOscuro"
+            android:textColor="@color/white"
+            android:iconTint="@color/white"/>
 
     </LinearLayout>
 </ScrollView>

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.presenter.PresenterOptometrasFragment;
@@ -85,7 +86,7 @@ public class OptometrasFragment extends Fragment {
     }
 
     private void buscarOptometra() {
-        // Aquí implementas la lógica de búsqueda si deseas
+        presenter.cargarBusquedaOptometra();
     }
 
     public void agregarOptometra(){
@@ -93,4 +94,17 @@ public class OptometrasFragment extends Fragment {
             ((MenuActivity) getActivity()).replaceFragment(new AgregarOptometraFragment());
         }
     }
+
+    public String getTextoBusquedaOptometra(){
+        return etBusquedaOptometra.getText() != null ? etBusquedaOptometra.getText().toString().trim() : "";
+    }
+
+    public String getTextoCriterioBusqueda(){
+        return spnCriterioBusquedaOptometra.getSelectedItem().toString();
+    }
+
+    public void mostrarMensaje(String mensaje) {
+        Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show();
+    }
+
 }

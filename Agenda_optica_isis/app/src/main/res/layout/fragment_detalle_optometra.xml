@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".view.DetallePacienteFragment">
+    tools:context=".view.DetallePacienteFragment"
+    android:layout_marginBottom="70dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -190,22 +191,59 @@
 
         </LinearLayout>
 
-        <!-- Título de la lista de citas -->
-        <TextView
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditarOptometra"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:text="Citas del paciente"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginTop="24dp"
-            android:textColor="@color/black"/>
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:text="Editar Optómetra"
+            android:textAllCaps="false"
+            app:icon="@drawable/baseline_edit_24"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@android:color/white"
+            android:backgroundTint="@color/azul"
+            android:textColor="@android:color/white"/>
 
-        <!-- Lista de citas -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerCitasOptometra"
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGuardarCambiosOptometra"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Guardar cambios"
+            android:textAllCaps="false"
+            app:icon="@drawable/baseline_save_24"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@android:color/white"
+            android:backgroundTint="@color/azul"
+            android:textColor="@android:color/white"
+            android:visibility="gone"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEliminarOptometra"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"/>
+            android:layout_gravity="center"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginBottom="20dp"
+            android:text="Eliminar Optómetra"
+            android:textAllCaps="false"
+            app:icon="@drawable/baseline_delete_24"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@android:color/white"
+            android:backgroundTint="@color/rojo"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 </ScrollView>

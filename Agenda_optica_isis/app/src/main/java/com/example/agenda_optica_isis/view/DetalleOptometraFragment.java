@@ -36,6 +36,10 @@ public class DetalleOptometraFragment extends Fragment {
     private TextInputEditText etFechaNacimientoOptometra;
     private Spinner spnGeneroOptometra;
 
+    private MaterialButton btnGuardarCambios;
+    private MaterialButton btnEditarOptometra;
+    private MaterialButton btnEliminarOptometra;
+
     private String documentoOptometra;
     private PresenterDetalleOptometraFragment presenter;
 
@@ -64,6 +68,9 @@ public class DetalleOptometraFragment extends Fragment {
         initInputFecha();
         cargarDatosOptometra();
 
+        btnGuardarCambios.setOnClickListener(v -> guardarCambios());
+        btnEditarOptometra.setOnClickListener(v -> editarOptometra());
+        btnEliminarOptometra.setOnClickListener(v -> eliminarOptometra());
     }
 
     private void initPresentador() {
@@ -82,6 +89,9 @@ public class DetalleOptometraFragment extends Fragment {
         etFechaNacimientoOptometra = view.findViewById(R.id.inputFechaNacimientoOptometraDetalle);
         spnTipoDocumentoOptometra = view.findViewById(R.id.spinnerTipoDocumentoOptometraDetalle);
         spnGeneroOptometra = view.findViewById(R.id.spinnerGeneroOptometraDetalle);
+        btnEditarOptometra = view.findViewById(R.id.btnEditarOptometra);
+        btnEliminarOptometra = view.findViewById(R.id.btnEliminarOptometra);
+        btnGuardarCambios = view.findViewById(R.id.btnGuardarCambiosOptometra);
     }
 
     private void initSpinnerTiposDocumento() {
@@ -184,6 +194,16 @@ public class DetalleOptometraFragment extends Fragment {
         etCorreoOptometra.setEnabled(true);
         etFechaNacimientoOptometra.setEnabled(true);
 
+        btnGuardarCambios.setVisibility(VISIBLE);
+        btnEditarOptometra.setVisibility(GONE);
+    }
+
+    private void guardarCambios(){
+        presenter.actualizarOptometra();
+    }
+
+    private void eliminarOptometra(){
+        presenter.eliminarOptometra();
     }
 
 

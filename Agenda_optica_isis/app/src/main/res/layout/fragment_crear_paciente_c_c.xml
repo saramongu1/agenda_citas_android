@@ -170,9 +170,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Crear paciente"
-            android:background="@drawable/custom_edittext"
             android:layout_gravity="center"
-            android:layout_margin="20dp"/>
+            android:backgroundTint="@color/azul"
+            android:textAllCaps="false"
+            android:layout_margin="15dp"/>
 
     </LinearLayout>
 

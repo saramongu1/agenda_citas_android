@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="12dp"
-    android:background="@color/grisClaro"
+    android:background="@color/white"
     android:layout_marginBottom="70dp">
 
     <LinearLayout
@@ -26,6 +26,7 @@
                 android:id="@+id/inputBuscarOptometra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/AzulClaroPastel"
                 android:maxLength="50"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -47,7 +48,8 @@
             android:layout_height="48dp"
             android:background="@drawable/bg_boton_buscar"
             android:src="@drawable/buscar"
-            app:tint="@color/white"
+            app:tint="@color/estado_no_asistio"
+            android:backgroundTint="@color/estado_no_asistio_claro"
             android:contentDescription="@string/buscar_optometra" />
 
     </LinearLayout>
@@ -69,7 +71,7 @@
         android:layout_margin="5dp"
         android:src="@drawable/baseline_person_add_alt_1_24"
         android:contentDescription="Crear optometra"
-        app:tint="@color/white"
-        android:backgroundTint="@color/grisMasOscuro"/>
+        app:tint="@color/verdeeeee"
+        android:backgroundTint="@color/VerdeClaro"/>
 
 </LinearLayout>

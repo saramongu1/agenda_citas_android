@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
+
 public class AgregarCitaFragment extends Fragment {
     private static String nombrePacienteGuardado;
     private static String documentoPacienteGuardado;
@@ -51,6 +52,7 @@ public class AgregarCitaFragment extends Fragment {
     private MaterialButton btnGuardarCita;
     private PresenterAgregarCitaFragment presenter;
 
+    private MaterialButton btnCancelarProcesoCita;
     private final Calendar calendar = Calendar.getInstance();
 
     @Override
@@ -71,6 +73,7 @@ public class AgregarCitaFragment extends Fragment {
         btnGuardarCita.setOnClickListener(v -> guardarCita());
         etFecha.setOnClickListener(v -> mostrarSelectorFecha());
         etHora.setOnClickListener(v -> mostrarSelectorHora());
+        btnCancelarProcesoCita.setOnClickListener(v -> cancelarProcesoCita());
 
 
         llenarPaciente();
@@ -129,6 +132,7 @@ public class AgregarCitaFragment extends Fragment {
         spnConsultorio = view.findViewById(R.id.spinnerConsultorioCC);
         btnBuscarPaciente = view.findViewById(R.id.btnBuscarPacienteCC);
         btnGuardarCita = view.findViewById(R.id.btnGuardarCitaCC);
+        btnCancelarProcesoCita = view.findViewById(R.id.btnCancelarProcesoCitaCC);
 
     }
 
@@ -285,6 +289,7 @@ public class AgregarCitaFragment extends Fragment {
 
     public void guardarCita(){
         presenter.agregarCita();
+        limpiarCamposCita();
     }
 
     public String getNombrePaciente(){
@@ -320,5 +325,37 @@ public class AgregarCitaFragment extends Fragment {
 
     public void mostrarMensaje(String mensaje) {
         Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    private void limpiarCamposCita() {
+        if (tvNombrePaciente != null) {
+            tvNombrePaciente.setText("Nombre del paciente");
+        }
+
+        if (tvDocumentoPaciente != null) {
+            tvDocumentoPaciente.setText("Documento del paciente");
+        }
+
+        if (etFecha != null) {
+            etFecha.setText("");
+        }
+
+        if (etHora != null) {
+            etHora.setText("");
+        }
+
+        nombrePacienteGuardado = null;
+        documentoPacienteGuardado = null;
+        fechaGuardada = null;
+        horaGuardada = null;
+
+        nombrePendiente = null;
+        documentoPendiente = null;
+    }
+
+
+    private void cancelarProcesoCita(){
+        irACalendario();
+        limpiarCamposCita();
     }
 }

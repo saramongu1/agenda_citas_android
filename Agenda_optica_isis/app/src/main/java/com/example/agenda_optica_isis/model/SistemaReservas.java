@@ -65,6 +65,33 @@ public class SistemaReservas {
         return buscarPacientePorNombre(pacienteBuscar);
     }
 
+    public HashMap<String, String> buscarOptometra(String criterio, String optometraBuscar){
+        if(criterio.equals("Documento")){
+            return buscarOptometraPorDocumento(optometraBuscar);
+        }
+        return buscarOptometraPorNombre(optometraBuscar);
+    }
+
+    public HashMap<String, String> buscarOptometraPorNombre(String nombre){
+        HashMap<String, String> listaOptometras = new HashMap<>();
+        for (Optometra optometra : optometras.values()) {
+            if(optometra.getNombre().toLowerCase().contains(nombre.toLowerCase())){
+                listaOptometras.put(optometra.getNumero_documento(), optometra.getNombre());
+            }
+        }
+        return listaOptometras;
+    }
+
+    public HashMap<String, String> buscarOptometraPorDocumento(String numero_documento){
+        HashMap<String, String> listaOptometras = new HashMap<>();
+        for (Optometra optometra : optometras.values()) {
+            if(optometra.getNumero_documento().contains(numero_documento)){
+                listaOptometras.put(optometra.getNumero_documento(), optometra.getNombre());
+            }
+        }
+        return listaOptometras;
+    }
+
     public HashMap<String, String> buscarPacientePorDocumento(String numero_documento){
         HashMap<String, String> listaPacientes = new HashMap<>();
         for (Paciente paciente : pacientes.values()) {
@@ -280,20 +307,22 @@ public class SistemaReservas {
         return optometras.get(numero_documento);
     }
 
-    public boolean actualizarOptometra(String nombre, String numero_documento,
-                                       String numero_celular, int anio, int mes, int dia) {
-        LocalDate fecha_nueva = LocalDate.of(anio, mes, dia);
-        Period edad = Period.between(fecha_nueva, LocalDate.now());
-        if(edad.getYears() < 18) return false;
+    public boolean actualizarOptometra(String correo_electronico, String nombre, String numero_documento,
+                                       String numero_celular, int anio, int mes, int dia,
+                                       String tipo_documento, String genero) {
         Optometra optometra = optometras.get(numero_documento);
         if (optometra != null) {
+            optometra.setCorreo_electronico(correo_electronico);
             optometra.setNombre(nombre);
             optometra.setNumero_celular(numero_celular);
-            optometra.setFecha_nacimiento(fecha_nueva);
+            optometra.setFecha_nacimiento(LocalDate.of(anio, mes, dia));
+            optometra.asignarTipoDocumento(tipo_documento);
+            optometra.asignarGenero(genero);
             return true;
         }
         return false;
     }
+
 
     public boolean eliminarOptometra(String numero_documento) {
         return optometras.remove(numero_documento) != null;

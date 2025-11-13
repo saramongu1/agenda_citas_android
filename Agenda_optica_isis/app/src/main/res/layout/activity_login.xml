@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-
+    android:background="@drawable/fondo"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -65,7 +65,7 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:textColor="@color/black"
-                android:textColorHint="@color/GrisOscuro" />
+                android:textColorHint="@color/grisMasOscuro" />
 
             <EditText
                 android:id="@+id/etPassword"

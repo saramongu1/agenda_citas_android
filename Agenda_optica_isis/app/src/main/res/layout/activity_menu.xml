@@ -16,45 +16,52 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/AzulGrisaseo"
-            android:titleTextColor="@color/white"
+            android:background="@color/azulOscuroGrisaseo"
+            android:titleTextColor="@color/grisNormal"
             android:title=""
-            app:navigationIcon="@drawable/menu" />
+            app:navigationIcon="@drawable/menu"
+            app:navigationIconTint="@color/grisNormal" />
 
         <FrameLayout
             android:id="@+id/frame_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
-            android:background="@color/grisClaro"/>
+            android:background="@color/white"/>
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:backgroundTint="@color/AzulGrisaseo"
+            android:backgroundTint="@color/azulOscuroGrisaseo"
             app:fabCradleMargin="10dp"
-            app:fabCradleRoundedCornerRadius="50dp">
+            app:fabCradleRoundedCornerRadius="50dp"
+            >
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottomNavigationView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
-                app:menu="@menu/bottom_menu"/>
+                app:menu="@menu/bottom_menu"
+                app:itemIconTint="@color/bottom_nav_selector"
+                app:itemTextColor="@color/bottom_nav_selector"
+                app:itemBackground="@drawable/bottom_nav_item_background"
+                app:labelVisibilityMode="labeled"/>
         </com.google.android.material.bottomappbar.BottomAppBar>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnAgregarCita"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/azulOscuro"
+            android:backgroundTint="@color/azul"
             android:contentDescription="@string/btm_menu_agregar_cita"
-            android:src="@drawable/add"
+            android:src="@drawable/agregar_cita"
             app:layout_anchor="@id/bottomAppBar"
-            app:maxImageSize="40dp"
+            app:maxImageSize="30dp"
+            android:tooltipText="Agregar cita"
             app:tint="@color/white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -68,4 +75,3 @@
         app:menu="@menu/drawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
-

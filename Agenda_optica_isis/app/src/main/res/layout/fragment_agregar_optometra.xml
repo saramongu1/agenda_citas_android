@@ -165,14 +165,15 @@
                 android:hint="Fecha de nacimiento" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCrearOptometra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Crear Optómetra"
-            android:background="@drawable/custom_edittext"
+            android:textAllCaps="false"
             android:layout_gravity="center"
-            android:layout_margin="20dp"/>
+
+            android:layout_margin="10dp"/>
 
     </LinearLayout>
 

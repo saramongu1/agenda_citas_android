@@ -11,7 +11,15 @@
     <color name="VerdePastel">#81C784</color>       <!-- verde suave para elementos destacados -->
     <color name="AzulClaroPastel">#A7D7E8FF</color>    <!-- azul claro moderno para iconos o texto -->
     <color name="morado">#D88CEC</color> <!-- morado -->
-    <color name="AzulGrisaseo">#AAC1FC</color> <!-- morado -->
+    <color name="AzulGrisaseo">#8FB7E8</color> <!-- morado -->
+    <color name="VerdeClaro">#e0fce9</color> <!-- morado -->
+
+    <color name="fondo">#DDDDDD</color> <!-- morado -->
+    <color name="verdeeeee">#49c777</color> <!-- morado -->
+    <color name="estado_no_asistio_claro">#FFD8AF</color> <!-- naranja -->
+    <color name="azulOscuroGrisaseo">#364458</color> <!-- morado -->
+
+    <color name="grisasul">#C8D0E0</color> <!-- morado -->
 
 
 
@@ -26,5 +34,7 @@
     <color name="azulOscuro">#314083</color>
     <color name="blanco">#FFFFFF</color>
     <color name="blancoTransparente">#E0FFFFFF</color>
+
+
 
 </resources>
