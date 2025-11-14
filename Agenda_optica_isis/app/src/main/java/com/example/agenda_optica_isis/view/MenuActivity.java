@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -34,7 +35,11 @@ public class MenuActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            setSupportActionBar(binding.toolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            binding.toolbar.setTitle("TuAgenda");
+            binding.toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+            binding.toolbar.setNavigationIconTint(ContextCompat.getColor(this, R.color.white));
         }
 
         toggle = new ActionBarDrawerToggle(
@@ -94,15 +99,12 @@ public class MenuActivity extends AppCompatActivity {
         TextView tvNombreUsuario = headerView.findViewById(R.id.tvNombreUsuario);
         TextView tvCorreoUsuario = headerView.findViewById(R.id.tvCorreoUsuario);
 
-        // Obtener el usuario actual del sistema
         Usuario usuarioActual = sistemaReservas.getUsuarioActual();
 
         if (usuarioActual != null) {
-            // Usar getNombre() y getCorreo_electronico() de la clase Usuario
             tvNombreUsuario.setText(usuarioActual.getNombre());
             tvCorreoUsuario.setText(usuarioActual.getCorreo_electronico());
         } else {
-            // Si no hay usuario, mostrar valores por defecto
             tvNombreUsuario.setText("Usuario actual");
             tvCorreoUsuario.setText("usuario@ejemplo.com");
         }

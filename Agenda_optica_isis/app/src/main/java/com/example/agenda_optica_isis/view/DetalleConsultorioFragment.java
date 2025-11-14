@@ -7,16 +7,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.presenter.PresenterDetalleConsultorioFragment;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.Map;
 
 public class DetalleConsultorioFragment extends Fragment {
 
@@ -140,5 +146,77 @@ public class DetalleConsultorioFragment extends Fragment {
 
     public void iniciarPresenter(){
         presenter = new PresenterDetalleConsultorioFragment(this, idConsultorio);
+    }
+
+    public void irACambiarConsultorio(String idConsultorio) {
+        if (getActivity() instanceof MenuActivity) {
+
+            CambiarConsultorioCitaFragment fragment = new CambiarConsultorioCitaFragment();
+
+            Bundle args = new Bundle();
+            args.putString("consultorio_actual", idConsultorio);
+
+            fragment.setArguments(args);
+
+            ((MenuActivity) getActivity()).replaceFragment(fragment);
+        }
+    }
+
+    public void mostrarDialogoPersonalizado(String titulo, String mensaje, Map<String, Runnable> opciones) {
+        if (getContext() == null) return;
+
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View dialogView = inflater.inflate(R.layout.dialog_personalizado, null);
+
+        TextView tvTitulo = dialogView.findViewById(R.id.tvTituloDialogo);
+        TextView tvMensaje = dialogView.findViewById(R.id.tvMensajeDialogo);
+        LinearLayout layoutBotones = dialogView.findViewById(R.id.layoutBotonesDialogo);
+
+        tvTitulo.setText(titulo);
+        tvMensaje.setText(mensaje);
+
+        // Creamos la instancia del diálogo aquí para poder cerrarla desde los botones.
+        AlertDialog dialog = new MaterialAlertDialogBuilder(getContext(), R.style.CustomAlertDialogTheme)
+                .setView(dialogView)
+                .create();
+
+        // 🔹 Crear botones dinámicamente a partir de las opciones pasadas
+        for (Map.Entry<String, Runnable> entry : opciones.entrySet()) {
+            MaterialButton boton = new MaterialButton(getContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle);
+            boton.setText(entry.getKey());
+            boton.setTextColor(getResources().getColor(R.color.azulOscuro));
+            boton.setStrokeColor(android.content.res.ColorStateList.valueOf(getResources().getColor(R.color.azulOscuro)));
+            boton.setStrokeWidth(3);
+            boton.setCornerRadius(20);
+            boton.setAllCaps(false);
+            boton.setPadding(0, 16, 0, 16);
+            boton.setTextSize(16);
+
+            boton.setOnClickListener(v -> {
+                entry.getValue().run();
+                dialog.dismiss(); // Cierra el diálogo después de ejecutar la acción
+            });
+
+            layoutBotones.addView(boton);
+        }
+
+        // 🔹 Añadir el botón "Cancelar" por defecto
+        MaterialButton botonCancelar = new MaterialButton(getContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle);
+        botonCancelar.setText("Cancelar");
+        botonCancelar.setTextColor(getResources().getColor(R.color.azulOscuro));
+        botonCancelar.setStrokeColor(android.content.res.ColorStateList.valueOf(getResources().getColor(R.color.azulOscuro)));
+        botonCancelar.setStrokeWidth(3);
+        botonCancelar.setCornerRadius(20);
+        botonCancelar.setAllCaps(false);
+        botonCancelar.setPadding(0, 16, 0, 16);
+        botonCancelar.setTextSize(16);
+
+        botonCancelar.setOnClickListener(v -> {
+            dialog.dismiss(); // Simplemente cierra el diálogo
+        });
+
+        layoutBotones.addView(botonCancelar);
+
+        dialog.show();
     }
 }

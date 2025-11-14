@@ -328,6 +328,56 @@ public class SistemaReservas {
         return optometras.remove(numero_documento) != null;
     }
 
+    public ArrayList<Integer> citasConsultorio(String id_consultorio){
+        ArrayList<Integer>idsCitas = new ArrayList<>();
+
+        for(Cita cita:citas.values()){
+            if(cita.getId_consultorio().equalsIgnoreCase(id_consultorio)){
+                idsCitas.add(cita.getId());
+            }
+        }
+        return idsCitas;
+    }
+
+    public void eliminarCitasConsultorio(String id_consultorio){
+        ArrayList<Integer>idsCitas = citasConsultorio(id_consultorio);
+        for (Integer idCita : idsCitas) {
+            citas.remove(idCita);
+        }
+    }
+
+    public void cambiarCitasConsultorio(String anterior_consultorio, String nuevo_consultorio){
+        ArrayList<Integer>idsCitas = citasConsultorio(anterior_consultorio);
+        for (Integer idCita : idsCitas) {
+            citas.get(idCita).setId_consultorio(nuevo_consultorio);
+        }
+    }
+
+    public ArrayList<Integer> citasOptometra(String numero_documento){
+        ArrayList<Integer>idsCitas = new ArrayList<>();
+
+        for(Cita cita:citas.values()){
+            if(cita.getDocumento_optometra().equalsIgnoreCase(numero_documento)){
+                idsCitas.add(cita.getId());
+            }
+        }
+        return idsCitas;
+    }
+
+    public void eliminarCitasOptometra(String numero_documento){
+        ArrayList<Integer>idsCitas = citasOptometra(numero_documento);
+        for (Integer idCita : idsCitas) {
+            citas.remove(idCita);
+        }
+    }
+
+    public void cambiarCitasOptometra(String anterior_optometra, String nuevo_optometra){
+        ArrayList<Integer>idsCitas = citasOptometra(anterior_optometra);
+        for (Integer idCita : idsCitas) {
+            citas.get(idCita).setDocumento_optometra(nuevo_optometra);
+        }
+    }
+
     // ================================
     // CRUD PACIENTES
     // ================================
@@ -424,31 +474,6 @@ public class SistemaReservas {
         return true;
     }
 
-
-
-
-    public Cita leerCita(int id) {
-        return citas.get(id);
-    }
-
-    public boolean actualizaCita(int id, String docOptometra, String docPaciente, String idConsultorio,
-                                  int anio, int mes, int dia, int hora, int minutos) {
-        Cita c = citas.get(id);
-        if (c == null) return false;
-        // Validación simple: no permitir actualizar a una fecha pasada
-        LocalDate nuevaFecha = LocalDate.of(anio, mes, dia);
-        LocalTime nuevaHora = LocalTime.of(hora, minutos);
-        if (nuevaFecha.isBefore(LocalDate.now()) ||
-                (nuevaFecha.isEqual(LocalDate.now()) && nuevaHora.isBefore(LocalTime.now()))) {
-            return false;
-        }
-        c.setDocumento_optometra(docOptometra);
-        c.setDocumento_paciente(docPaciente);
-        c.setId_consultorio(idConsultorio);
-        c.setFecha(nuevaFecha);
-        c.setHora(nuevaHora);
-        return true;
-    }
 
     public void actualizarCita(int id_cita, int anio, int mes, int dia,int hora, int minutos,
                                String documento_optometra, String id_consultorio ){

@@ -6,9 +6,15 @@ import com.example.agenda_optica_isis.model.Optometra;
 import com.example.agenda_optica_isis.model.SistemaReservas;
 import com.example.agenda_optica_isis.view.DetalleOptometraFragment;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class PresenterDetalleOptometraFragment {
     private DetalleOptometraFragment view;
     private SistemaReservas sistemaReservas;
+    private String documento_optometra;
 
     public PresenterDetalleOptometraFragment(DetalleOptometraFragment view) {
         this.view = view;
@@ -86,13 +92,50 @@ public class PresenterDetalleOptometraFragment {
     }
 
     public void eliminarOptometra(){
-        boolean seElimino = sistemaReservas.eliminarOptometra(view.getEtDocumentoOptometra());
+        try{
+            documento_optometra = view.getEtDocumentoOptometra();
+            ArrayList<Integer> citasOptometra = sistemaReservas.citasOptometra(documento_optometra);
+
+            if(!citasOptometra.isEmpty()){
+                view.mostrarDialogoPersonalizado("Eliminar optometra",
+                        "El optometra tiene "+citasOptometra.size()+ " citas asignadas, desea: ",
+                        retornarOpciones());
+            }
+
+
+        } catch (Exception e) {
+            view.mostrarMensaje(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public Map<String, Runnable> retornarOpciones(){
+        Map<String, Runnable> opciones = new LinkedHashMap<>();
+
+        opciones.put("Eliminar citas", () -> {
+            eliminarCitasOptometra();
+        });
+        opciones.put("Cambiar optometra y eliminar", () -> {
+            cambiarOptometraCitas();
+        });
+
+
+        return opciones;
+    }
+
+    public void eliminarCitasOptometra(){
+        sistemaReservas.eliminarCitasOptometra(documento_optometra);
+        boolean seElimino = sistemaReservas.eliminarOptometra(documento_optometra);
         if(seElimino){
             view.mostrarMensaje("Se eliminó el optometra exitosamente");
             view.irAOptometras();
         }else{
             view.mostrarMensaje("No se pudo eliminar el optometra");
         }
+    }
+
+    public void cambiarOptometraCitas(){
+        view.irACambiarOptometra(view.getEtNombreOptometra(), view.getEtDocumentoOptometra());
     }
 
 

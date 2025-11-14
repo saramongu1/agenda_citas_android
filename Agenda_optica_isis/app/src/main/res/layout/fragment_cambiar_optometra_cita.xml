@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.CambiarOptometraCitaFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Cambiar optometra asignado a citas"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:layout_margin="15dp"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Optómetra a eliminar:"
+            android:layout_marginStart="15dp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_dialog"
+        android:layout_margin="15dp"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tvNombreOptometraEliminar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Optómetra a eliminar"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            tools:ignore="TextSizeCheck" />
+
+
+    </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar optometra a cambiar"
+            android:layout_marginStart="15dp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/custom_spinner_border"
+            android:layout_margin="15dp"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Optómetra asignado"
+                android:textColor="#000000"
+                android:textSize="13dp"
+                tools:ignore="TextSizeCheck" />
+
+            <Spinner
+                android:id="@+id/spinnerOptometraCambiar"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@android:color/transparent"
+                android:padding="4dp"
+                android:spinnerMode="dropdown"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAsignarOptometraCambiarCitas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/azul"
+            android:text="Asignar optometra"
+            />
+
+
+    </LinearLayout>
+
+</FrameLayout>

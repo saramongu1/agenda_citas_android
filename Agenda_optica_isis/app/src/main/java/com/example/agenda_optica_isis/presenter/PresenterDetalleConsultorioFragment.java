@@ -6,11 +6,15 @@ import com.example.agenda_optica_isis.model.Consultorio;
 import com.example.agenda_optica_isis.model.SistemaReservas;
 import com.example.agenda_optica_isis.view.DetalleConsultorioFragment;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class PresenterDetalleConsultorioFragment {
 
-    private final DetalleConsultorioFragment view;
-    private final SistemaReservas sistemaReservas;
-    private final String idConsultorio;
+    private  DetalleConsultorioFragment view;
+    private  SistemaReservas sistemaReservas;
+    private  String idConsultorio;
 
     public PresenterDetalleConsultorioFragment(DetalleConsultorioFragment view, String idConsultorio) {
         this.view = view;
@@ -78,27 +82,13 @@ public class PresenterDetalleConsultorioFragment {
 
     public void eliminarConsultorio() {
         try {
-            // Verificar si el consultorio existe
-            Consultorio consultorio = buscarConsultorioPorId(idConsultorio);
-            if (consultorio == null) {
-                view.mostrarMensaje("Consultorio no encontrado");
-                view.irAConsultorios();
-                return;
-            }
+           idConsultorio = view.getIdConsultorio();
+            ArrayList<Integer> citasConsultorio = sistemaReservas.citasConsultorio(idConsultorio);
 
-            // Verificar si el consultorio tiene citas programadas
-            if (tieneCitasProgramadas(idConsultorio)) {
-                view.mostrarMensaje("No se puede eliminar el consultorio porque tiene citas programadas");
-                return;
-            }
-
-            // Eliminar consultorio
-            boolean resultado = sistemaReservas.eliminarConsultorio(idConsultorio);
-            if (resultado) {
-                view.mostrarMensaje("Consultorio eliminado exitosamente");
-                view.irAConsultorios();
-            } else {
-                view.mostrarMensaje("Error al eliminar consultorio");
+            if (!citasConsultorio.isEmpty()) {
+                view.mostrarDialogoPersonalizado("Eliminar consultorio",
+                        "El consultorio tiene " + citasConsultorio.size() + " citas asignadas, desea:",
+                        retornarOpciones());
             }
 
         } catch (Exception e) {
@@ -107,18 +97,41 @@ public class PresenterDetalleConsultorioFragment {
         }
     }
 
+    public Map<String, Runnable> retornarOpciones(){
+        Map<String, Runnable> opciones = new LinkedHashMap<>();
+
+        opciones.put("Eliminar citas", () -> {
+            eliminarCitasConsultorio();
+        });
+        opciones.put("Cambiar consultorio asignado a las citas y eliminar", () -> {
+            cambiarConsultorioCitas();
+        });
+
+
+        return opciones;
+    }
+
+    public void eliminarCitasConsultorio(){
+        sistemaReservas.eliminarCitasConsultorio(idConsultorio);
+        boolean seElimino = sistemaReservas.eliminarConsultorio(idConsultorio);
+        if(seElimino){
+            view.mostrarMensaje("Se eliminó el consultorio exitosamente");
+            view.irAConsultorios();
+        }else{
+            view.mostrarMensaje("No se pudo eliminar el consultorio");
+        }
+    }
+
+    public void cambiarConsultorioCitas(){
+        view.irACambiarConsultorio(view.getIdConsultorio());
+    }
+
     private Consultorio buscarConsultorioPorId(String id) {
         return sistemaReservas.leerConsultorio(id);
     }
 
-    private boolean tieneCitasProgramadas(String idConsultorio) {
-        // Aquí necesitarías un método en SistemaReservas para verificar si el consultorio tiene citas
-        // Por ahora, asumimos que no hay citas para permitir la eliminación
-        // Puedes implementar esta lógica más adelante
-        return false;
-    }
 
-    // Método auxiliar para validaciones específicas de consultorios
+
     public void validarDatosConsultorio(String direccion, String ciudad) throws ValidacionException {
         ValidarDatos.validarTexto("dirección", direccion);
         ValidarDatos.validarTexto("ciudad", ciudad);

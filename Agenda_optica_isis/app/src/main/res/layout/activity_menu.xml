@@ -17,10 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/azulOscuroGrisaseo"
+            android:title="TuAgenda"
             android:titleTextColor="@color/grisNormal"
-            android:title=""
-            app:navigationIcon="@drawable/menu"
-            app:navigationIconTint="@color/grisNormal" />
+            app:navigationIcon="@drawable/menu" />
+
 
         <FrameLayout
             android:id="@+id/frame_layout"
