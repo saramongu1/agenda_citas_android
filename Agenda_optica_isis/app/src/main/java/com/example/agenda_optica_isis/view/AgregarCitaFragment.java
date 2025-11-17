@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.presenter.PresenterAgregarCitaFragment;
+import com.example.agenda_optica_isis.utils.ModernSnackBar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -357,5 +358,9 @@ public class AgregarCitaFragment extends Fragment {
     private void cancelarProcesoCita(){
         irACalendario();
         limpiarCamposCita();
+    }
+
+    public void mostrarMensajeSnackBar(String mensaje, int tipoMensaje) {
+        ModernSnackBar.mostrar(getView(), mensaje, tipoMensaje);
     }
 }

@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.AgregarOptometraFragment">
+    tools:context=".view.AgregarOptometraFragment"
+    android:padding="20dp"
+    android:layout_marginBottom="70dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crear Optómetra"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_margin="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"/>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
         android:layout_marginBottom="60dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/custom_background">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Agregar Optómetra"
-            android:textColor="#000000"
-            android:textSize="30dp"
+            android:text="Datos del optómetra"
+            android:textSize="18dp"
             android:textStyle="bold"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:textColor="#000000" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
@@ -165,16 +185,20 @@
                 android:hint="Fecha de nacimiento" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
+
+    </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCrearOptometra"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Crear Optómetra"
             android:textAllCaps="false"
             android:layout_gravity="center"
-
+            android:backgroundTint="@color/azul"
             android:layout_margin="10dp"/>
 
     </LinearLayout>
 
-</FrameLayout>
+</ScrollView>

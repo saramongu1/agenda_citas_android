@@ -7,7 +7,8 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:backgroundTint="@color/AzulClaroPastel">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -67,7 +67,6 @@ public class EmailService {
                 "<p>Se ha creado tu cuenta como optómetra en nuestro sistema.</p>" +
                 "<div style='background: #f8f9fa; padding: 15px; border-left: 4px solid #4CAF50; margin: 15px 0;'>" +
                 "<h3>Tus credenciales de acceso:</h3>" +
-                "<p><strong>Usuario:</strong> " + generarUsuario(nombreOptometra) + "</p>" +
                 "<p><strong>Contraseña:</strong> <span style='color: #d32f2f; font-weight: bold;'>" + contrasena + "</span></p>" +
                 "</div>" +
                 "<p><strong>Importante:</strong> Por seguridad, cambia tu contraseña después del primer inicio de sesión.</p>" +

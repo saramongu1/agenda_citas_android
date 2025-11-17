@@ -16,12 +16,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:text="Información de la cita"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="30dp"
-            android:textStyle="bold" />
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_margin="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"/>
 
 
         <LinearLayout
@@ -196,7 +196,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditarCita"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
@@ -215,7 +215,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGuardarCambiosCita"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
@@ -232,9 +232,10 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelarCita"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginBottom="20dp"

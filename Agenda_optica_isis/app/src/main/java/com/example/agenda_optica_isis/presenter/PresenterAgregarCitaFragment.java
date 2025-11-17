@@ -3,6 +3,7 @@ package com.example.agenda_optica_isis.presenter;
 import com.example.agenda_optica_isis.exceptions.ValidacionException;
 import com.example.agenda_optica_isis.exceptions.ValidarDatos;
 import com.example.agenda_optica_isis.model.SistemaReservas;
+import com.example.agenda_optica_isis.utils.ModernSnackBar;
 import com.example.agenda_optica_isis.view.AgregarCitaFragment;
 
 public class PresenterAgregarCitaFragment {
@@ -45,25 +46,25 @@ public class PresenterAgregarCitaFragment {
             boolean optometraLibre = sistemaReservas.comprobarHorarioOptometra(-1,documento_optometra,anio,mes,dia,hora,minutos);
 
             if(!consultorioLibre){
-                view.mostrarMensaje("El consultorio no está disponible en esa hora");
+                view.mostrarMensajeSnackBar("El consultorio no está disponible en esa hora", ModernSnackBar.ERROR);
             }if (!optometraLibre){
-                view.mostrarMensaje("Optómetra no disponible en esa hora");
+                view.mostrarMensajeSnackBar("Optómetra no disponible en esa hora", ModernSnackBar.ERROR);
             }if(!pacienteSeleccionado){
-                view.mostrarMensaje("Seleccione un paciente");
+                view.mostrarMensajeSnackBar("Seleccione un paciente", ModernSnackBar.INFO);
             }
 
             if(consultorioLibre && optometraLibre && pacienteSeleccionado){
                 sistemaReservas.crearCita(documento_optometra,documento_paciente,consultorio,anio,mes,dia,hora,minutos);
-                view.mostrarMensaje("Cita agendada correctamente");
+                view.mostrarMensajeSnackBar("Cita agendada correctamente", ModernSnackBar.SUCCESS);
                 view.irACalendario();
             }else{
-                view.mostrarMensaje("No se pudo agendar la cita");
+                view.mostrarMensajeSnackBar("No se pudo agendar la cita",ModernSnackBar.ERROR);
             }
 
         } catch (ValidacionException e) {
-            view.mostrarMensaje(e.getMessage());
+            view.mostrarMensajeSnackBar(e.getMessage(), ModernSnackBar.ERROR);
         } catch (Exception e) {
-            view.mostrarMensaje(e.getMessage());
+            view.mostrarMensajeSnackBar(e.getMessage(), ModernSnackBar.ERROR);
         }
     }
 

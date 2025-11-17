@@ -62,6 +62,7 @@
             app:layout_anchor="@id/bottomAppBar"
             app:maxImageSize="30dp"
             android:tooltipText="Agregar cita"
+            app:behavior_autoHide="false"
             app:tint="@color/white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

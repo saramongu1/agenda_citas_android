@@ -51,5 +51,14 @@
         <item>Ciudad</item>
     </string-array>
 
+    <string name="forgot_password_wait">Espere %d segundos</string>
+    <string name="title_activity_recuperar_password">RecuperarPasswordActivity</string>
+    <string name="recuperar_password">Recuperar Contraseña</string>
+    <string name="enviar_codigo">Enviar código de verificación</string>
+    <string name="reenviar_codigo">Reenviar código</string>
+    <string name="verificar_codigo">Verificar código</string>
+    <string name="cambiar_password">Cambiar contraseña</string>
+    <string name="volver_login">← Volver al inicio de sesión</string>
+
 
 </resources>

@@ -12,15 +12,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:text="Información del Consultorio"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="30dp"
-            android:textStyle="bold" />
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_margin="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,7 +83,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditarConsultorio"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
@@ -114,7 +115,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEliminarConsultorio"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"

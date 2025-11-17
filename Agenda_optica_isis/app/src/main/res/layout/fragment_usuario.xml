@@ -9,18 +9,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="Mi Perfil"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="30dp"
+            android:layout_margin="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"
+            android:text="Mi perfil"
+            android:textAlignment="viewStart"
+            android:textSize="24sp"
             android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -189,7 +195,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditarUsuario"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
@@ -205,7 +211,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGuardarCambiosUsuario"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
@@ -222,7 +228,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCambiarContrasenia"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="15dp"
@@ -237,6 +243,8 @@
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
+
+    </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

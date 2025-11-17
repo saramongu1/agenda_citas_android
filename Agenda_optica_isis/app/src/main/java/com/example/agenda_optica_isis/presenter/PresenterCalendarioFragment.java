@@ -20,6 +20,7 @@ public class PresenterCalendarioFragment {
     private LocalDate fechaSeleccionada;
     private String tipoVista; // "DIA" o "SEMANA"
 
+
     public PresenterCalendarioFragment(CalendarioFragment view) {
         this.view = view;
         this.sistemaReservas = SistemaReservas.getInstance();
