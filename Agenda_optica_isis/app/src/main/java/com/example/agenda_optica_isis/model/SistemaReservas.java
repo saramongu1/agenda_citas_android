@@ -102,6 +102,15 @@ public class SistemaReservas {
         return listaPacientes;
     }
 
+    public Paciente buscarPacientePorDocumentono(String documento) {
+        for (Paciente paciente : pacientes.values()) {
+            if (paciente.getNumero_documento().equals(documento)) {
+                return paciente;
+            }
+        }
+        return null;
+    }
+
     public HashMap<String, String> buscarPacientePorNombre(String nombre){
         HashMap<String, String> listaPacientes = new HashMap<>();
         for (Paciente paciente : pacientes.values()) {

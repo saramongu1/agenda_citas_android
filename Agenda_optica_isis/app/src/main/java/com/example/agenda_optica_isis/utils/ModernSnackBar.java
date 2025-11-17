@@ -3,13 +3,14 @@ package com.example.agenda_optica_isis.utils;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
 import com.example.agenda_optica_isis.R;
 import com.google.android.material.snackbar.Snackbar;
+
 public class ModernSnackBar {
 
     public static final int INFO = 1;
@@ -19,10 +20,17 @@ public class ModernSnackBar {
     public static void mostrar(View parentView, String mensaje, int tipoMensaje) {
         Snackbar snackbar = Snackbar.make(parentView, "", Snackbar.LENGTH_LONG);
 
-        snackbar.setAnchorView(R.id.bottomAppBar);
+        // ELIMINA esta línea que causa el error:
+        // snackbar.setAnchorView(R.id.bottomAppBar);
 
         View snackbarView = snackbar.getView();
         Context context = parentView.getContext();
+
+        // Configurar el snackbar para que aparezca en la parte superior
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) snackbarView.getLayoutParams();
+        params.setMargins(24, 24, 24, 24);
+        snackbarView.setLayoutParams(params);
+
         int fondoDrawableRes;
         int iconoRes;
 

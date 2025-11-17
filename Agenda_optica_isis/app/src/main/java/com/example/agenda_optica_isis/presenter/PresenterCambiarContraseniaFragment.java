@@ -25,7 +25,7 @@ public class PresenterCambiarContraseniaFragment {
             ValidarDatos.validarTexto("contraseña actual", contraseniaActual);
             ValidarDatos.validarTexto("nueva contraseña", nuevaContrasenia);
             ValidarDatos.validarTexto("confirmar contraseña", confirmarContrasenia);
-            ValidarDatos.validarLongitudTexto("nueva contraseña", nuevaContrasenia, 6, 20);
+            ValidarDatos.validarLongitud("La nueva contraseña", nuevaContrasenia, 6); // Cambié a validarLongitud
 
             // Verificar que las nuevas contraseñas coincidan
             if (!nuevaContrasenia.equals(confirmarContrasenia)) {
@@ -48,17 +48,20 @@ public class PresenterCambiarContraseniaFragment {
                 throw new ValidacionException("La nueva contraseña debe ser diferente a la actual");
             }
 
-            // Cambiar contraseña
-            boolean seCambio = sistemaReservas.cambiarContraseniaUsuario(
-                    usuarioActual.getNumero_documento(), nuevaContrasenia
+            // Cambiar contraseña - CORREGIDO: usar el método correcto
+            boolean seCambio = sistemaReservas.actualizarContrasena(
+                    usuarioActual.getCorreo_electronico(), nuevaContrasenia
             );
 
             if (seCambio) {
                 view.mostrarMensaje("Contraseña cambiada exitosamente");
                 view.limpiarCampos();
-                view.irAUsuarioFragment();
+                // Pequeño delay antes de regresar para que se vea el mensaje
+                new android.os.Handler().postDelayed(() -> {
+                    view.irAUsuarioFragment();
+                }, 1000);
             } else {
-                view.mostrarMensaje("Error al cambiar la contraseña");
+                throw new Exception("Error al cambiar la contraseña en el sistema");
             }
 
         } catch (ValidacionException validacionException) {

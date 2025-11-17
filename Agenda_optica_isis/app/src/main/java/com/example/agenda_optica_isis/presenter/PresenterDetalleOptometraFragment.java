@@ -100,7 +100,12 @@ public class PresenterDetalleOptometraFragment {
                 view.mostrarDialogoPersonalizado("Eliminar optometra",
                         "El optometra tiene "+citasOptometra.size()+ " citas asignadas, desea: ",
                         retornarOpciones());
+            }else{
+                view.mostrarDialogoPersonalizado("Eliminar optometra",
+                        "¿Está seguro de eliminar el/la optómetra?",
+                        retornarOpcionesSinCitas());
             }
+
 
 
         } catch (Exception e) {
@@ -118,9 +123,27 @@ public class PresenterDetalleOptometraFragment {
         opciones.put("Cambiar optometra y eliminar", () -> {
             cambiarOptometraCitas();
         });
+        return opciones;
+    }
 
+    public Map<String, Runnable> retornarOpcionesSinCitas(){
+        Map<String, Runnable> opciones = new LinkedHashMap<>();
+
+        opciones.put("Eliminar optómetra", () -> {
+            eliminarOptometraSinCitas();
+        });
 
         return opciones;
+    }
+
+    public void eliminarOptometraSinCitas(){
+        boolean seElimino = sistemaReservas.eliminarOptometra(documento_optometra);
+        if(seElimino){
+            view.mostrarMensaje("Se eliminó el optometra exitosamente");
+            view.irAOptometras();
+        }else{
+            view.mostrarMensaje("No se pudo eliminar el optometra");
+        }
     }
 
     public void eliminarCitasOptometra(){

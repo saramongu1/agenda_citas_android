@@ -33,7 +33,7 @@ public class PresenterAgregarPacienteFragment {
             ValidarDatos.validarTexto("tipo de documento", tipo_documento);
             ValidarDatos.validarTexto("fecha de nacimiento",fecha_nacimiento_paciente);
             ValidarDatos.validarTexto("Numero de celular", numero_celular_paciente);
-            ValidarDatos.validarLongitud("documento", documento_paciente,10);
+            ValidarDatos.validarLongitud("documento", documento_paciente,7);
             ValidarDatos.validarLongitud("numero de celular", numero_celular_paciente, 10);
             ValidarDatos.validarLongitud("nombre", nombre_paciente, 6);
 

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.model.EstadoCita;
@@ -37,6 +38,7 @@ public class CalendarioFragment extends Fragment {
     private TextView tvFechaSeleccionada;
     private Spinner spinnerVista;
 
+
     private static final int HORA_INICIO = 6;
     private static final int HORA_FIN = 19;
     private static final int ALTURA_BLOQUE_15MIN_DP = 60;
@@ -52,6 +54,8 @@ public class CalendarioFragment extends Fragment {
         configurarSpinner();
         configurarSelectorFecha();
         actualizarVista();
+
+
         return view;
     }
 
@@ -91,6 +95,8 @@ public class CalendarioFragment extends Fragment {
         tvFechaSeleccionada.setOnClickListener(v -> mostrarDatePicker());
         actualizarFechaDisplay();
     }
+
+
 
     private void mostrarDatePicker() {
         LocalDate fechaActual = presenter.getFechaSeleccionada();

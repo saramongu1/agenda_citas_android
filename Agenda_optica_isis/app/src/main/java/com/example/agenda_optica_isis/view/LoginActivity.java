@@ -2,23 +2,27 @@ package com.example.agenda_optica_isis.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.presenter.PresenterLoginActivity;
+import com.example.agenda_optica_isis.utils.ModernSnackBar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText etMail;
-    private EditText etPassword;
+    private TextInputLayout layoutEmail;
+    private TextInputLayout layoutPassword;
     private MaterialButton btnLogin;
     private TextView tvForgotPassword;
     private PresenterLoginActivity presenter;
+    private CountDownTimer countDownTimer;
+    private boolean isForgotPasswordEnabled = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,29 +33,83 @@ public class LoginActivity extends AppCompatActivity {
         tvForgotPassword.setOnClickListener(v -> recuperarContrasena());
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+    }
+
     public void enlazarVistas(){
-        etMail = findViewById(R.id.etMail);
-        etPassword = findViewById(R.id.etPassword);
+        layoutEmail = findViewById(R.id.layoutEmail);
+        layoutPassword = findViewById(R.id.layoutPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
     }
 
     public void iniciarSesion(){
+        layoutEmail.setError(null);
+        layoutPassword.setError(null);
+
+        // Validaciones básicas
+        if (getMailText().isEmpty()) {
+            layoutEmail.setError("Campo obligatorio");
+            return;
+        }
+
+        if (getPasswordText().isEmpty()) {
+            layoutPassword.setError("Campo obligatorio");
+            return;
+        }
+
         presenter = new PresenterLoginActivity(this);
         presenter.iniciarSesion();
     }
 
     public void recuperarContrasena() {
-        presenter = new PresenterLoginActivity(this);
-        presenter.recuperarContrasena();
+        if (!isForgotPasswordEnabled) {
+            return;
+        }
+
+        // Abrir activity de recuperación de contraseña
+        Intent intent = new Intent(LoginActivity.this, RecuperarPasswordActivity.class);
+        startActivity(intent);
+
+        // Deshabilitar temporalmente (opcional, ya que cambiamos de activity)
+        // disableForgotPasswordFor30Seconds();
+    }
+
+    private void disableForgotPasswordFor30Seconds() {
+        isForgotPasswordEnabled = false;
+        tvForgotPassword.setEnabled(false);
+        tvForgotPassword.setAlpha(0.5f);
+
+        countDownTimer = new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                long secondsRemaining = millisUntilFinished / 1000;
+                tvForgotPassword.setText(getString(R.string.forgot_password_wait, secondsRemaining));
+            }
+
+            public void onFinish() {
+                enableForgotPassword();
+            }
+        }.start();
+    }
+
+    private void enableForgotPassword() {
+        isForgotPasswordEnabled = true;
+        tvForgotPassword.setEnabled(true);
+        tvForgotPassword.setAlpha(1.0f);
+        tvForgotPassword.setText(R.string.forgot_password);
     }
 
     public String getMailText(){
-        return etMail.getText().toString().trim();
+        return layoutEmail.getEditText().getText().toString().trim();
     }
 
     public String getPasswordText(){
-        return etPassword.getText().toString().trim();
+        return layoutPassword.getEditText().getText().toString().trim();
     }
 
     public void irAMenu(){
@@ -60,11 +118,14 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void mostrarMensaje(String mensaje) {
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+    public void mostrarMensaje(String mensaje, int tipoMensaje) {
+        View rootView = findViewById(android.R.id.content);
+        if (rootView != null) {
+            ModernSnackBar.mostrar(rootView, mensaje, tipoMensaje);
+        }
     }
 
     public void limpiarCampoContrasena() {
-        etPassword.setText("");
+        layoutPassword.getEditText().setText("");
     }
 }

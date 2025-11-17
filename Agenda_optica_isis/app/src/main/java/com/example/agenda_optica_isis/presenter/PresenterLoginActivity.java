@@ -5,6 +5,7 @@ import com.example.agenda_optica_isis.exceptions.ValidarDatos;
 import com.example.agenda_optica_isis.model.EmailService;
 import com.example.agenda_optica_isis.model.SistemaReservas;
 import com.example.agenda_optica_isis.model.Usuario;
+import com.example.agenda_optica_isis.utils.ModernSnackBar;
 import com.example.agenda_optica_isis.view.LoginActivity;
 
 public class PresenterLoginActivity {
@@ -35,65 +36,13 @@ public class PresenterLoginActivity {
                 sistemaReservas.setUsuarioActual(usuario);
                 view.irAMenu();
             } else {
-                view.mostrarMensaje("Credenciales incorrectas");
+                view.mostrarMensaje("Credenciales incorrectas", ModernSnackBar.ERROR);
             }
 
         } catch (ValidacionException e) {
-            view.mostrarMensaje(e.getMessage());
+            view.mostrarMensaje(e.getMessage(), ModernSnackBar.ERROR);
         } catch (Exception e) {
-            view.mostrarMensaje("Error inesperado: " + e.getMessage());
-        }
-    }
-
-    public void recuperarContrasena() {
-        try {
-            String mail = view.getMailText();
-
-            // Validar que el correo no esté vacío
-            ValidarDatos.validarTexto("correo electrónico", mail);
-            ValidarDatos.validarCorreo(mail);
-
-            // Buscar usuario por correo
-            Usuario usuario = buscarUsuarioPorCorreo(mail);
-
-            if (usuario == null) {
-                view.mostrarMensaje("No existe un usuario con este correo electrónico");
-                return;
-            }
-
-            // Generar nueva contraseña temporal
-            String nuevaContrasena = sistemaReservas.generarContrasena();
-
-            // Actualizar contraseña en el sistema
-            boolean contrasenaActualizada = sistemaReservas.actualizarContrasena(mail, nuevaContrasena);
-
-            if (contrasenaActualizada) {
-                // Enviar correo con la nueva contraseña
-                emailService.enviarCorreoRecuperacion(mail, usuario.getNombre(), nuevaContrasena,
-                        new EmailService.EmailCallback() {
-                            @Override
-                            public void onSuccess() {
-                                view.runOnUiThread(() -> {
-                                    view.mostrarMensaje("Se ha enviado una nueva contraseña a tu correo");
-                                    view.limpiarCampoContrasena(); // Limpiar campo de contraseña
-                                });
-                            }
-
-                            @Override
-                            public void onError(String error) {
-                                view.runOnUiThread(() -> {
-                                    view.mostrarMensaje("Contraseña actualizada pero error enviando correo: " + error);
-                                });
-                            }
-                        });
-            } else {
-                view.mostrarMensaje("Error actualizando la contraseña");
-            }
-
-        } catch (ValidacionException e) {
-            view.mostrarMensaje(e.getMessage());
-        } catch (Exception e) {
-            view.mostrarMensaje("Error inesperado: " + e.getMessage());
+            view.mostrarMensaje("Error inesperado", ModernSnackBar.ERROR);
         }
     }
 

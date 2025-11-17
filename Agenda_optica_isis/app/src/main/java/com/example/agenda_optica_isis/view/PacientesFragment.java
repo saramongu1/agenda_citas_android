@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.presenter.PresenterPacientesFragment;
@@ -32,6 +33,8 @@ public class PacientesFragment extends Fragment {
     private RecyclerView recyclerPacientes;
     private PacienteAdapter adapter;
     private PresenterPacientesFragment presenter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -49,6 +52,7 @@ public class PacientesFragment extends Fragment {
 
         iBtnBuscarPaciente.setOnClickListener(v -> buscarPaciente());
         fBtnAgregarPaciente.setOnClickListener(v -> agregarPaciente());
+        swipeRefreshLayout.setOnRefreshListener(() -> {recargarFragment();});
     }
 
     public void iniciarPresenter(){
@@ -58,6 +62,14 @@ public class PacientesFragment extends Fragment {
     private void buscarPaciente() {
         presenter.cargarBusquedaPaciente();
     }
+
+    private void recargarFragment() {
+        if (getActivity() instanceof MenuActivity) {
+            ((MenuActivity) getActivity()).replaceFragment(new PacientesFragment());
+        }
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 
 
 
@@ -95,6 +107,7 @@ public class PacientesFragment extends Fragment {
         iBtnBuscarPaciente = view.findViewById(R.id.btnBuscarPaciente);
         fBtnAgregarPaciente = view.findViewById(R.id.btnAgregarPaciente);
         recyclerPacientes = view.findViewById(R.id.recyclerPacientes);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshPacientes);
         recyclerPacientes.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 

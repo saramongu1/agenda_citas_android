@@ -33,8 +33,7 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
 
     private PresenterRecuperarPassword presenter;
     private CountDownTimer countDownTimer;
-    private boolean codigoEnviado = false;
-    private boolean codigoVerificado = false;
+    private String currentEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +94,8 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
             return;
         }
 
+        currentEmail = email;
+
         // Deshabilitar botón y iniciar countdown
         btnEnviarCodigo.setEnabled(false);
         btnEnviarCodigo.setAlpha(0.5f);
@@ -102,10 +103,7 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
         // Mostrar progreso
         btnEnviarCodigo.setText("Enviando...");
 
-        // Simular envío de código (en una app real, aquí iría la llamada a tu API)
-        new android.os.Handler().postDelayed(() -> {
-            presenter.enviarCodigoVerificacion(email);
-        }, 2000);
+        presenter.enviarCodigoVerificacion(email);
     }
 
     private void verificarCodigo() {
@@ -121,7 +119,12 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
             return;
         }
 
-        presenter.verificarCodigo(codigo);
+        if (currentEmail == null) {
+            Toast.makeText(this, "Primero envía un código de verificación", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        presenter.verificarCodigo(currentEmail, codigo);
     }
 
     private void cambiarPassword() {
@@ -143,7 +146,12 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
             return;
         }
 
-        presenter.cambiarPassword(nuevaPassword);
+        if (currentEmail == null) {
+            Toast.makeText(this, "Error: email no disponible", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        presenter.cambiarPassword(currentEmail, nuevaPassword);
     }
 
     private void volverALogin() {
@@ -155,7 +163,6 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
     // Métodos públicos para que el Presenter interactúe con la vista
     public void onCodigoEnviado() {
         runOnUiThread(() -> {
-            codigoEnviado = true;
             btnEnviarCodigo.setText("Reenviar código");
             btnEnviarCodigo.setEnabled(false);
 
@@ -164,7 +171,7 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
             btnVerificarCodigo.setVisibility(android.view.View.VISIBLE);
             tvTiempoRestante.setVisibility(android.view.View.VISIBLE);
 
-            // Iniciar countdown de 30 segundos
+            // Iniciar countdown de 30 segundos para reenvío
             iniciarCountdown();
 
             Toast.makeText(this, "Código enviado a tu correo", Toast.LENGTH_LONG).show();
@@ -182,8 +189,6 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
 
     public void onCodigoVerificado() {
         runOnUiThread(() -> {
-            codigoVerificado = true;
-
             // Mostrar sección de nueva contraseña
             layoutNuevaPassword.setVisibility(android.view.View.VISIBLE);
             layoutConfirmarPassword.setVisibility(android.view.View.VISIBLE);
@@ -198,6 +203,10 @@ public class RecuperarPasswordActivity extends AppCompatActivity {
             if (countDownTimer != null) {
                 countDownTimer.cancel();
             }
+
+            // Habilitar botón de reenvío por si necesita otro código
+            btnEnviarCodigo.setEnabled(true);
+            btnEnviarCodigo.setAlpha(1.0f);
 
             Toast.makeText(this, "Código verificado correctamente", Toast.LENGTH_SHORT).show();
         });

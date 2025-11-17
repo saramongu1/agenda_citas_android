@@ -12,14 +12,19 @@ import androidx.fragment.app.Fragment;
 
 import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.presenter.PresenterCambiarContraseniaFragment;
+import com.example.agenda_optica_isis.utils.ModernSnackBar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class CambiarContraseniaFragment extends Fragment {
 
     private TextInputEditText etContraseniaActual;
     private TextInputEditText etNuevaContrasenia;
     private TextInputEditText etConfirmarContrasenia;
+    private TextInputLayout layoutContraseniaActual;
+    private TextInputLayout layoutNuevaContrasenia;
+    private TextInputLayout layoutConfirmarContrasenia;
     private MaterialButton btnCambiarContrasenia;
     private MaterialButton btnCancelarCambio;
 
@@ -36,9 +41,8 @@ public class CambiarContraseniaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         enlazarVistas(view);
         initPresenter();
-
-        btnCambiarContrasenia.setOnClickListener(v -> cambiarContrasenia());
-        btnCancelarCambio.setOnClickListener(v -> cancelarCambio());
+        configurarListeners();
+        setupUI();
     }
 
     private void initPresenter() {
@@ -49,8 +53,42 @@ public class CambiarContraseniaFragment extends Fragment {
         etContraseniaActual = view.findViewById(R.id.inputContraseniaActual);
         etNuevaContrasenia = view.findViewById(R.id.inputNuevaContrasenia);
         etConfirmarContrasenia = view.findViewById(R.id.inputConfirmarContrasenia);
+        layoutContraseniaActual = view.findViewById(R.id.layoutContraseniaActual);
+        layoutNuevaContrasenia = view.findViewById(R.id.layoutNuevaContrasenia);
+        layoutConfirmarContrasenia = view.findViewById(R.id.layoutConfirmarContrasenia);
         btnCambiarContrasenia = view.findViewById(R.id.btnCambiarContrasenia);
         btnCancelarCambio = view.findViewById(R.id.btnCancelarCambio);
+    }
+
+    private void configurarListeners() {
+        btnCambiarContrasenia.setOnClickListener(v -> cambiarContrasenia());
+        btnCancelarCambio.setOnClickListener(v -> cancelarCambio());
+
+        // Limpiar errores cuando el usuario empiece a escribir
+        etContraseniaActual.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                layoutContraseniaActual.setError(null);
+            }
+        });
+
+        etNuevaContrasenia.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                layoutNuevaContrasenia.setError(null);
+            }
+        });
+
+        etConfirmarContrasenia.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                layoutConfirmarContrasenia.setError(null);
+            }
+        });
+    }
+
+    private void setupUI() {
+        // Configurar iconos y hints
+        layoutContraseniaActual.setHint("Contraseña Actual");
+        layoutNuevaContrasenia.setHint("Nueva Contraseña");
+        layoutConfirmarContrasenia.setHint("Confirmar Nueva Contraseña");
     }
 
     public String getContraseniaActual() {
@@ -66,6 +104,32 @@ public class CambiarContraseniaFragment extends Fragment {
     }
 
     private void cambiarContrasenia() {
+        // Validaciones básicas antes de llamar al presenter
+        if (getContraseniaActual().isEmpty()) {
+            layoutContraseniaActual.setError("Ingresa tu contraseña actual");
+            return;
+        }
+
+        if (getNuevaContrasenia().isEmpty()) {
+            layoutNuevaContrasenia.setError("Ingresa la nueva contraseña");
+            return;
+        }
+
+        if (getConfirmarContrasenia().isEmpty()) {
+            layoutConfirmarContrasenia.setError("Confirma la nueva contraseña");
+            return;
+        }
+
+        if (getNuevaContrasenia().length() < 6) {
+            layoutNuevaContrasenia.setError("La contraseña debe tener al menos 6 caracteres");
+            return;
+        }
+
+        if (!getNuevaContrasenia().equals(getConfirmarContrasenia())) {
+            layoutConfirmarContrasenia.setError("Las contraseñas no coinciden");
+            return;
+        }
+
         presenter.cambiarContrasenia();
     }
 
@@ -77,18 +141,43 @@ public class CambiarContraseniaFragment extends Fragment {
     }
 
     public void mostrarMensaje(String mensaje) {
-        Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show();
+        if (getView() != null) {
+            ModernSnackBar.mostrar(getView(), mensaje, ModernSnackBar.SUCCESS);
+        }
+    }
+
+    public void mostrarError(String mensaje) {
+        if (getView() != null) {
+            ModernSnackBar.mostrar(getView(), mensaje, ModernSnackBar.ERROR);
+        }
     }
 
     public void limpiarCampos() {
         etContraseniaActual.setText("");
         etNuevaContrasenia.setText("");
         etConfirmarContrasenia.setText("");
+
+        // Limpiar errores
+        layoutContraseniaActual.setError(null);
+        layoutNuevaContrasenia.setError(null);
+        layoutConfirmarContrasenia.setError(null);
     }
 
     public void irAUsuarioFragment() {
         if (getActivity() instanceof MenuActivity) {
             ((MenuActivity) getActivity()).replaceFragment(new UsuarioFragment(), "USUARIO");
         }
+    }
+
+    public void setErrorContraseniaActual(String mensaje) {
+        layoutContraseniaActual.setError(mensaje);
+    }
+
+    public void setErrorNuevaContrasenia(String mensaje) {
+        layoutNuevaContrasenia.setError(mensaje);
+    }
+
+    public void setErrorConfirmarContrasenia(String mensaje) {
+        layoutConfirmarContrasenia.setError(mensaje);
     }
 }

@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,8 @@ public class AgendaFragment extends Fragment {
     private CitaAdapter adapter;
     private PresenterAgendaFragment presenter;
     private Button btnCargarMas;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     public AgendaFragment() {}
 
@@ -39,6 +43,9 @@ public class AgendaFragment extends Fragment {
 
         recyclerCitas = view.findViewById(R.id.recyclerCitas);
         btnCargarMas = view.findViewById(R.id.btnCargarMas);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshAgenda);
+        swipeRefreshLayout.setOnRefreshListener(() -> {recargarFragment();});
+
 
         recyclerCitas.setLayoutManager(new LinearLayoutManager(requireContext()));
 
@@ -53,6 +60,14 @@ public class AgendaFragment extends Fragment {
 
         btnCargarMas.setOnClickListener(v -> presenter.cargarSiguientePagina());
     }
+
+    private void recargarFragment() {
+        if (getActivity() instanceof MenuActivity) {
+            ((MenuActivity) getActivity()).replaceFragment(new AgendaFragment());
+        }
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 
     public void mostrarCitasInicial(List<CitaUI> lista) {
         adapter = new CitaAdapter(requireContext(), lista, idCita -> navegarADetalleCita(idCita));

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ public class ConsultoriosFragment extends Fragment {
     private RecyclerView recyclerConsultorios;
     private ConsultorioAdapter adapter;
     private PresenterConsultoriosFragment presenter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -50,7 +53,16 @@ public class ConsultoriosFragment extends Fragment {
 
         iBtnBuscarConsultorio.setOnClickListener(v -> buscarConsultorio());
         fBtnAgregarConsultorio.setOnClickListener(v -> agregarConsultorio());
+        swipeRefreshLayout.setOnRefreshListener(() -> {recargarFragment();});
     }
+
+    private void recargarFragment() {
+        if (getActivity() instanceof MenuActivity) {
+            ((MenuActivity) getActivity()).replaceFragment(new ConsultoriosFragment());
+        }
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
 
     public void iniciarPresenter(){
         presenter = new PresenterConsultoriosFragment(this);
@@ -94,6 +106,7 @@ public class ConsultoriosFragment extends Fragment {
         iBtnBuscarConsultorio = view.findViewById(R.id.btnBuscarConsultorio);
         fBtnAgregarConsultorio = view.findViewById(R.id.btnAgregarConsultorio);
         recyclerConsultorios = view.findViewById(R.id.recyclerConsultorios);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshConsultorios);
         recyclerConsultorios.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 

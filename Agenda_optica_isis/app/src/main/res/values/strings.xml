@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Agenda_optica_isis</string>
+    <string name="app_name">TuAgenda</string>
     <string name="hint_email">Correo electrónico</string>
     <string name="hint_password">Contraseña</string>
     <string name="button_sesion">Iniciar sesión</string>

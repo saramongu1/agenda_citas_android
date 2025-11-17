@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.example.agenda_optica_isis"
-    compileSdk = 34  // Cambié a 34 para consistencia
+    compileSdk = 36  // Cambié a 34 para consistencia
 
     defaultConfig {
         applicationId = "com.example.agenda_optica_isis"
-        minSdk = 21
-        targetSdk = 34  // Cambié a 34 para consistencia
+        minSdk = 24
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.activity)
+    implementation(libs.swiperefreshlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

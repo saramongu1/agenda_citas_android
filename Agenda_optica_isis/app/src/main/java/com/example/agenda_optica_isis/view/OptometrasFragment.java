@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ public class OptometrasFragment extends Fragment {
     private RecyclerView recyclerOptometras;
     private OptometraAdapter adapter;
     private PresenterOptometrasFragment presenter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,7 +53,18 @@ public class OptometrasFragment extends Fragment {
 
         iBtnBuscarOptometra.setOnClickListener(v -> buscarOptometra());
         fBtnAgregarOptometra.setOnClickListener(v -> agregarOptometra());
+        swipeRefreshLayout.setOnRefreshListener(() -> {recargarFragment();});
+
     }
+
+    private void recargarFragment() {
+        if (getActivity() instanceof MenuActivity) {
+            ((MenuActivity) getActivity()).replaceFragment(new OptometrasFragment());
+        }
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+
 
     private void iniciarPresenter() {
         presenter = new PresenterOptometrasFragment(this);
@@ -62,6 +76,7 @@ public class OptometrasFragment extends Fragment {
         iBtnBuscarOptometra = view.findViewById(R.id.btnBuscarOptometra);
         recyclerOptometras = view.findViewById(R.id.recyclerOptometras);
         fBtnAgregarOptometra = view.findViewById(R.id.btnAgregarOptometra);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshOptometras);
         recyclerOptometras.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 

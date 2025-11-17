@@ -4,116 +4,237 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    tools:context=".view.CambiarContraseniaFragment">
+    android:padding="24dp"
+    android:background="@color/white"
+    tools:context=".view.CambiarContraseniaFragment"
+    android:layout_marginBottom="70dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="12dp"
-            android:text="Cambiar contraseña"
-            android:textAlignment="viewStart"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
+        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/custom_background">
+            android:layout_marginBottom="32dp"
+            android:gravity="center">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/candado"
+                android:layout_marginBottom="16dp"
+                app:tint="@color/azul" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contraseña Actual"
-                android:layout_margin="15dp">
+                android:text="Cambiar Contraseña"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/azulOscuroGrisaseo"
+                android:layout_marginBottom="8dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputContraseniaActual"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="20"
-                    android:inputType="textPassword"
-                    android:textColor="@color/edittext_color"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nueva Contraseña"
-                android:layout_margin="15dp">
+                android:text="Actualiza tu contraseña para mantener tu cuenta segura"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:textColor="@color/grisNormal"
+                android:lineSpacingExtra="4sp" />
+        </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputNuevaContrasenia"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="20"
-                    android:inputType="textPassword"
-                    android:textColor="@color/edittext_color"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+        <!-- Formulario -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/white"
+            android:layout_marginBottom="24dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Confirmar Nueva Contraseña"
-                android:layout_margin="15dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputConfirmarContrasenia"
+                <!-- Contraseña Actual -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutContraseniaActual"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLength="20"
-                    android:inputType="textPassword"
-                    android:textColor="@color/edittext_color"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/azul"
+                    app:hintTextColor="@color/azul"
+                    app:startIconTint="@color/azul"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/azul"
+                    android:hint="Contraseña Actual">
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputContraseniaActual"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:padding="16dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="SpeakableTextPresentCheck" />
 
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Nueva Contraseña -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutNuevaContrasenia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/azul"
+                    app:hintTextColor="@color/azul"
+                    app:startIconTint="@color/azul"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/azul"
+                    android:hint="Nueva Contraseña">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputNuevaContrasenia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:padding="16dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Confirmar Nueva Contraseña -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutConfirmarContrasenia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="12dp"
+                    app:boxCornerRadiusBottomStart="12dp"
+                    app:boxCornerRadiusTopEnd="12dp"
+                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxStrokeColor="@color/azul"
+                    app:hintTextColor="@color/azul"
+                    app:startIconTint="@color/azul"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/azul"
+                    android:hint="Confirmar Nueva Contraseña">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputConfirmarContrasenia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:padding="16dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Botones -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCambiarContrasenia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="Cambiar Contraseña"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:paddingVertical="16dp"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/candado"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                android:backgroundTint="@color/azul"
+                android:textColor="@color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelarCambio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cancelar"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:paddingVertical="16dp"
+                app:cornerRadius="12dp"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                android:backgroundTint="@color/grisNormal"
+                android:textColor="@color/white" />
 
         </LinearLayout>
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCambiarContrasenia"
-            style="@style/Widget.MaterialComponents.Button"
+
+        <!-- Información de seguridad -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_gravity="center"
-            android:text="Cambiar Contraseña"
-            android:textAllCaps="false"
-            app:icon="@drawable/candado"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            app:iconTint="@android:color/white"
-            android:backgroundTint="@color/azul"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/grisClaro"
+            android:layout_marginTop="24dp">
 
-            android:textColor="@android:color/white"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelarCambio"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="15dp"
-            android:layout_marginBottom="20dp"
-            android:text="Cancelar"
-            android:textAllCaps="false"
-            app:iconGravity="textStart"
-            app:iconTint="@android:color/white"
-            android:backgroundTint="@color/GrisOscuro"
-            android:textColor="@android:color/white" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/outline_info_24"
+                    app:tint="@color/azul"
+                    android:layout_marginEnd="12dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tu contraseña debe tener al menos 6 caracteres y ser diferente a la anterior"
+                    android:textSize="14sp"
+                    android:textColor="@color/grisNormal"
+                    android:lineSpacingExtra="4sp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
+
 </ScrollView>
