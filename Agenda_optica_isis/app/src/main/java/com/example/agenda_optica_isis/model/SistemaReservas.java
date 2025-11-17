@@ -1,4 +1,9 @@
 package com.example.agenda_optica_isis.model;
+import com.example.agenda_optica_isis.repository.FirebaseRepository;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
@@ -15,16 +20,22 @@ public class SistemaReservas {
     private HashMap<String,Usuario> usuarios;
     private static SistemaReservas instancia;
     private Usuario usuarioActual;
+    private FirebaseRepository firebaseRepository;
+    private boolean datosCargados = false;
 
-
-    public SistemaReservas() {
+    // Constructor privado
+    private SistemaReservas() {
         this.optometras = new HashMap<>();
         this.pacientes = new HashMap<>();
         this.citas = new HashMap<>();
         this.consultorios = new HashMap<>();
         this.usuarios = new HashMap<>();
-        quemarDatos();
+        this.firebaseRepository = new FirebaseRepository();
+
+        // Cargar datos desde Firebase
+        cargarDatosDesdeFirebase();
     }
+
     public static synchronized SistemaReservas getInstance() {
         if (instancia == null) {
             instancia = new SistemaReservas();
@@ -32,31 +43,102 @@ public class SistemaReservas {
         return instancia;
     }
 
-    public void quemarDatos(){
+    // NUEVO MÉTODO: Cargar datos desde Firebase
+    private void cargarDatosDesdeFirebase() {
+        firebaseRepository.cargarTodosLosDatos(new FirebaseRepository.OnDataLoadedListener() {
+            @Override
+            public void onDataLoaded(DataSnapshot dataSnapshot) {
+                // Limpiar datos existentes
+                usuarios.clear();
+                optometras.clear();
+                pacientes.clear();
+                citas.clear();
+                consultorios.clear();
 
-        crearUsuario("admin@admin.com","12345678",true,"Administradora","1057577987","3213055412",2005,7,13, "C.C.", "femenino");
-        crearOptometra("diana@optometra.com","12345678","Diana yineth González Martínez","1057571987","3131234546",1990,9,13, "C.C.", "femenino");
-        crearOptometra("sara@optometra.com","12345678","Sara alejandra mongui gonzalez","1057574987","3131234789",2005,9,13, "C.C.", "femenino");
+                // Cargar usuarios
+                if (dataSnapshot.child("usuarios").exists()) {
+                    for (DataSnapshot usuarioSnapshot : dataSnapshot.child("usuarios").getChildren()) {
+                        Usuario usuario = usuarioSnapshot.getValue(Usuario.class);
+                        if (usuario != null) {
+                            usuarios.put(usuario.getNumero_documento(), usuario);
+                        }
+                    }
+                }
 
+                // Cargar optometras
+                if (dataSnapshot.child("optometras").exists()) {
+                    for (DataSnapshot optometraSnapshot : dataSnapshot.child("optometras").getChildren()) {
+                        Optometra optometra = optometraSnapshot.getValue(Optometra.class);
+                        if (optometra != null) {
+                            optometras.put(optometra.getNumero_documento(), optometra);
+                            // También agregar a usuarios
+                            usuarios.put(optometra.getNumero_documento(), optometra);
+                        }
+                    }
+                }
 
+                // Cargar pacientes
+                if (dataSnapshot.child("pacientes").exists()) {
+                    for (DataSnapshot pacienteSnapshot : dataSnapshot.child("pacientes").getChildren()) {
+                        Paciente paciente = pacienteSnapshot.getValue(Paciente.class);
+                        if (paciente != null) {
+                            pacientes.put(paciente.getNumero_documento(), paciente);
+                        }
+                    }
+                }
 
-        crearPaciente("carlos.lopez@email.com", "Carlos Andrés López", "9876543215", "3152345678", 1990, 7, 22, "C.C.", "masculino");
-        crearPaciente("ana.martinez@email.com", "Ana Isabel Martínez", "1456789123", "3203456789", 1978, 11, 5, "C.C.", "femenino");
-        crearPaciente("jorge.silva@email.com", "Jorge Eduardo Silva", "7891234561", "3004567890", 1988, 1, 30, "C.C.", "masculino");
-        crearPaciente("laura.diaz@email.com", "Laura Patricia Díaz", "1321654987", "3015678901", 1995, 9, 12, "C.C.", "femenino");
-        crearPaciente("roberto.garcia@email.com", "Roberto Antonio García", "6549873211", "3026789012", 1982, 4, 18, "C.C.", "masculino");
-        crearPaciente("sofia.perez@email.com", "Sofia Camila Pérez", "2147258369", "3037890123", 2000, 8, 25, "C.C.", "femenino");
-        crearPaciente("miguel.torres@email.com", "Miguel Ángel Torres", "2583691472", "3048901234", 1975, 12, 3, "C.C.", "masculino");
-        crearPaciente("elena.castro@email.com", "Elena Margarita Castro", "2369147258", "3059012345", 1992, 6, 8, "C.C.", "femenino");
-        crearPaciente("fernando.ramirez@email.com", "Fernando José Ramírez", "9517538522", "3120123456", 1987, 2, 14, "C.C.", "masculino");
-        crearPaciente("carmen.herrera@email.com", "Carmen Rosa Herrera", "1753159486", "3131234567", 1965, 10, 17, "C.C.", "femenino");
-        crearPaciente("diego.mendoza@email.com", "Diego Alejandro Mendoza", "8527419632", "3142345678", 2010, 7, 29, "T.I.", "otro");
-        crearPaciente("patricia.rojas@email.com", "Patricia Alejandra Rojas", "3963852741", "3173456789", 2018, 3, 21, "R.C.", "femenino");
-        crearPaciente("ricardo.vargas@email.com", "Ricardo Manuel Vargas", "7418529633", "3184567890", 1970, 11, 9, "C.E.", "otro");
-        crearPaciente("isabel.nunez@email.com", "Isabel Cristina Núñez", "5948726312", "3195678901", 1993, 5, 6, "C.C.", "otro");
-        crearConsultorio("COI-01","calle 15 # 13-9", "Sogamoso");
+                // Cargar citas
+                if (dataSnapshot.child("citas").exists()) {
+                    for (DataSnapshot citaSnapshot : dataSnapshot.child("citas").getChildren()) {
+                        Cita cita = citaSnapshot.getValue(Cita.class);
+                        if (cita != null) {
+                            citas.put(cita.getId(), cita);
+                            // Actualizar contador si es necesario
+                            if (cita.getId() >= Cita.getContador()) {
+                                Cita.setContador(cita.getId() + 1);
+                            }
+                        }
+                    }
+                }
+
+                // Cargar consultorios
+                if (dataSnapshot.child("consultorios").exists()) {
+                    for (DataSnapshot consultorioSnapshot : dataSnapshot.child("consultorios").getChildren()) {
+                        Consultorio consultorio = consultorioSnapshot.getValue(Consultorio.class);
+                        if (consultorio != null) {
+                            consultorios.put(consultorio.getId(), consultorio);
+                        }
+                    }
+                }
+
+                datosCargados = true;
+                System.out.println("Datos cargados correctamente desde Firebase");
+
+                // Si no hay datos, quemar datos iniciales
+                if (usuarios.isEmpty()) {
+                    quemarDatos();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("Error cargando datos desde Firebase: " + error);
+                // En caso de error, usar datos locales
+                quemarDatos();
+            }
+        });
     }
 
+    public void quemarDatos(){
+        // Solo crear admin si no existe
+        if (usuarios.isEmpty()) {
+            crearUsuario("admin@admin.com","12345678",true,"Administradora","1057577987","3213055412",2005,7,13, "C.C.", "femenino");
+        }
+    }
+
+    // ================================
+    // MÉTODOS DE BÚSQUEDA
+    // ================================
 
     public HashMap<String, String> buscarPaciente(String criterio, String pacienteBuscar){
         if(criterio.equals("Documento")){
@@ -123,38 +205,85 @@ public class SistemaReservas {
 
     public HashMap<String, String> retornatNombreDocPacientes(){
         HashMap<String, String> listaPacientes = new HashMap<>();
-            for (Paciente paciente : pacientes.values()) {
-                listaPacientes.put(paciente.getNumero_documento(), paciente.getNombre());
-            }
-            return listaPacientes;
+        for (Paciente paciente : pacientes.values()) {
+            listaPacientes.put(paciente.getNumero_documento(), paciente.getNombre());
+        }
+        return listaPacientes;
     }
 
-    //
-     //CRUD USUARIOS
-     //
+    // ================================
+    // CRUD USUARIOS
+    // ================================
+
     public boolean crearUsuario(String correo_electronico,String contrasenia ,boolean isAdmin,String nombre, String numero_documento,
-                                String numero_celular, int anio, int mes, int dia, String tipo_contrasenia, String genero) {
+                                String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         if (usuarios.containsKey(numero_documento)) return false;
-        usuarios.put(numero_documento,new Usuario(correo_electronico,contrasenia,isAdmin,nombre,numero_documento,numero_celular,anio,mes,dia, tipo_contrasenia, genero));
+
+        Usuario nuevoUsuario = new Usuario(correo_electronico, contrasenia, isAdmin, nombre,
+                numero_documento, numero_celular, anio, mes, dia,
+                tipo_documento, genero);
+        usuarios.put(numero_documento, nuevoUsuario);
+
+        // Guardar en Firebase
+        firebaseRepository.guardarUsuario(nuevoUsuario, new FirebaseRepository.OnDataSavedListener() {
+            @Override
+            public void onSuccess() {
+                System.out.println("Usuario guardado en Firebase: " + numero_documento);
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("Error guardando usuario en Firebase: " + error);
+            }
+        });
+
         return true;
     }
 
-    // En tu SistemaReservas.java, agrega este método:
     public boolean actualizarContrasena(String correo, String nuevaContrasena) {
         for (Usuario usuario : usuarios.values()) {
             if (usuario.getCorreo_electronico().equalsIgnoreCase(correo)) {
                 usuario.setContrasenia(nuevaContrasena);
+
+                // Actualizar en Firebase
+                firebaseRepository.guardarUsuario(usuario, new FirebaseRepository.OnDataSavedListener() {
+                    @Override
+                    public void onSuccess() {
+                        System.out.println("Contraseña actualizada en Firebase");
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        System.out.println("Error actualizando contraseña en Firebase: " + error);
+                    }
+                });
+
                 return true;
             }
         }
         for (Optometra optometra : optometras.values()) {
             if (optometra.getCorreo_electronico().equalsIgnoreCase(correo)) {
                 optometra.setContrasenia(nuevaContrasena);
+
+                // Actualizar en Firebase
+                firebaseRepository.guardarOptometra(optometra, new FirebaseRepository.OnDataSavedListener() {
+                    @Override
+                    public void onSuccess() {
+                        System.out.println("Contraseña de optometra actualizada en Firebase");
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        System.out.println("Error actualizando contraseña de optometra en Firebase: " + error);
+                    }
+                });
+
                 return true;
             }
         }
         return false;
     }
+
     public HashMap<String, Usuario> getTodosUsuarios() {
         HashMap<String, Usuario> todosUsuarios = new HashMap<>();
         for (Usuario usuario : usuarios.values()) {
@@ -179,7 +308,6 @@ public class SistemaReservas {
         this.usuarioActual = usuario;
     }
 
-
     public Usuario leerUsuario(String numero_documento) {
         return usuarios.get(numero_documento);
     }
@@ -190,18 +318,29 @@ public class SistemaReservas {
         try {
             Usuario usuario = usuarios.get(numero_documento);
             if (usuario != null) {
-                // Actualizar los datos del usuario
                 usuario.setCorreo_electronico(correo_electronico);
                 usuario.setNombre(nombre);
                 usuario.setNumero_celular(numero_celular);
-                usuario.setFecha_nacimiento(LocalDate.of(anio, mes, dia));
+                usuario.setFechaNacimientoFromComponents(anio, mes, dia);
                 usuario.asignarTipoDocumento(tipo_documento);
                 usuario.asignarGenero(genero);
 
-                // Actualizar también el usuario actual si es el mismo
                 if (usuarioActual != null && usuarioActual.getNumero_documento().equals(numero_documento)) {
                     usuarioActual = usuario;
                 }
+
+                // Actualizar en Firebase
+                firebaseRepository.guardarUsuario(usuario, new FirebaseRepository.OnDataSavedListener() {
+                    @Override
+                    public void onSuccess() {
+                        System.out.println("Usuario actualizado en Firebase: " + numero_documento);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        System.out.println("Error actualizando usuario en Firebase: " + error);
+                    }
+                });
 
                 return true;
             }
@@ -222,6 +361,19 @@ public class SistemaReservas {
                     usuarioActual.setContrasenia(nuevaContrasenia);
                 }
 
+                // Actualizar en Firebase
+                firebaseRepository.guardarUsuario(usuario, new FirebaseRepository.OnDataSavedListener() {
+                    @Override
+                    public void onSuccess() {
+                        System.out.println("Contraseña actualizada en Firebase");
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        System.out.println("Error actualizando contraseña en Firebase: " + error);
+                    }
+                });
+
                 return true;
             }
             return false;
@@ -229,6 +381,7 @@ public class SistemaReservas {
             return false;
         }
     }
+
     public boolean iniciarSesion(String mail, String contrasenia){
         HashMap<String, Usuario> todosUsuarios = new HashMap<>();
         todosUsuarios.putAll(usuarios);
@@ -243,7 +396,6 @@ public class SistemaReservas {
         }
         return false;
     }
-
 
     // ================================
     // CRUD OPTOMETRAS
@@ -297,7 +449,26 @@ public class SistemaReservas {
     public boolean crearOptometra(String correo_electronico,String contrasenia ,String nombre, String numero_documento,
                                   String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         if (optometras.containsKey(numero_documento)) return false;
-        optometras.put(numero_documento, new Optometra(correo_electronico, contrasenia , true, nombre,  numero_documento,numero_celular,  anio,  mes,  dia, tipo_documento, genero));
+
+        Optometra nuevoOptometra = new Optometra(correo_electronico, contrasenia, true, nombre,
+                numero_documento, numero_celular, anio, mes, dia,
+                tipo_documento, genero);
+        optometras.put(numero_documento, nuevoOptometra);
+        usuarios.put(numero_documento, nuevoOptometra); // También agregar a usuarios
+
+        // Guardar en Firebase
+        firebaseRepository.guardarOptometra(nuevoOptometra, new FirebaseRepository.OnDataSavedListener() {
+            @Override
+            public void onSuccess() {
+                System.out.println("Optometra guardado en Firebase: " + numero_documento);
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("Error guardando optometra en Firebase: " + error);
+            }
+        });
+
         return true;
     }
 
@@ -324,17 +495,48 @@ public class SistemaReservas {
             optometra.setCorreo_electronico(correo_electronico);
             optometra.setNombre(nombre);
             optometra.setNumero_celular(numero_celular);
-            optometra.setFecha_nacimiento(LocalDate.of(anio, mes, dia));
+            optometra.setFechaNacimientoFromComponents(anio, mes, dia);
             optometra.asignarTipoDocumento(tipo_documento);
             optometra.asignarGenero(genero);
+
+            // Actualizar en Firebase
+            firebaseRepository.guardarOptometra(optometra, new FirebaseRepository.OnDataSavedListener() {
+                @Override
+                public void onSuccess() {
+                    System.out.println("Optometra actualizado en Firebase: " + numero_documento);
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Error actualizando optometra en Firebase: " + error);
+                }
+            });
+
             return true;
         }
         return false;
     }
 
-
     public boolean eliminarOptometra(String numero_documento) {
-        return optometras.remove(numero_documento) != null;
+        if (optometras.remove(numero_documento) != null) {
+            usuarios.remove(numero_documento);
+
+            // Eliminar de Firebase
+            firebaseRepository.eliminarOptometra(numero_documento, new FirebaseRepository.OnDataSavedListener() {
+                @Override
+                public void onSuccess() {
+                    System.out.println("Optometra eliminado de Firebase: " + numero_documento);
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Error eliminando optometra de Firebase: " + error);
+                }
+            });
+
+            return true;
+        }
+        return false;
     }
 
     public ArrayList<Integer> citasConsultorio(String id_consultorio){
@@ -390,10 +592,28 @@ public class SistemaReservas {
     // ================================
     // CRUD PACIENTES
     // ================================
+
     public boolean crearPaciente(String correo_electronico,String nombre, String numero_documento,
                                  String numero_celular, int anio, int mes, int dia, String tipo_documento, String genero) {
         if (pacientes.containsKey(numero_documento)) return false;
-        pacientes.put(numero_documento, new Paciente(correo_electronico,nombre, numero_documento,numero_celular, anio, mes, dia, tipo_documento, genero));
+
+        Paciente nuevoPaciente = new Paciente(correo_electronico, nombre, numero_documento,
+                numero_celular, anio, mes, dia, tipo_documento, genero);
+        pacientes.put(numero_documento, nuevoPaciente);
+
+        // Guardar en Firebase
+        firebaseRepository.guardarPaciente(nuevoPaciente, new FirebaseRepository.OnDataSavedListener() {
+            @Override
+            public void onSuccess() {
+                System.out.println("Paciente guardado en Firebase: " + numero_documento);
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("Error guardando paciente en Firebase: " + error);
+            }
+        });
+
         return true;
     }
 
@@ -412,48 +632,93 @@ public class SistemaReservas {
             paciente.setCorreo_electronico(correo_electronico);
             paciente.setNombre(nombre);
             paciente.setNumero_celular(numero_celular);
-            paciente.setFecha_nacimiento(LocalDate.of(anio, mes, dia));
+            paciente.setFechaNacimientoFromComponents(anio, mes, dia);
             paciente.asignarTipoDocumento(tipo_documento);
             paciente.asignarGenero(genero);
+
+            // Actualizar en Firebase
+            firebaseRepository.guardarPaciente(paciente, new FirebaseRepository.OnDataSavedListener() {
+                @Override
+                public void onSuccess() {
+                    System.out.println("Paciente actualizado en Firebase: " + numero_documento);
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Error actualizando paciente en Firebase: " + error);
+                }
+            });
+
             return true;
         }
         return false;
     }
 
-
     public boolean eliminarPaciente(String numero_documento) {
-        return pacientes.remove(numero_documento) != null;
+        if (pacientes.remove(numero_documento) != null) {
+            // Eliminar de Firebase
+            firebaseRepository.eliminarPaciente(numero_documento, new FirebaseRepository.OnDataSavedListener() {
+                @Override
+                public void onSuccess() {
+                    System.out.println("Paciente eliminado de Firebase: " + numero_documento);
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Error eliminando paciente de Firebase: " + error);
+                }
+            });
+
+            return true;
+        }
+        return false;
     }
 
     // ========================================
     // CRUD CITAS
     // ========================================
+
     public boolean crearCita(String docOptometra, String docPaciente, String idConsultorio,
-                         int anio, int mes, int dia, int hora, int minutos) {
+                             int anio, int mes, int dia, int hora, int minutos) {
         int id = Cita.getContador();
         if (citas.containsKey(id)) return false;
-        Cita nueva = new Cita(docOptometra, docPaciente, idConsultorio, anio, mes, dia, hora, minutos);
-        citas.put(nueva.getId(), nueva);
+
+        Cita nuevaCita = new Cita(docOptometra, docPaciente, idConsultorio, anio, mes, dia, hora, minutos);
+        citas.put(nuevaCita.getId(), nuevaCita);
+
+        // Actualizar contador
+        Cita.setContador(id + 1);
+
+        // Guardar en Firebase
+        firebaseRepository.guardarCita(nuevaCita, new FirebaseRepository.OnDataSavedListener() {
+            @Override
+            public void onSuccess() {
+                System.out.println("Cita guardada en Firebase: " + nuevaCita.getId());
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("Error guardando cita en Firebase: " + error);
+            }
+        });
+
         return true;
     }
 
     public boolean comprobarHorarioOptometra(int id_cita, String documento_optometra, int anio, int mes, int dia, int hora, int minutos) {
-        LocalDate fecha = LocalDate.of(anio, mes, dia);
-        LocalTime horaCita = LocalTime.of(hora, minutos);
-        LocalTime horaFinCita = horaCita.plusMinutes(15);
+        String fechaBuscar = String.format("%04d-%02d-%02d", anio, mes, dia);
+        String horaBuscar = String.format("%02d:%02d", hora, minutos);
 
         HashMap<Integer, Cita> lista_citas = new HashMap<>(citas);
         if (id_cita != -1) lista_citas.remove(id_cita);
 
         for (Cita cita : lista_citas.values()) {
-            if (cita.getFecha().isEqual(fecha) &&
+            if (cita.getFecha().equals(fechaBuscar) &&
                     cita.getDocumento_optometra().equalsIgnoreCase(documento_optometra)) {
 
-                LocalTime inicio_actual = cita.getHora();
-                LocalTime fin_actual = inicio_actual.plusMinutes(15);
-
-                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)) {
-                    return false;
+                // Comparar horarios como strings
+                if (cita.getHora().equals(horaBuscar)) {
+                    return false; // Hay conflicto de horario
                 }
             }
         }
@@ -461,41 +726,67 @@ public class SistemaReservas {
     }
 
     public boolean comprobarHorarioConsultorio(int id_cita, String idConsultorio, int anio, int mes, int dia, int hora, int minutos) {
-        LocalDate fecha = LocalDate.of(anio, mes, dia);
-        LocalTime horaCita = LocalTime.of(hora, minutos);
-        LocalTime horaFinCita = horaCita.plusMinutes(15);
+        String fechaBuscar = String.format("%04d-%02d-%02d", anio, mes, dia);
+        String horaBuscar = String.format("%02d:%02d", hora, minutos);
 
         HashMap<Integer, Cita> lista_citas = new HashMap<>(citas);
         if (id_cita != -1) lista_citas.remove(id_cita);
 
         for (Cita cita : lista_citas.values()) {
-            if (cita.getFecha().isEqual(fecha) &&
+            if (cita.getFecha().equals(fechaBuscar) &&
                     cita.getId_consultorio().equals(idConsultorio)) {
 
-                LocalTime inicio_actual = cita.getHora();
-                LocalTime fin_actual = inicio_actual.plusMinutes(15);
-
-                if (!horaCita.isAfter(fin_actual) && !horaFinCita.isBefore(inicio_actual)) {
-                    return false;
+                // Comparar horarios como strings
+                if (cita.getHora().equals(horaBuscar)) {
+                    return false; // Hay conflicto de horario
                 }
             }
         }
         return true;
     }
 
-
     public void actualizarCita(int id_cita, int anio, int mes, int dia,int hora, int minutos,
                                String documento_optometra, String id_consultorio ){
-        citas.get(id_cita).setFecha(LocalDate.of(anio,mes,dia));
-        citas.get(id_cita).setHora(LocalTime.of(hora,minutos));
-        citas.get(id_cita).setDocumento_optometra(documento_optometra);
-        citas.get(id_cita).setId_consultorio(id_consultorio);
+        Cita cita = citas.get(id_cita);
+        if (cita != null) {
+            cita.setFechaFromComponents(anio, mes, dia);
+            cita.setHoraFromComponents(hora, minutos);
+            cita.setDocumento_optometra(documento_optometra);
+            cita.setId_consultorio(id_consultorio);
+
+            // Actualizar en Firebase
+            firebaseRepository.guardarCita(cita, new FirebaseRepository.OnDataSavedListener() {
+                @Override
+                public void onSuccess() {
+                    System.out.println("Cita actualizada en Firebase: " + id_cita);
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Error actualizando cita en Firebase: " + error);
+                }
+            });
+        }
     }
 
-
-
     public boolean eliminarCita(int id) {
-        return citas.remove(id) != null;
+        if (citas.remove(id) != null) {
+            // Eliminar de Firebase
+            firebaseRepository.eliminarCita(String.valueOf(id), new FirebaseRepository.OnDataSavedListener() {
+                @Override
+                public void onSuccess() {
+                    System.out.println("Cita eliminada de Firebase: " + id);
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Error eliminando cita de Firebase: " + error);
+                }
+            });
+
+            return true;
+        }
+        return false;
     }
 
     // ================================
@@ -505,9 +796,26 @@ public class SistemaReservas {
     public String[] obtenerIdsConsultorios(){
         return consultorios.keySet().toArray(new String[0]);
     }
+
     public boolean crearConsultorio(String id, String direccion, String ciudad) {
         if (consultorios.containsKey(id)) return false;
-        consultorios.put(id, new Consultorio(id, direccion, ciudad));
+
+        Consultorio nuevoConsultorio = new Consultorio(id, direccion, ciudad);
+        consultorios.put(id, nuevoConsultorio);
+
+        // Guardar en Firebase
+        firebaseRepository.guardarConsultorio(nuevoConsultorio, new FirebaseRepository.OnDataSavedListener() {
+            @Override
+            public void onSuccess() {
+                System.out.println("Consultorio guardado en Firebase: " + id);
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("Error guardando consultorio en Firebase: " + error);
+            }
+        });
+
         return true;
     }
 
@@ -516,27 +824,59 @@ public class SistemaReservas {
     }
 
     public boolean actualizarConsultorio(String id, String direccion, String ciudad) {
-        Consultorio c = consultorios.get(id);
-        if (c == null) return false;
-        c.setDireccion(direccion);
-        c.setCiudad(ciudad);
-        return true;
+        Consultorio consultorio = consultorios.get(id);
+        if (consultorio != null) {
+            consultorio.setDireccion(direccion);
+            consultorio.setCiudad(ciudad);
+
+            // Actualizar en Firebase
+            firebaseRepository.guardarConsultorio(consultorio, new FirebaseRepository.OnDataSavedListener() {
+                @Override
+                public void onSuccess() {
+                    System.out.println("Consultorio actualizado en Firebase: " + id);
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Error actualizando consultorio en Firebase: " + error);
+                }
+            });
+
+            return true;
+        }
+        return false;
     }
 
     public boolean eliminarConsultorio(String id) {
-        return consultorios.remove(id) != null;
+        if (consultorios.remove(id) != null) {
+            // Eliminar de Firebase
+            firebaseRepository.eliminarConsultorio(id, new FirebaseRepository.OnDataSavedListener() {
+                @Override
+                public void onSuccess() {
+                    System.out.println("Consultorio eliminado de Firebase: " + id);
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println("Error eliminando consultorio de Firebase: " + error);
+                }
+            });
+
+            return true;
+        }
+        return false;
     }
 
     // ================================
     // CONSULTA CITAS POR CRITERIO
     // ================================
+
     public List<Cita> consultarCitasDia(int dia, int mes, int anio) {
         List<Cita> citasDia = new ArrayList<>();
+        String fechaBuscar = String.format("%04d-%02d-%02d", anio, mes, dia);
+
         for (Cita cita : citas.values()) {
-            LocalDate fecha = cita.getFecha();
-            if (fecha.getDayOfMonth() == dia &&
-                    fecha.getMonthValue() == mes &&
-                    fecha.getYear() == anio) {
+            if (cita.getFecha().equals(fechaBuscar)) {
                 citasDia.add(cita);
             }
         }
@@ -546,9 +886,9 @@ public class SistemaReservas {
     public List<Cita> consultarCitasSemana(int inicioSemana, int finSemana, int mes){
         List<Cita> citasSemana = new ArrayList<>();
         for(Cita cita : citas.values()){
-            int diaCita = cita.getFecha().getDayOfMonth();
+            int diaCita = cita.getDia();
             if(diaCita >= inicioSemana && diaCita <= finSemana &&
-                    cita.getFecha().getMonthValue() == mes){
+                    cita.getMes() == mes){
                 citasSemana.add(cita);
             }
         }
@@ -557,8 +897,10 @@ public class SistemaReservas {
 
     public List<Cita> consultarCitasMes(int mes){
         List<Cita> citasMes = new ArrayList<>();
+        String mesBuscar = String.format("-%02d-", mes);
+
         for(Cita cita: citas.values()){
-            if(cita.getFecha().getMonthValue() == mes){
+            if(cita.getFecha().contains(mesBuscar)){
                 citasMes.add(cita);
             }
         }
@@ -567,5 +909,35 @@ public class SistemaReservas {
 
     public List<Cita> consultarCitas(){
         return new ArrayList<>(citas.values());
+    }
+
+    // MÉTODO PARA SINCRONIZAR MANUALMENTE
+    public void sincronizarConFirebase() {
+        cargarDatosDesdeFirebase();
+    }
+
+    // GETTERS para los HashMap (si los necesitas)
+    public HashMap<String, Optometra> getOptometras() {
+        return optometras;
+    }
+
+    public HashMap<String, Paciente> getPacientes() {
+        return pacientes;
+    }
+
+    public HashMap<Integer, Cita> getCitas() {
+        return citas;
+    }
+
+    public HashMap<String, Consultorio> getConsultorios() {
+        return consultorios;
+    }
+
+    public HashMap<String, Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public boolean isDatosCargados() {
+        return datosCargados;
     }
 }

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "100094142510",
+    "firebase_url": "https://agendaopticaisis-default-rtdb.firebaseio.com",
+    "project_id": "agendaopticaisis",
+    "storage_bucket": "agendaopticaisis.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100094142510:android:25f9a02a6e613dd82d57bf",
+        "android_client_info": {
+          "package_name": "com.example.agenda_optica_isis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhfuXMEIcnr5bWwhmFZrSM11yzfXy8NOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

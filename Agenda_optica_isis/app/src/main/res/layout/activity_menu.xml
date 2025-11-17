@@ -16,10 +16,12 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/azulOscuroGrisaseo"
-            android:title="TuAgenda"
-            android:titleTextColor="@color/grisNormal"
-            app:navigationIcon="@drawable/menu" />
+            android:background="?attr/colorPrimary"
+            app:title="TuAgenda"
+            app:titleTextColor="@color/white"
+            android:backgroundTint="@color/azulOscuroGrisaseo"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
 
 
         <FrameLayout
@@ -58,9 +60,9 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/azul"
             android:contentDescription="@string/btm_menu_agregar_cita"
-            android:src="@drawable/agregar_cita"
+            android:src="@drawable/angregar_cita"
             app:layout_anchor="@id/bottomAppBar"
-            app:maxImageSize="30dp"
+            app:maxImageSize="45dp"
             android:tooltipText="Agregar cita"
             app:behavior_autoHide="false"
             app:tint="@color/white" />

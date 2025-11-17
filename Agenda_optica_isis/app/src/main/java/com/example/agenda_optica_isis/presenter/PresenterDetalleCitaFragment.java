@@ -34,16 +34,15 @@ public class PresenterDetalleCitaFragment {
                 return;
             }
 
-            DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
 
             String idStr = String.valueOf(encontrada.getId());
             String nombrePaciente = sistemaReservas.getNombrePaciente(encontrada.getDocumento_paciente());
             String documentoPaciente = encontrada.getDocumento_paciente();
             String nombreOptometra = sistemaReservas.getNombreOptometra(encontrada.getDocumento_optometra());
-            String fecha = encontrada.getFecha().format(formatoFecha);
-            String hora = encontrada.getHora().format(formatoHora);
-            String estado = encontrada.getEstadoCita().name();
+            String fecha = encontrada.getFecha();
+            String hora = encontrada.getHora();
+            String estado = encontrada.getEstadoCita();
             int posicionOptometra = getPosicionNombreOptometra(nombreOptometra);
             int posicionConsultorio = getPosicionConsultorio(encontrada.getId_consultorio());
 
@@ -69,9 +68,9 @@ public class PresenterDetalleCitaFragment {
         ValidarDatos.validarTexto("hora", hora_completa);
 
 
-        int dia = Integer.parseInt(arreglo_fecha[2]);
+        int dia = Integer.parseInt(arreglo_fecha[0]);
         int mes = Integer.parseInt(arreglo_fecha[1]);
-        int anio = Integer.parseInt(arreglo_fecha[0]);
+        int anio = Integer.parseInt(arreglo_fecha[2]);
         int hora = Integer.parseInt(arreglo_hora[0]);
         int minutos = Integer.parseInt(arreglo_hora[1]);
 

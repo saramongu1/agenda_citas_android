@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tour_tooltip_container"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_tour_tooltip"
+    android:padding="0dp"
+    android:elevation="16dp">
+
+    <!-- Flecha direccional -->
+    <ImageView
+        android:id="@+id/tooltip_arrow"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_arrow_down"
+        android:layout_marginTop="-12dp"
+        app:tint="@color/white" />
+
+    <!-- Contenido del tooltip -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="@drawable/bg_tour_tooltip_content"
+        android:layout_marginTop="12dp">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tooltip_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Título del Paso"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Descripción -->
+        <TextView
+            android:id="@+id/tooltip_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción detallada de la funcionalidad que se está explicando en este paso del tour."
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:lineSpacingExtra="6sp"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Contador de pasos -->
+        <TextView
+            android:id="@+id/tooltip_counter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Paso 1 de 5"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:textStyle="italic" />
+
+        <!-- Botones -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Botón Saltar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_skip"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Saltar Tour"
+                android:textColor="@color/white"
+                android:backgroundTint="@android:color/transparent"
+                android:textAllCaps="false"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="20dp" />
+
+            <!-- Botón Siguiente -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_next"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Siguiente"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/azul"
+                android:textAllCaps="false"
+                app:cornerRadius="20dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

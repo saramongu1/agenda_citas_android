@@ -153,7 +153,7 @@ public class CrearPacienteCCFragment extends Fragment {
             DatePickerDialog datePicker = new DatePickerDialog(
                     requireContext(),
                     (view1, selectedYear, selectedMonth, selectedDay) -> {
-                        String fechaSeleccionada = String.format("%02d/%02d/%04d",
+                        String fechaSeleccionada = String.format("%02d-%02d-%04d",
                                 selectedDay, selectedMonth + 1, selectedYear);
                         inputFecha.setText(fechaSeleccionada);
                     },

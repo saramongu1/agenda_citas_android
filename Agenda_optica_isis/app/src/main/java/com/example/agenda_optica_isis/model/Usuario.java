@@ -12,11 +12,15 @@ public class Usuario extends Persona{
         this.setNombre(nombre);
         this.setNumero_documento(numero_documento);
         this.setNumero_celular(numero_celular);
-        this.setFecha_nacimiento(LocalDate.of(anio, mes, dia));
+        this.setFecha_nacimiento(dia, mes, anio);
         this.setContrasenia(contrasenia);
         this.setAdmin(isAdmin);
         super.asignarTipoDocumento(tipo_documento);
         super.asignarGenero(genero);
+    }
+
+    public Usuario() {
+        super();
     }
 
 

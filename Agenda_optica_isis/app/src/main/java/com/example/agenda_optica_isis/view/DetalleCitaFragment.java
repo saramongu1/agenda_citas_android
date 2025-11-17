@@ -44,6 +44,8 @@ public class DetalleCitaFragment extends Fragment {
     private MaterialButton btnCancelarCita;
 
     private PresenterDetalleCitaFragment presenter;
+    private final Calendar calendar = Calendar.getInstance();
+
 
 
     public static DetalleCitaFragment newInstance(String citaId) {
@@ -64,8 +66,6 @@ public class DetalleCitaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         enlazarVistas(view);
-        initInputFecha(view);
-        initInputHora(view);
         deshabilitarSpinner();
 
         presenter = new PresenterDetalleCitaFragment(this);
@@ -75,6 +75,10 @@ public class DetalleCitaFragment extends Fragment {
         btnEditar.setOnClickListener(v -> editarCita());
         btnGuardarCambios.setOnClickListener(v -> guardarCambios());
         btnCancelarCita.setOnClickListener(v-> cancelarCita());
+        tvFechaCita.setOnClickListener(v -> mostrarSelectorFecha());
+        tvHoraCita.setOnClickListener(v -> mostrarSelectorHora());
+
+
 
         String idCita = getArguments() != null ? getArguments().getString(ARG_ID) : null;
         if (idCita == null || idCita.isEmpty()) {
@@ -172,53 +176,63 @@ public class DetalleCitaFragment extends Fragment {
         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    public void initInputFecha(@NonNull View view){
-        EditText inputFecha = view.findViewById(R.id.inputFechaCitaDetalleCita);
-        inputFecha.setOnClickListener(v -> {
-            final Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePicker = new DatePickerDialog(
-                    requireContext(),
-                    (view1, selectedYear, selectedMonth, selectedDay) -> {
-                        String fechaSeleccionada = String.format("%04d-%02d-%02d",
-                                 selectedYear, selectedMonth + 1, selectedDay);
-                        inputFecha.setText(fechaSeleccionada);
-                    },
-                    year,month,day
-            );
-            datePicker.getDatePicker().setMinDate(calendar.getTimeInMillis());
-            datePicker.show();
-        });
+    private void mostrarSelectorFecha() {
+        final Calendar fechaActual = Calendar.getInstance();
+        int año = fechaActual.get(Calendar.YEAR);
+        int mes = fechaActual.get(Calendar.MONTH);
+        int dia = fechaActual.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+                (view, year, month, dayOfMonth) -> {
+                    calendar.set(year, month, dayOfMonth);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    tvFechaCita.setText(sdf.format(calendar.getTime()));
+                },
+                año, mes, dia);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePickerDialog.show();
     }
 
-    public void initInputHora(@NonNull View view) {
-        EditText inputHora = view.findViewById(R.id.inputHoraCitaDetalleCita);
-        inputHora.setOnClickListener(v -> {
-            final Calendar calendar = Calendar.getInstance();
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int minute = calendar.get(Calendar.MINUTE);
+    private void mostrarSelectorHora() {
+        final Calendar horaActual = Calendar.getInstance();
+        int hora = horaActual.get(Calendar.HOUR_OF_DAY);
+        int minuto = horaActual.get(Calendar.MINUTE);
+        int minutosRedondeadosInicial = (minuto / 15) * 15;
 
-            TimePickerDialog timePicker = new TimePickerDialog(
-                    requireContext(),
-                    (view1, selectedHour, selectedMinute) -> {
-                        int minutoAjustado = Math.round(selectedMinute / 5f) * 5;
-                        if (minutoAjustado == 60) {
-                            minutoAjustado = 0;
-                            selectedHour = (selectedHour + 1) % 24;
-                        }
+        // Usar MaterialTimePicker que no tiene botón de teclado
+        com.google.android.material.timepicker.MaterialTimePicker timePicker =
+                new com.google.android.material.timepicker.MaterialTimePicker.Builder()
+                        .setTimeFormat(com.google.android.material.timepicker.TimeFormat.CLOCK_24H)
+                        .setHour(hora)
+                        .setMinute(minutosRedondeadosInicial)
+                        .setTitleText("Seleccionar Hora")
+                        .setInputMode(com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK)
+                        .build();
 
-                        String horaSeleccionada = String.format("%02d:%02d", selectedHour, minutoAjustado);
-                        inputHora.setText(horaSeleccionada);
-                    },
-                    hour,
-                    minute,
-                    true
-            );
-            timePicker.show();
+        timePicker.addOnPositiveButtonClickListener(dialog -> {
+            int selectedHour = timePicker.getHour();
+            int selectedMinute = timePicker.getMinute();
+
+            int minutosRedondeados = (selectedMinute / 15) * 15;
+
+            // Validar rango horario
+            if (selectedHour < 6) {
+                selectedHour = 6;
+                minutosRedondeados = 0;
+                Toast.makeText(requireContext(), "La hora mínima permitida es 6:00", Toast.LENGTH_SHORT).show();
+            } else if (selectedHour > 20 || (selectedHour == 20 && minutosRedondeados > 0)) {
+                selectedHour = 20;
+                minutosRedondeados = 0;
+                Toast.makeText(requireContext(), "La hora máxima permitida es 20:00", Toast.LENGTH_SHORT).show();
+            }
+
+            String horaFormateada = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, minutosRedondeados);
+            tvHoraCita.setText(horaFormateada);
         });
+
+        timePicker.show(getParentFragmentManager(), "TIME_PICKER");
     }
+
 
 
 

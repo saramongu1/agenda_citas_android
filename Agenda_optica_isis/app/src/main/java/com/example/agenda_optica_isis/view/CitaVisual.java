@@ -1,7 +1,5 @@
 package com.example.agenda_optica_isis.view;
 
-import com.example.agenda_optica_isis.model.EstadoCita;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -12,10 +10,10 @@ public class CitaVisual {
     private String consultorio;
     private LocalDate fecha;
     private LocalTime hora;
-    private EstadoCita estado;
+    private String estado;
 
     public CitaVisual(int id, String nombrePaciente, String nombreOptometra,
-                      String consultorio, LocalDate fecha, LocalTime hora, EstadoCita estado) {
+                      String consultorio, LocalDate fecha, LocalTime hora, String estado) {
         this.id = id;
         this.nombrePaciente = nombrePaciente;
         this.nombreOptometra = nombreOptometra;
@@ -32,5 +30,5 @@ public class CitaVisual {
     public String getConsultorio() { return consultorio; }
     public LocalDate getFecha() { return fecha; }
     public LocalTime getHora() { return hora; }
-    public EstadoCita getEstado() { return estado; }
+    public String getEstado() { return estado; }
 }

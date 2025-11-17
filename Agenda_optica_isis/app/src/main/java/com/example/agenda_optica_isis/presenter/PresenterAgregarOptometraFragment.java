@@ -89,17 +89,17 @@ public class PresenterAgregarOptometraFragment {
     }
 
     public int getDiaNacimiento(String fecha_nacimiento){
-        String[] fechaSplit = fecha_nacimiento.split("/");
+        String[] fechaSplit = fecha_nacimiento.split("-");
         return Integer.parseInt(fechaSplit[0]);
     }
 
     public int getMesNacimiento(String fecha_nacimiento){
-        String[] fechaSplit = fecha_nacimiento.split("/");
+        String[] fechaSplit = fecha_nacimiento.split("-");
         return Integer.parseInt(fechaSplit[1]);
     }
 
     public int getAnioNacimiento(String fecha_nacimiento){
-        String[] fechaSplit = fecha_nacimiento.split("/");
+        String[] fechaSplit = fecha_nacimiento.split("-");
         return Integer.parseInt(fechaSplit[2]);
     }
 }

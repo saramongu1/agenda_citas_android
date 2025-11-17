@@ -17,7 +17,7 @@ import com.google.android.material.button.MaterialButton;
 
 public class ConfiguracionFragment extends Fragment {
 
-    private static final String LINK_MANUAL_USUARIO = "https://www.youtube.com/watch?v=H13rI_6FypA&list=RDH13rI_6FypA&start_radio=1";
+    private static final String LINK_MANUAL_USUARIO = "https://docs.google.com/document/d/14cZsadEF407XFvCqcBD6FH4ZZF1055o7/edit?usp=sharing&ouid=103073729729655230256&rtpof=true&sd=true";
 
     public ConfiguracionFragment() {
     }

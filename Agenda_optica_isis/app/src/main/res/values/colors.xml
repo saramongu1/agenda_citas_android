@@ -35,6 +35,9 @@
     <color name="blanco">#FFFFFF</color>
     <color name="blancoTransparente">#E0FFFFFF</color>
 
+    <color name="tour_overlay">#CC000000</color>
+
+
 
 
 </resources>

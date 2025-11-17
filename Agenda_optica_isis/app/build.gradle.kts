@@ -2,11 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    // AGREGAR ESTE PLUGIN (sin version aquí)
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.agenda_optica_isis"
-    compileSdk = 36  // Cambié a 34 para consistencia
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.agenda_optica_isis"
@@ -16,8 +18,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        // Agrega esto para evitar conflictos
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -42,7 +42,6 @@ android {
         compose = true
     }
 
-    // BLOQUE packaging CORRECTO - solo uno
     packaging {
         resources {
             excludes += setOf(
@@ -58,12 +57,14 @@ android {
             )
         }
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
 }
 
 dependencies {
+    // TUS DEPENDENCIAS ACTUALES
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -90,7 +91,15 @@ dependencies {
     // JavaMail
     implementation("com.sun.mail:android-mail:1.6.7")
     implementation("com.sun.mail:android-activation:1.6.7")
+
+    // FIREBASE - SEGÚN DOCUMENTACIÓN ACTUAL
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0")) // Puedes usar 34.5.0 si prefieres
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Utilidades para Firebase
+    implementation("com.google.code.gson:gson:2.10.1")
+
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
-
 }

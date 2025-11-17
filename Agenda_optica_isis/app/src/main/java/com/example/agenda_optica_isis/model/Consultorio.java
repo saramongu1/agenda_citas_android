@@ -4,12 +4,15 @@ public class Consultorio {
     private String id;
     private String direccion;
     private String ciudad;
-    private EstadoConsultorio estadoConsultorio;
 
     public Consultorio(String id, String direccion, String ciudad) {
         this.id = id;
         this.direccion = direccion;
         this.ciudad = ciudad;
+    }
+
+    public Consultorio() {
+
     }
 
     public Consultorio(String id) {
@@ -40,12 +43,5 @@ public class Consultorio {
         this.ciudad = ciudad;
     }
 
-    public EstadoConsultorio getEstadoConsultorio() {
-        return estadoConsultorio;
-    }
-
-    public void setEstadoConsultorio(EstadoConsultorio estadoConsultorio) {
-        this.estadoConsultorio = estadoConsultorio;
-    }
 }
 

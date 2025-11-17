@@ -2,6 +2,7 @@ package com.example.agenda_optica_isis.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import com.example.agenda_optica_isis.R;
 import com.example.agenda_optica_isis.databinding.ActivityMenuBinding;
 import com.example.agenda_optica_isis.model.SistemaReservas;
 import com.example.agenda_optica_isis.model.Usuario;
+import com.example.agenda_optica_isis.utils.AppTourManager;
+import com.example.agenda_optica_isis.utils.ModernSnackBar;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -24,6 +27,7 @@ public class MenuActivity extends AppCompatActivity {
     private Fragment fragmentActivo;
     private String tagActivo;
     private SistemaReservas sistemaReservas;
+    private AppTourManager appTourManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,9 @@ public class MenuActivity extends AppCompatActivity {
         );
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        // Inicializar tour manager
+        appTourManager = new AppTourManager(this);
 
         // Actualizar información del usuario en el drawer
         actualizarInformacionUsuario();
@@ -91,6 +98,39 @@ public class MenuActivity extends AppCompatActivity {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         });
+
+        // Verificar si debe mostrar el tour después de que la UI esté cargada
+        new Handler().postDelayed(() -> {
+            checkAndShowTour();
+        }, 1000);
+    }
+
+    // En tu MenuActivity, modifica el método checkAndShowTour:
+    private void checkAndShowTour() {
+        System.out.println("=== VERIFICANDO SI DEBE MOSTRAR TOUR ===");
+        if (AppTourManager.shouldShowTour(this)) {
+            System.out.println("=== INICIANDO TOUR DESDE ACTIVITY ===");
+            startAppTour();
+        } else {
+            System.out.println("=== TOUR YA FUE MOSTRADO ===");
+        }
+    }
+
+    private void startAppTour() {
+        appTourManager.setOnTourCompleteListener(new AppTourManager.OnTourCompleteListener() {
+            @Override
+            public void onTourComplete() {
+                // Tour completado
+                ModernSnackBar.mostrar(
+                        findViewById(android.R.id.content),
+                        "¡Tour completado! Ya conoces todas las funciones principales.",
+                        ModernSnackBar.SUCCESS
+                );
+            }
+        });
+
+        System.out.println("=== LLAMANDO START TOUR ===");
+        appTourManager.startTour();
     }
 
     private void actualizarInformacionUsuario() {
@@ -125,6 +165,15 @@ public class MenuActivity extends AppCompatActivity {
         super.onResume();
         // Actualizar información del usuario cada vez que la actividad se reanude
         actualizarInformacionUsuario();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Limpiar recursos del tour si es necesario
+        if (appTourManager != null) {
+            // Aquí puedes agregar limpieza si es necesaria
+        }
     }
 
     // ... (los demás métodos se mantienen igual)

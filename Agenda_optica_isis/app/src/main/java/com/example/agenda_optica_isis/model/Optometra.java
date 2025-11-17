@@ -8,6 +8,10 @@ public class Optometra extends Usuario{
         super(correo_electronico, contrasenia , isAdmin, nombre, numero_documento, numero_celular,  anio,  mes,  dia, tipo_documento, genero);
     }
 
+    public Optometra() {
+        super();
+    }
+
 
 
 

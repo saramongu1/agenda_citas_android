@@ -240,65 +240,67 @@ public class AgregarCitaFragment extends Fragment {
         final Calendar horaActual = Calendar.getInstance();
         int hora = horaActual.get(Calendar.HOUR_OF_DAY);
         int minuto = horaActual.get(Calendar.MINUTE);
-
-        // Redondear la hora inicial a los 15 minutos más cercanos
         int minutosRedondeadosInicial = (minuto / 15) * 15;
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
-                (view, hourOfDay, minute1) -> {
-                    // Redondear los minutos seleccionados al múltiplo de 15 más cercano
-                    int minutosRedondeados = (minute1 / 15) * 15;
+        // Usar MaterialTimePicker que no tiene botón de teclado
+        com.google.android.material.timepicker.MaterialTimePicker timePicker =
+                new com.google.android.material.timepicker.MaterialTimePicker.Builder()
+                        .setTimeFormat(com.google.android.material.timepicker.TimeFormat.CLOCK_24H)
+                        .setHour(hora)
+                        .setMinute(minutosRedondeadosInicial)
+                        .setTitleText("Seleccionar Hora")
+                        .setInputMode(com.google.android.material.timepicker.MaterialTimePicker.INPUT_MODE_CLOCK)
+                        .build();
 
-                    // Validar rango horario
-                    if (hourOfDay < 6) {
-                        hourOfDay = 6;
-                        minutosRedondeados = 0;
-                        Toast.makeText(requireContext(), "La hora mínima permitida es 6:00", Toast.LENGTH_SHORT).show();
-                    } else if (hourOfDay > 20 || (hourOfDay == 20 && minutosRedondeados > 0)) {
-                        hourOfDay = 20;
-                        minutosRedondeados = 0;
-                        Toast.makeText(requireContext(), "La hora máxima permitida es 20:00", Toast.LENGTH_SHORT).show();
-                    }
+        timePicker.addOnPositiveButtonClickListener(dialog -> {
+            int selectedHour = timePicker.getHour();
+            int selectedMinute = timePicker.getMinute();
 
-                    String horaFormateada = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minutosRedondeados);
-                    etHora.setText(horaFormateada);
-                }, hora, minutosRedondeadosInicial, true) {
+            int minutosRedondeados = (selectedMinute / 15) * 15;
 
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                // Redondear los minutos en tiempo real al múltiplo de 15 más cercano
-                int minutosRedondeados = (minute / 15) * 15;
-
-                // Validar rango horario en tiempo real
-                if (hourOfDay < 6) {
-                    view.setCurrentHour(6);
-                    view.setCurrentMinute(0);
-                } else if (hourOfDay > 20 || (hourOfDay == 20 && minutosRedondeados > 0)) {
-                    view.setCurrentHour(20);
-                    view.setCurrentMinute(0);
-                } else {
-                    // Solo actualizar los minutos si estamos dentro del rango válido
-                    if (minute != minutosRedondeados) {
-                        view.setCurrentMinute(minutosRedondeados);
-                    }
-                }
+            // Validar rango horario
+            if (selectedHour < 6) {
+                selectedHour = 6;
+                minutosRedondeados = 0;
+                Toast.makeText(requireContext(), "La hora mínima permitida es 6:00", Toast.LENGTH_SHORT).show();
+            } else if (selectedHour > 20 || (selectedHour == 20 && minutosRedondeados > 0)) {
+                selectedHour = 20;
+                minutosRedondeados = 0;
+                Toast.makeText(requireContext(), "La hora máxima permitida es 20:00", Toast.LENGTH_SHORT).show();
             }
-        };
 
-        timePickerDialog.show();
+            String horaFormateada = String.format(Locale.getDefault(), "%02d:%02d", selectedHour, minutosRedondeados);
+            etHora.setText(horaFormateada);
+        });
+
+        timePicker.show(getParentFragmentManager(), "TIME_PICKER");
     }
 
     public void guardarCita(){
+        if (getDocumentoPaciente().isEmpty() || getDocumentoPaciente().equals("Documento del paciente") ||
+                getFechaCita().isEmpty() || getHoraCita().isEmpty()) {
+            mostrarMensajeSnackBar("Complete todos los campos requeridos", ModernSnackBar.INFO);
+            return;
+        }
+
         presenter.agregarCita();
-        limpiarCamposCita();
     }
 
     public String getNombrePaciente(){
-        return  tvNombrePaciente.getText() != null ? tvNombrePaciente.getText().toString().trim() :"";
+        String nombre = tvNombrePaciente.getText() != null ? tvNombrePaciente.getText().toString().trim() : "";
+        // Si el texto es el placeholder, considerarlo como vacío
+        if (nombre.equals("Nombre del paciente")) {
+            return "";
+        }
+        return nombre;
     }
 
     public String getDocumentoPaciente(){
-        return tvDocumentoPaciente.getText() != null ? tvDocumentoPaciente.getText().toString().trim() : "";
+        String documento = tvDocumentoPaciente.getText() != null ? tvDocumentoPaciente.getText().toString().trim() : "";
+        if (documento.equals("Documento del paciente")) {
+            return "";
+        }
+        return documento;
     }
 
     public String getFechaCita(){
@@ -328,7 +330,7 @@ public class AgregarCitaFragment extends Fragment {
         Toast.makeText(requireContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
 
-    private void limpiarCamposCita() {
+    public void limpiarCamposCita() {
         if (tvNombrePaciente != null) {
             tvNombrePaciente.setText("Nombre del paciente");
         }
@@ -344,6 +346,8 @@ public class AgregarCitaFragment extends Fragment {
         if (etHora != null) {
             etHora.setText("");
         }
+        tvNombrePaciente.setText("Nombre del paciente");
+        tvDocumentoPaciente.setText("Documento del paciente");
 
         nombrePacienteGuardado = null;
         documentoPacienteGuardado = null;

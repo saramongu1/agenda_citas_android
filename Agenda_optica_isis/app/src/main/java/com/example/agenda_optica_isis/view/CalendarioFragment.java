@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -17,10 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.agenda_optica_isis.R;
-import com.example.agenda_optica_isis.model.EstadoCita;
 import com.example.agenda_optica_isis.presenter.PresenterCalendarioFragment;
 
 import java.time.LocalDate;
@@ -100,21 +97,31 @@ public class CalendarioFragment extends Fragment {
 
     private void mostrarDatePicker() {
         LocalDate fechaActual = presenter.getFechaSeleccionada();
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 requireContext(),
                 (view, year, month, dayOfMonth) -> {
+
                     LocalDate nuevaFecha = LocalDate.of(year, month + 1, dayOfMonth);
-                    Log.d(TAG, "Fecha seleccionada: " + nuevaFecha);
+
+                    // Formatear en DD-MM-AAAA
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    String fechaFormateada = nuevaFecha.format(formatter);
+
+                    // Mostrar donde corresponda
+                    tvFechaSeleccionada.setText(fechaFormateada);  // Cambia tvFecha por tu TextView real
+
                     presenter.cambiarFecha(nuevaFecha);
-                    actualizarFechaDisplay();
                     actualizarVista();
                 },
                 fechaActual.getYear(),
                 fechaActual.getMonthValue() - 1,
                 fechaActual.getDayOfMonth()
         );
+
         datePickerDialog.show();
     }
+
 
     private void actualizarFechaDisplay() {
         LocalDate fecha = presenter.getFechaSeleccionada();
@@ -672,15 +679,8 @@ public class CalendarioFragment extends Fragment {
     }
 
 
-    private int obtenerColorEstado(EstadoCita estado) {
-        switch (estado) {
-            case PROGRAMADA: return Color.parseColor("#4CAF50");
-            case CANCELADA: return Color.parseColor("#F44336");
-            case EN_PROGRESO: return Color.parseColor("#2196F3");
-            case COMPLETADA: return Color.parseColor("#FF9800");
-            case NO_ASISTIO: return Color.parseColor("#9E9E9E");
-            default: return Color.parseColor("#4CAF50");
-        }
+    private int obtenerColorEstado(String estado) {
+        return Color.parseColor("#4CAF50");
     }
 
 

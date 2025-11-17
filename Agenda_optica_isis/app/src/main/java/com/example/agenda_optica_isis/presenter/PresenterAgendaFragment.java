@@ -2,7 +2,6 @@ package com.example.agenda_optica_isis.presenter;
 
 import com.example.agenda_optica_isis.model.Cita;
 import com.example.agenda_optica_isis.model.SistemaReservas;
-import com.example.agenda_optica_isis.model.EstadoCita;
 import com.example.agenda_optica_isis.view.AgendaFragment;
 import com.example.agenda_optica_isis.view.CitaUI;
 
@@ -60,15 +59,13 @@ public class PresenterAgendaFragment {
 
     private List<CitaUI> convertirACitaUI(List<Cita> citas) {
         List<CitaUI> uiList = new ArrayList<>();
-        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
 
         for (Cita c : citas) {
             String id = String.valueOf(c.getId());
             String nombrePaciente = sistemaReservas.getNombrePaciente(c.getDocumento_paciente());
             String nombreOptometra = sistemaReservas.getNombreOptometra(c.getDocumento_optometra());
-            String fechaHora = c.getFecha().format(formatoFecha) + " " + c.getHora().format(formatoHora);
-            String estado = c.getEstadoCita().name();
+            String fechaHora = c.getFecha() + " " + c.getHora();
+            String estado = c.getEstadoCita();
 
             uiList.add(new CitaUI(id, nombrePaciente, c.getDocumento_paciente(),
                     nombreOptometra, fechaHora, estado));
